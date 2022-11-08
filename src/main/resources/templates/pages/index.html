@@ -22,11 +22,7 @@
                     <img src="images/login/login-logo.png" alt="" style="width: 118px; transition: width .2s;">
                 </div>
                 <div class="el-scrollbar">
-<<<<<<< HEAD
                     <div class="scrollbar-wrapper el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px;">
-=======
-                    <div class="scrollbar-wrapper el-scrollbar__wrap" style="width: 191px;overflow: hidden;">
->>>>>>> f93c63b (初始化项目！)
                         <div class="el-scrollbar__view">
                             <ul role="menubar" class="el-menu" style="background-color: rgb(52, 55, 68);">
                                 <div id="load-member-id">
@@ -128,17 +124,12 @@
             $.each(idUrls, function(key, value) {
                 doPageUI(value.id,value.url);
             })
-<<<<<<< HEAD
             $(".logo").click(changeSidebarContainer)
-=======
-            $(".logo img").click(changeSidebarContainer)
->>>>>>> f93c63b (初始化项目！)
         })
 
         //侧边栏
         function changeSidebarContainer() {
             if (changeSidebarState) {
-<<<<<<< HEAD
                 $(this).children().width("118")
                 $(".sidebar-container").width("190");
                 $(".main-container").width(($(".main-container").width() - 130));
@@ -151,18 +142,6 @@
                 $(".main-container").width(($(".main-container").width() + 130));
                 $(".main-container").css("transition", "0s");
                 $(".is-active i").css("color", "#ffffff")
-=======
-                $(this).width("118")
-                $(".sidebar-container").width("190");
-                $(".main-container").width(($(".main-container").width() - 130));
-                $(".main-container").css("transition", "1s");
-                changeSidebarState = false;
-            } else {
-                $(this).width("15")
-                $(".sidebar-container").width("60");
-                $(".main-container").width(($(".main-container").width() + 130));
-                $(".main-container").css("transition", "0s");
->>>>>>> f93c63b (初始化项目！)
                 changeSidebarState = true;
             }
         }
@@ -175,7 +154,6 @@
                         if (idUrls[i].url == url) {
                             $("#"+idUrls[i].id+" li").addClass("is-active");
                             $(".head-lable span").text($("#"+idUrls[i].id+" li span").text());
-<<<<<<< HEAD
                             if (changeSidebarState) {
                                 $("#"+idUrls[i].id+" li i").css("color", "#ffffff");
                             }
@@ -183,10 +161,6 @@
                         } else {
                             $("#"+idUrls[i].id+" li").removeClass("is-active");
                             $("#"+idUrls[i].id+" li i").css("color", "rgb(191, 203, 217)");
-=======
-                        } else {
-                            $("#"+idUrls[i].id+" li").removeClass("is-active");
->>>>>>> f93c63b (初始化项目！)
                         }
                     }
                 });
