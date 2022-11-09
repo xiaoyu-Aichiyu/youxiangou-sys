@@ -1,58 +1,72 @@
 {
-  "id": "2552591",
-  "name": "rjwm",
+  "id": "3761000",
+  "name": "yxgsys",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "21641541",
-      "name": "category",
-      "font_class": "category",
-      "unicode": "e606",
-      "unicode_decimal": 58886
+      "icon_id": "1301",
+      "name": "应用",
+      "font_class": "yingyong",
+      "unicode": "e600",
+      "unicode_decimal": 58880
     },
     {
-      "icon_id": "21641542",
-      "name": "member",
-      "font_class": "member",
-      "unicode": "e607",
-      "unicode_decimal": 58887
+      "icon_id": "908564",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
     },
     {
-      "icon_id": "21641545",
-      "name": "user",
-      "font_class": "user",
-      "unicode": "e608",
-      "unicode_decimal": 58888
+      "icon_id": "1413433",
+      "name": "日志",
+      "font_class": "rizhi",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
     },
     {
-      "icon_id": "21641546",
-      "name": "order",
-      "font_class": "order",
-      "unicode": "e609",
-      "unicode_decimal": 58889
+      "icon_id": "1723000",
+      "name": "菜单管理",
+      "font_class": "caidanguanli",
+      "unicode": "e7c0",
+      "unicode_decimal": 59328
     },
     {
-      "icon_id": "21641547",
-      "name": "combo",
-      "font_class": "combo",
-      "unicode": "e60a",
-      "unicode_decimal": 58890
+      "icon_id": "7712242",
+      "name": "员工",
+      "font_class": "yuangong",
+      "unicode": "e72e",
+      "unicode_decimal": 59182
     },
     {
-      "icon_id": "21641548",
-      "name": "lock",
-      "font_class": "lock",
-      "unicode": "e60b",
-      "unicode_decimal": 58891
+      "icon_id": "11372764",
+      "name": "公告",
+      "font_class": "gonggao",
+      "unicode": "e8c4",
+      "unicode_decimal": 59588
     },
     {
-      "icon_id": "21641611",
-      "name": "food",
-      "font_class": "food",
-      "unicode": "e60c",
-      "unicode_decimal": 58892
+      "icon_id": "13625313",
+      "name": "商品",
+      "font_class": "shangpin",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "18977367",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "19585495",
+      "name": "轮播图管理",
+      "font_class": "lunbotuguanli",
+      "unicode": "e99b",
+      "unicode_decimal": 59803
     }
   ]
 }

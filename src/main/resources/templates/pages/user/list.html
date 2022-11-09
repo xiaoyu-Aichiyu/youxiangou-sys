@@ -1,0 +1,118 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="plugins/element-ui/index.css">
+<link rel="stylesheet" href="styles/common/common.css">
+
+
+<div id="member-app" class="dashboard-container">
+    <div class="container">
+        <div class="tableBar">
+            <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
+                <input type="text" autocomplete="off" placeholder="请输入员工姓名" class="el-input__inner">
+                <span class="el-input__prefix">
+                    <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
+                </span>
+            </div>
+            <button type="button" class="el-button el-button--primary">
+                <span>+ 添加员工</span>
+            </button>
+        </div>
+        <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
+            <div class="hidden-columns">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="el-table__header-wrapper">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 100%;">
+                    <thead class="">
+                        <tr class="">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_1 is-leaf">
+                                <div class="cell">员工姓名</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_2 is-leaf">
+                                <div class="cell">账号</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_3 is-leaf">
+                                <div class="cell">手机号</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
+                                <div class="cell">账号状态</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-center is-leaf">
+                                <div class="cell">操作</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="el-table__body-wrapper is-scrolling-none">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%;">
+                    <tbody></tbody>
+                </table>
+                <div class="el-table__empty-block" style="height: 100%; width: 100%;">
+                    <span class="el-table__empty-text">暂无数据</span>
+                </div>
+            </div>
+            <div class="el-table__column-resize-proxy" style="display: none;"></div>
+        </div>
+        <div class="pageList el-pagination"><span class="el-pagination__total">共 0 条</span><span
+                class="el-pagination__sizes">
+                <div class="el-select el-select--mini">
+                    <div class="el-input el-input--mini el-input--suffix">
+                        <input type="text" readonly="readonly" autocomplete="off" placeholder="请选择" class="el-input__inner">
+                        <span class="el-input__suffix"><span class="el-input__suffix-inner">
+                            <i class="el-select__caret el-input__icon el-icon-arrow-up"></i>
+                        </span>
+                        </span></div>
+                    <div class="el-select-dropdown el-popper" style="display: none; min-width: 110px;">
+                        <div class="el-scrollbar" style="">
+                            <div class="el-select-dropdown__wrap el-scrollbar__wrap el-scrollbar__wrap--hidden-default">
+                                <ul class="el-scrollbar__view el-select-dropdown__list">
+                                    <li class="el-select-dropdown__item selected"><span>10条/页</span></li>
+                                    <li class="el-select-dropdown__item"><span>20条/页</span></li>
+                                    <li class="el-select-dropdown__item"><span>30条/页</span></li>
+                                    <li class="el-select-dropdown__item"><span>40条/页</span></li>
+                                </ul>
+                            </div>
+                            <div class="el-scrollbar__bar is-horizontal">
+                                <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+                            </div>
+                            <div class="el-scrollbar__bar is-vertical">
+                                <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            <button type="button" disabled="disabled" class="btn-prev"><i class="el-icon el-icon-arrow-left"></i>
+            </button>
+            <ul class="el-pager">
+                <li class="number active">1</li>
+            </ul>
+            <button type="button" disabled="disabled" class="btn-next"><i class="el-icon el-icon-arrow-right"></i>
+            </button>
+            <span class="el-pagination__jump">
+                前往
+                <div class="el-input el-pagination__editor is-in-pagination">
+                    <input type="number" autocomplete="off" min="1" max="1" class="el-input__inner">
+                </div>
+                页
+            </span>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $(".el-button--primary").on("click", addPage);
+    })
+
+    function addPage() {
+        $("#cIframe").load("user/add");
+    }
+</script>
+<script src="api/member/member.js"></script>

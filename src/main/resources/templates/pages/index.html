@@ -25,11 +25,18 @@
                     <div class="scrollbar-wrapper el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px;">
                         <div class="el-scrollbar__view">
                             <ul role="menubar" class="el-menu" style="background-color: rgb(52, 55, 68);">
-                                <div id="load-member-id">
+                                <div id="load-user-id">
                                     <li role="menuitem" tabindex="-1" class="el-menu-item"
                                         style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
-                                        <i class="iconfont icon-member"></i>
-                                        <span>员工管理</span>
+                                        <i class="iconfont icon-user"></i>
+                                        <span>用户管理</span>
+                                    </li>
+                                </div>
+                                <div id="load-item-id">
+                                    <li role="menuitem" tabindex="-1" class="el-menu-item"
+                                        style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
+                                        <i class="iconfont icon-item"></i>
+                                        <span>商品管理</span>
                                     </li>
                                 </div>
                                 <div id="load-category-id">
@@ -39,18 +46,39 @@
                                         <span>分类管理</span>
                                     </li>
                                 </div>
-                                <div id="load-food-id">
+                                <div id="load-coupon-id">
                                     <li role="menuitem" tabindex="-1" class="el-menu-item"
                                         style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
-                                        <i class="iconfont icon-food"></i>
-                                        <span>菜品管理</span>
+                                        <i class="iconfont icon-coupon"></i>
+                                        <span>优惠券管理</span>
                                     </li>
                                 </div>
-                                <div id="load-combo-id">
+                                <div id="load-notice-id">
                                     <li role="menuitem" tabindex="-1" class="el-menu-item"
                                         style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
-                                        <i class="iconfont icon-combo"></i>
-                                        <span>套餐管理</span>
+                                        <i class="iconfont icon-notice"></i>
+                                        <span>公告管理</span>
+                                    </li>
+                                </div>
+                                <div id="load-carousel-id">
+                                    <li role="menuitem" tabindex="-1" class="el-menu-item"
+                                        style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
+                                        <i class="iconfont icon-carousel"></i>
+                                        <span>轮播图管理</span>
+                                    </li>
+                                </div>
+                                <div id="load-menu-id">
+                                    <li role="menuitem" tabindex="-1" class="el-menu-item"
+                                        style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
+                                        <i class="iconfont icon-menu"></i>
+                                        <span>菜单管理</span>
+                                    </li>
+                                </div>
+                                <div id="load-log-id">
+                                    <li role="menuitem" tabindex="-1" class="el-menu-item"
+                                        style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
+                                        <i class="iconfont icon-log"></i>
+                                        <span>日志管理</span>
                                     </li>
                                 </div>
                                 <div id="load-order-id">
@@ -98,20 +126,36 @@
     <script>
         var idUrls =[
             {
-                id:"load-member-id",
-                url:"member/list"
+                id:"load-user-id",
+                url:"user/list"
             },
             {
                 id:"load-category-id",
                 url:"category/list"
             },
             {
-                id:"load-combo-id",
-                url:"combo/list"
+                id:"load-coupon-id",
+                url:"coupon/list"
             },
             {
-                id:"load-food-id",
-                url:"food/list"
+                id:"load-item-id",
+                url:"item/list"
+            },
+            {
+                id:"load-notice-id",
+                url:"notice/list"
+            },
+            {
+                id:"load-carousel-id",
+                url:"carousel/list"
+            },
+            {
+                id:"load-menu-id",
+                url:"menu/list"
+            },
+            {
+                id:"load-log-id",
+                url:"log/list"
             },
             {
                 id:"load-order-id",

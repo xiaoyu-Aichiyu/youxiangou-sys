@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 2552591 */
-  src: url('iconfont.woff2?t=1621231825060') format('woff2'),
-       url('iconfont.woff?t=1621231825060') format('woff'),
-       url('iconfont.ttf?t=1621231825060') format('truetype');
+  font-family: "iconfont"; /* Project id 3761000 */
+  src: url('iconfont.woff2?t=1667994186819') format('woff2'),
+       url('iconfont.woff?t=1667994186819') format('woff'),
+       url('iconfont.ttf?t=1667994186819') format('truetype');
 }
 
 .iconfont {
@@ -14,30 +14,38 @@
 }
 
 .icon-category:before {
-  content: "\e606";
+  content: "\e600";
 }
 
-.icon-member:before {
-  content: "\e607";
+.icon-coupon:before {
+  content: "\e69b";
+}
+
+.icon-log:before {
+  content: "\e69a";
+}
+
+.icon-menu:before {
+  content: "\e7c0";
 }
 
 .icon-user:before {
-  content: "\e608";
+  content: "\e72e";
+}
+
+.icon-notice:before {
+  content: "\e8c4";
+}
+
+.icon-item:before {
+  content: "\e613";
 }
 
 .icon-order:before {
-  content: "\e609";
+  content: "\e60e";
 }
 
-.icon-combo:before {
-  content: "\e60a";
-}
-
-.icon-lock:before {
-  content: "\e60b";
-}
-
-.icon-food:before {
-  content: "\e60c";
+.icon-carousel:before {
+  content: "\e99b";
 }
 
