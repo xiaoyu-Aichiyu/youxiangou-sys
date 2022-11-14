@@ -1,6 +1,6 @@
-package com.qqls.youxiangousys.pj.common.util;
+package com.qqls.youxiangousys.pj.admin.common.util;
 
-import com.qqls.youxiangousys.pj.common.web.ServiceException;
+import com.qqls.youxiangousys.pj.admin.common.web.ServiceException;
 
 //工具类，检测条件是否符合规则
 public class Assert {

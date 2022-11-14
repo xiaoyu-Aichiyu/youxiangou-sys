@@ -3,6 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
         
 <!-- namespace:命名空间，对应一个dao层接口的全路径 -->
-<mapper namespace="com.qqls.youxiangousys.pj.admin.dao.SysItemDao">
+<mapper namespace="com.qqls.youxiangousys.pj.admin.sys.dao.SysItemDao">
+
+    <sql id="queryItemName">
+        <where>
+            <if test="itemName != null and itemName != ''">
+                item_name like concat("%",#{itemName},"%")
+            </if>
+        </where>
+    </sql>
+
+    <select id="getCountItem" resultType="int">
+        select count(1) from t_item
+        <include refid="queryItemName"/>
+    </select>
+
+    <select id="findItemByItemName" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysItem">
+        select * from t_item <include refid="queryItemName"/> limit #{start},#{pageSize}
+    </select>
 
 </mapper>

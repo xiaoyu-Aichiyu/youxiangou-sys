@@ -1,4 +1,4 @@
-package com.qqls.youxiangousys.pj.common.util;
+package com.qqls.youxiangousys.pj.admin.common.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.qqls.youxiangousys.pj.common.entity;
+package com.qqls.youxiangousys.pj.admin.common.entity;
 
 import lombok.Data;
 

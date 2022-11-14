@@ -1,4 +1,4 @@
-package com.qqls.youxiangousys.pj.common.web;
+package com.qqls.youxiangousys.pj.admin.common.web;
 
 public class ServiceException extends RuntimeException {
 

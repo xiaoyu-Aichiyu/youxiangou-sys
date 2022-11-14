@@ -1,6 +1,6 @@
-package com.qqls.youxiangousys.pj.common.web;
+package com.qqls.youxiangousys.pj.admin.common.web;
 
-import com.qqls.youxiangousys.pj.common.entity.JsonResult;
+import com.qqls.youxiangousys.pj.admin.common.entity.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

@@ -1,5 +1,6 @@
-package com.qqls.youxiangousys.pj.admin.entity;
+package com.qqls.youxiangousys.pj.admin.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,10 +17,12 @@ public class SysItem implements Serializable {
     private double itemPrice;
     private int itemNum;
     private int saleNum;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date modifiedTime;
     private String createdUser;
     private String modifiedUser;
     private int typeId;
-    private int state;
+    private Integer itemState = 1;
 }
