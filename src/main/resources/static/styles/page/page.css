@@ -1,3 +1,6 @@
+.tableLab {
+  float: right;
+}
 .dashboard-container {
   padding: 20px;
 }
@@ -9,7 +12,7 @@
   border-radius: 4px;
 }
 .dashboard-container .container .tableBar {
-  display: flex;
+  /*display: flex;*/
   margin-bottom: 20px;
   justify-content: space-between;
 }
@@ -26,7 +29,8 @@
 
 .dashboard-container .container .pageList {
   text-align: center;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
+  cursor: pointer;
 }
 
 .dashboard-container .container .tableLab .span-btn {
@@ -45,6 +49,7 @@
 .el-table-column--selection .cell {
   padding-left: 10px;
 }
+
 
 /* 添加 */
 .addBrand-container .avatar-uploader .el-upload {
@@ -189,29 +194,23 @@
 .el-table--border th:first-child .cell {
   padding-left: 12px;
 }
-.blockquote-reverse,
-blockquote.pull-right {
-  padding-right: 15px;
-  padding-left: 0;
-  text-align: right;
-  border-right: 5px solid #eee;
-  border-left: 0;
+
+/* PAGINATION */
+.pagination-sm > li > a,
+.pagination-sm > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
 }
-.blockquote-reverse footer:before,
-blockquote.pull-right footer:before,
-.blockquote-reverse small:before,
-blockquote.pull-right small:before,
-.blockquote-reverse .small:before,
-blockquote.pull-right .small:before {
-  content: '';
+.pagination-sm > li:first-child > a,
+.pagination-sm > li:first-child > span {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
-.blockquote-reverse footer:after,
-blockquote.pull-right footer:after,
-.blockquote-reverse small:after,
-blockquote.pull-right small:after,
-.blockquote-reverse .small:after,
-blockquote.pull-right .small:after {
-  content: '\00A0 \2014';
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 .pagination {
   display: inline-block;
@@ -300,19 +299,27 @@ blockquote.pull-right .small:after {
   line-height: 1.5;
 }
 .pagination-sm > li:first-child > a
-.pagination-sm > li > a,
-.pagination-sm > li > span {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
+.blockquote-reverse,
+blockquote.pull-right {
+  padding-right: 15px;
+  padding-left: 0;
+  text-align: right;
+  border-right: 5px solid #eee;
+  border-left: 0;
 }
-.pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+.blockquote-reverse footer:before,
+blockquote.pull-right footer:before,
+.blockquote-reverse small:before,
+blockquote.pull-right small:before,
+.blockquote-reverse .small:before,
+blockquote.pull-right .small:before {
+  content: '';
 }
-.pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+.blockquote-reverse footer:after,
+blockquote.pull-right footer:after,
+.blockquote-reverse small:after,
+blockquote.pull-right small:after,
+.blockquote-reverse .small:after,
+blockquote.pull-right .small:after {
+  content: '\00A0 \2014';
 }

@@ -2,6 +2,11 @@ package com.qqls.youxiangousys.pj.admin.common.web;
 
 public class ServiceException extends RuntimeException {
 
+	/**
+	 * 序列化常量
+	 */
+	private static final long serialVersionUID = 2444658681172872019L;
+
 	public ServiceException() {
 		super();
 	}
