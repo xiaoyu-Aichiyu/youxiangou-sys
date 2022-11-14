@@ -1,4 +1,4 @@
-package com.qqls.youxiangousys.pj.admin.controller;
+package com.qqls.youxiangousys.pj.admin.sys.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
