@@ -19,5 +19,7 @@ public interface SysItemService {
      * @param state
      * @return
      */
-    int updateState(Integer id, Integer state);
+    Integer updateState(Integer id, Integer state);
+
+    Integer updateTj(Integer id, Integer itemTj);
 }

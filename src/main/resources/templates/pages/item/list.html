@@ -68,9 +68,12 @@
                                 <div class="cell">售卖状态</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
+                                <div class="cell">商品推荐</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
                                 <div class="cell">最后操作时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -128,7 +131,6 @@
     function doGetObjects() {
         var url = "item/findAllItem";
         var curPage = $("#pageId").data("curPage");
-        debugger;
         var params = {
             itemName : $(".el-input__inner").val(),
             curPage: curPage ?  curPage : 1,
@@ -159,27 +161,60 @@
                 dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data[i].itemTitle + "</div></td>";
                 dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data[i].itemPrice + "</div></td>";
                 dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" +(data[i].itemState?"上架":"下架") + "</div></td>";
-                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" +data[i].createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_8 is-center is-leaf'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+(data[i].itemState ? "下架" : "上架") +"</button><button type='button' class='el-button el-button--primary continue'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" +
+                            "<div class='tj-btn' style='width: 55px; cursor: pointer;transition: .5s; height:30px;border-radius: 15px; background-color: " + (data[i].itemTj ? "#ffc200" : "#e3e3e3") + ";'></div>" +
+                "<div style='background-color: #ffffff;transition: .5s;width:24px;height: 24px;left:" + (data[i].itemTj ? "40" : "15") + "px;border-radius:15px;position: absolute;top: 20px; '></div></div></td>"
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +data[i].createdTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_9 is-center is-leaf'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+(data[i].itemState ? "下架" : "上架") +"</button><button type='button' class='el-button el-button--primary continue'>修改</button></div></td></td>";
                 dataStr += "</tr>"
             }
             $("#tbodyId").append(dataStr);
+            $(".tj-btn").on('click', changeTjBtn);
         }
+    }
+
+    function changeTjBtn() {
+        var btn = $(this);
+        var bgColor = $(this).css("background-color");
+        var id = $(this).parents("tr").find("input[type='checkbox']").val();
+        var itemTj = 0;
+        //判断是否是不推荐的 是的话状态=1，不是的话状态=0
+        if (bgColor == 'rgb(227, 227, 227)') {
+            itemTj = 1;
+        }
+        var params = {id:id,itemTj:itemTj};
+        if (btn.parents("tr").children(":eq(8)").children().children().eq(0).text() == '上架') {
+            alert("商品处于下架状态，暂不能推荐！");
+            return;
+        }
+        changeTj(btn, itemTj, params);
+    }
+
+    function changeTj(btn, itemTj, params) {
+        var url = "item/updateTj";
+        $.get(url, params, function (result) {
+            alert(result.message);
+            btn.css("background-color", !itemTj ? "#e3e3e3" :"#ffc200");
+            btn.next().css("left",  !itemTj ? "15px" : "40px");
+        })
     }
 
     function changeState(btn){
         var id= $(btn).parents("tr").find("input").val();
         var url = "item/updateState";
         var state = $(btn).text() == '下架' ? 0 : 1;
-        var params = {id:id,state:state}
-        debugger;
+        var tjBtn = $(btn).parents("tr").find("div[class='tj-btn']");
+        if (state == 0) {
+            changeTj(tjBtn, 0, {id:id, itemTj:0});
+        }
+        var params = {id:id,state:state};
         $.get(url,params,function(result){
             alert(result.message);
             //刷新页面
-            doGetObjects();
+            //doGetObjects();
             //静态刷新
-            $(btn).text(valid == 0 ? "启用" : "禁用");
-            $(btn).parents("td").children(":eq(6)").text(valid == 1 ? "启用" : "禁用");
+            $(btn).text(state == 0 ? "上架" : "下架");
+            $(btn).parents("tr").children(":eq(5)").html("<div class='cell'>" + (state == 1 ? "上架" : "下架") + "</div>");
         })
     }
 

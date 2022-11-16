@@ -39,4 +39,12 @@ public class SysItemController {
         jr.setMessage("状态修改成功！");
         return jr;
     }
+
+    @RequestMapping("updateTj")
+    public JsonResult updateTj(Integer id,Integer itemTj) {
+        JsonResult jr = new JsonResult(itemService.updateTj(id, itemTj));
+        jr.setMessage("推荐修改成功！");
+        return jr;
+    }
+
 }

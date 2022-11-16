@@ -48,11 +48,20 @@ public class SysItemServiceImpl implements SysItemService {
      * @param state
      * @return
      */
-    public int updateState(Integer id, Integer state) {
+    public Integer updateState(Integer id, Integer state) {
         Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
         Assert.isEmpty(state == null, "操作有误！");
-        int n = itemDao.updateState(id, state);
+        Integer n = itemDao.updateState(id, state);
         Assert.isEmpty(n == 0, "状态修改失败！");
+        return n;
+    }
+
+    @Override
+    public Integer updateTj(Integer id, Integer itemTj) {
+        Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
+        Assert.isEmpty(itemTj == null, "操作有误！");
+        Integer n = itemDao.updateTj(id, itemTj);
+        Assert.isEmpty(n == 0,"推荐状态修改失败！");
         return n;
     }
 }

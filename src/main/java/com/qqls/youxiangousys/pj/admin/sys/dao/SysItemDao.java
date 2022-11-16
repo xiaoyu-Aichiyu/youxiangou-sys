@@ -34,4 +34,7 @@ public interface SysItemDao {
      */
     @Update("update t_item set item_state = #{state} where id = #{id}")
     int updateState(Integer id, Integer state);
+
+    @Update("update t_item set item_tj = #{itemTj} where id = #{id}")
+    Integer updateTj(Integer id, Integer itemTj);
 }
