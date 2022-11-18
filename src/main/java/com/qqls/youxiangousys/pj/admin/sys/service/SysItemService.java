@@ -1,6 +1,9 @@
 package com.qqls.youxiangousys.pj.admin.sys.service;
 
 import com.qqls.youxiangousys.pj.admin.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.admin.sys.entity.SysItem;
+
+import java.util.List;
 
 public interface SysItemService {
 
@@ -11,7 +14,7 @@ public interface SysItemService {
      * @param pageSize
      * @return
      */
-    Pagination findAllItem(String itemName, Integer curPage, Integer pageSize);
+    Pagination findAllItem(String itemName, Integer curPage, Integer pageSize, Integer itemState);
 
     /**
      * 修改用户启用禁用
@@ -21,5 +24,18 @@ public interface SysItemService {
      */
     Integer updateState(Integer id, Integer state);
 
-    Integer updateTj(Integer id, Integer itemTj);
+    /**
+     * 修改用户推荐状态
+     * @param id
+     * @param itemSell
+     * @return
+     */
+    Integer updateSell(Integer id, Integer itemSell);
+
+    /**
+     * 根据id删除商品
+     * @param ids
+     * @return
+     */
+    Integer deleteItem(Integer[] ids);
 }

@@ -25,5 +25,5 @@ public class SysItem implements Serializable {
     private String modifiedUser;
     private int typeId;
     private Integer itemState = 1;
-    private Integer itemTj;
+    private Integer itemSell;
 }
