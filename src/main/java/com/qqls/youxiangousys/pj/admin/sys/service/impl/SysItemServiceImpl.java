@@ -23,11 +23,12 @@ public class SysItemServiceImpl implements SysItemService {
      * @param pageSize
      * @return
      */
-    public Pagination findAllItem(String itemName, Integer curPage, Integer pageSize) {
+    public Pagination findAllItem(String itemName, Integer curPage, Integer pageSize, Integer itemState) {
+        System.out.println(itemState);
         //1.验证参数
         Assert.isEmpty(curPage == null || pageSize == null,"请选择当前页码或者每页条数！！");
         //2.得到角色的总条数
-        int count = itemDao.getCountItem(itemName);
+        int count = itemDao.getCountItem(itemName, itemState);
         //3.创建分页对象，算出所有属性
         Pagination pageObj = new Pagination(curPage,count,pageSize);
         curPage = pageObj.getCurPage();//得到当前页
@@ -35,9 +36,8 @@ public class SysItemServiceImpl implements SysItemService {
         //分页跳过条数=（当前页 - 1）*每页条数
         int start = (curPage - 1) * pageSize;
         //4.根据参数找角色
-        List<SysItem> list = itemDao.findItemByItemName(itemName,start,pageSize);
+        List<SysItem> list = itemDao.findItemByItemName(itemName,start,pageSize,itemState);
         System.out.println(list);
-        Assert.isEmpty(list == null || list.size() == 0,"数据查询失败！！");
         pageObj.setPageData(list);
         return pageObj;
     }
@@ -56,12 +56,30 @@ public class SysItemServiceImpl implements SysItemService {
         return n;
     }
 
-    @Override
-    public Integer updateTj(Integer id, Integer itemTj) {
+    /**
+     * 修改用户推荐状态
+     * @param id
+     * @param itemSell
+     * @return
+     */
+    public Integer updateSell(Integer id, Integer itemSell) {
         Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
-        Assert.isEmpty(itemTj == null, "操作有误！");
-        Integer n = itemDao.updateTj(id, itemTj);
+        Assert.isEmpty(itemSell == null, "操作有误！");
+        Integer n = itemDao.updateSell(id, itemSell);
         Assert.isEmpty(n == 0,"推荐状态修改失败！");
+        return n;
+    }
+
+    /**
+     * 根据id删除商品信息
+     * @param ids
+     * @return
+     */
+    public Integer deleteItem(Integer[] ids) {
+        System.out.println(ids);
+        Assert.isEmpty(ids == null || ids.length == 0,"请选择要删除的数据！");
+        Integer n = itemDao.deleteItemByIds(ids);
+        Assert.isEmpty(n == 0,"商品状态删除失败！");
         return n;
     }
 }

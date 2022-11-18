@@ -21,8 +21,8 @@ public class Pagination {
 	 */
 	public Pagination(int curPage, int countSize, int pageSize) {
 		//this.countPage = countSize % pageSize == 0 ? countSize % pageSize : countSize + 1;
-		this.countPage = (countSize + pageSize - 1) / pageSize;
-		this.countSize = countSize;
+		this.countSize = countSize == 0 ? 1 : countSize;
+		this.countPage = (this.countSize + pageSize - 1) / pageSize;
 		this.pageSize = pageSize <= 0 ? 10 : pageSize;
 		this.pageSize = this.pageSize >= 50 ? 50 : this.pageSize;
 		this.curPage = curPage < 1 ? 1 :curPage;
