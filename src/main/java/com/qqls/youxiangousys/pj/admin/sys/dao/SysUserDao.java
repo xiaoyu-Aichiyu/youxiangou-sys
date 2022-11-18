@@ -32,4 +32,18 @@ public interface SysUserDao {
      * @return
      */
     int updateValId(@Param("id") Integer id,@Param("state") Integer state);
+
+    /**
+     * 根据账号查找用户是否存在
+     * @param username
+     * @return
+     */
+    SysUser findUserByName(String username);
+
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
+    int insertUser(SysUser user);
 }

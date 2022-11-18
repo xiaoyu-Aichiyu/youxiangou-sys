@@ -8,6 +8,11 @@
             where name like concat("%",#{name},"%")
         </if>
     </sql>
+    <!--添加用户-->
+    <insert id="insertUser" parameterType="com.qqls.youxiangousys.pj.admin.sys.entity.SysUser" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user(name, username, password, salt, user_img, phone, state, gender, createdTime, modifiedTime) values
+                    (#{name},#{username},#{password},#{salt},#{userImg},#{phone},#{state},#{gender},now(),now())
+    </insert>
     <!--修改状态-->
     <update id="updateValId">
         update t_user set state = #{state} where id = #{id}
@@ -22,5 +27,9 @@
     <select id="countUser" resultType="Integer">
         select count(1) from t_user
         <include refid="userQuery"/>
+    </select>
+    <!--根据账号查找用户名-->
+    <select id="findUserByName" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysUser">
+        select * from t_user where username = #{name}
     </select>
 </mapper>

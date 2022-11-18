@@ -1,6 +1,7 @@
 package com.qqls.youxiangousys.pj.admin.sys.service;
 
 import com.qqls.youxiangousys.pj.admin.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.admin.sys.entity.SysUser;
 
 public interface SysUserService {
 
@@ -20,4 +21,12 @@ public interface SysUserService {
      * @return
      */
     int updateValId(Integer id, Integer state);
+
+    /**
+     * 添加
+     * @param user
+     * @param roleIds
+     * @return
+     */
+    int insertUser(SysUser user, Integer[] roleIds);
 }

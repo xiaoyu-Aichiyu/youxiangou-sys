@@ -10,17 +10,14 @@
     <div class="container">
         <div class="tableBar">
             <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
-                <input type="text" autocomplete="off" placeholder="请输入员工姓名" class="el-input__inner" id="searchNameId">
+                <input type="text" autocomplete="off" placeholder="请输入用户姓名" class="el-input__inner" id="searchNameId">
                 <span class="el-input__prefix">
                     <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
                 </span>
             </div>
-            <button type="button" class="el-button el-button--primary">
-                <span>删除员工</span>
-            </button>
-            <button type="button" class="el-button el-button--primary">
-                <span>+ 添加员工</span>
-            </button>
+            <button type="button" class="el-button el-button--delete" style="color: #333333;background-color: #ffc200;border-color: #ffc200">删除用户</button>
+            <button type="button" class="el-button el-button--primary">添加用户</button>
+            <button type="button" class="el-button el-button--update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">修改用户</button>
         </div>
         <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
             <div class="hidden-columns">
@@ -38,7 +35,7 @@
                                 <div class="cell">ID</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_2 is-leaf">
-                                <div class="cell">员工姓名</div>
+                                <div class="cell">用户姓名</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_3 is-leaf">
                                 <div class="cell">账号</div>
@@ -55,7 +52,13 @@
                             <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
                                 <div class="cell">性别</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
+                                <div class="cell">创建时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-leaf">
+                                <div class="cell">修改时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_10 is-center is-leaf">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -79,21 +82,43 @@
 </div>
 <script>
     $(function() {
-        $(".el-button--primary").on("click", addPage);
+        //el-button--update
+        //tableBar
+        $(".tableBar").on("click",".el-button--primary,.el-button--update",addPage);
         $(".el-input__inner").on("click",doGetObjects)
         doGetObjects();
         $("#pageId").load("page/page",function(){
-
         })
 
     })
+    //跳转添加或修改页面
+    function addPage() {
+        var bool = $(this).hasClass("el-button--update");
+        var title = bool ? "修改用户" : "添加用户";
+        if (bool){
+            var radioCheck = $("#tbodyId").find("input[type = 'radio']:checked");
+            if (!radioCheck.length){
+                alert("请选择要修改的数据")
+                return;
+            }
+            $("#cIframe").data("userId",radioCheck.val())
+            //拿到当前行绑定的行数据
+            var userData = radioCheck.parents("tr").data("user");
+            //行数据绑定到大盒子上，为了修改页面拿到数据
+            $("#cIframe").data("user",userData);
+        }
+        $("#cIframe").load("user/add",function () {
+            $(".head-lable").text(title);
+        });
+    }
+    //初始加载
     function doGetObjects(){
         var url = "user/findUser";
         var curPage = $("#pageId").data("curPage");
         var params = {
             "name" : $("#searchNameId").val(),
             "curPage" :curPage ? curPage : 1,
-            "pageSize" : 10
+            "pageSize" : 8
         };
         $.get(url,params,function(result){
             if(result.state == 0){
@@ -115,10 +140,12 @@
                 +"<td class='el-table_1_column_4 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.userImg+"</div></td>"
                 +"<td class='el-table_1_column_5 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.phone+"</div></td>"
                 +"<td class='el-table_1_column_6 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+(d.state == 1 ? "启用":"禁用")+"</div></td>"
-                +"<td class='el-table_1_column_7 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.gender+"</div></td>"
-                +"<td class='el-table_1_column_8 is-leaf' colspan='1' rowspan='1'><div class='cell'>"
-                +"<button type='button' class='el-button--primary' onclick='changeValid(this)'>"+(d.state == 1 ?"启用":"禁用")+"</button>"
-                +"<button type='button' class='el-button--primary' onclick='updateValid(this)'>修改</button></div></td></tr>";
+                +"<td class='el-table_1_column_7 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+(d.gender == 1 ? "男" : "女")+"</div></td>"
+                +"<td class='el-table_1_column_8 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.createdTime+"</div></td>"
+                +"<td class='el-table_1_column_9 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.modifiedTime+"</div></td>"
+                +"<td class='el-table_1_column_10 is-leaf' colspan='1' rowspan='1'><div class='cell'>"
+                +"<button type='button' class='el-button--primary' onclick='changeValid(this)'>"+(d.state?"禁用":"启用")+"</button>"
+                +"<button type='button' class='el-button--primary' onclick='delete(this)'>删除</button></div></td></tr>";
             tbody.append(tr);
             //每一行上面绑定当前行数据
             $("#tbodyId tr:last").data("user",data[i]);
@@ -130,16 +157,12 @@
         var id =$(btn).parents('tr').find("input").val();
         var url = "user/updateValId";
         var state = $(btn).text() == '禁用' ? 0 : 1;
-        var params = {id : id,valid : state};
+        var params = {id : id,state : state};
         $.get(url,params,function(result){
             alert(result.message);
             $(btn).text(state == 0 ? "启用" : "禁用");
             $(btn).parents('tr').children(":eq(5)").html("<div class='cell'>"+(state == 1 ? "启用":"禁用")+"</div>");
         })
-    }
-    //跳转添加页面
-    function addPage() {
-        $("#cIframe").load("user/add");
     }
 </script>
 <script src="api/member/member.js"></script>

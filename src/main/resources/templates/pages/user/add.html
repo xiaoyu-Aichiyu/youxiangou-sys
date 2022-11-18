@@ -9,79 +9,142 @@
     <div class="container">
         <form class="el-form demo-ruleForm">
             <div class="el-form-item is-required">
-                <label for="username" class="el-form-item__label" style="width: 180px;">账号:</label>
+                <label for="usernameId" class="el-form-item__label" style="width: 180px;">账号:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner">
+                        <input type="text" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner" id="usernameId">
                     </div>
                 </div>
             </div>
             <div class="el-form-item is-required">
-                <label for="name" class="el-form-item__label" style="width: 180px;">员工姓名:</label>
+                <label for="passwordId" class="el-form-item__label" style="width: 180px;">密码:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入员工姓名" maxlength="20" class="el-input__inner">
+                        <input type="text" autocomplete="off" placeholder="请输入密码" maxlength="20" class="el-input__inner"id="passwordId">
                     </div>
                 </div>
             </div>
             <div class="el-form-item is-required">
-                <label for="phone" class="el-form-item__label" style="width: 180px;">手机号:</label>
+                <label for="nameId" class="el-form-item__label" style="width: 180px;">姓名:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入手机号" maxlength="20" class="el-input__inner">
+                        <input type="text" autocomplete="off" placeholder="请输入姓名" maxlength="20" class="el-input__inner" id="nameId">
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item is-required">
+                <label for="phoneId" class="el-form-item__label" style="width: 180px;">手机号:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" placeholder="请输入手机号" maxlength="20" class="el-input__inner"id="phoneId">
                     </div>
                 </div>
             </div>
             <div class="el-form-item">
-                <label for="sex" class="el-form-item__label" style="width: 180px;">性别:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div role="radiogroup" class="el-radio-group" style="margin-top: 10px;">
-                        <label role="radio" aria-checked="true" tabindex="0" class="el-radio is-checked">
-                            <span class="el-radio__input is-checked">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="男" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">男</span>
-                        </label>
-                        <label role="radio" tabindex="-1" class="el-radio">
-                            <span class="el-radio__input">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="女" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">女</span>
-                        </label>
+                <label for="genderId" class="el-form-item__label" style="width: 180px;">性别:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;" >
+                    <div class="el-form-item__content" id="genderId">
+                        <label class="radio-inline">
+                            <input type="radio" name="typeId" value="1" checked> 男 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="typeId" value="2"> 女 </label>
                     </div>
                 </div>
             </div>
-            <div class="el-form-item is-required">
+            <!--<div class="el-form-item is-required">
                 <label for="idNumber" class="el-form-item__label" style="width: 180px;">身份证号:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
                         <input type="text" autocomplete="off" placeholder="请输入身份证号" maxlength="20" class="el-input__inner">
                     </div>
                 </div>
+            </div>-->
+            <div class="el-form-item is-required">
+                <label for="roleIds" class="el-form-item__label" style="width: 180px;">角色:</label>
+                <ul class="roles-ul" style="margin: 11px;">
+
+                </ul>
+                <div class="el-form-item__content" style="margin-left: 180px;" id="roleIds"></div>
             </div>
             <div class="subBox address">
                 <div class="el-form-item">
                     <div class="el-form-item__content" style="margin-left: 180px;">
                         <button type="button" class="el-button el-button--default">
-                            <span>取消</span>
+                            取消
                         </button>
                         <button type="button" class="el-button el-button--primary">
-                            <span>保存</span>
+                            保存
                         </button>
-                        <button type="button" class="el-button continue el-button--primary">
-                            <span>保存并继续添加</span>
-                        </button>
+                        <!--<button type="button" class="el-button continue el-button&#45;&#45;primary">
+                            保存并继续添加
+                        </button>-->
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
-<script src="api/member/member.js">
+<script src="api/member/member.js"></script>
+<script>
     $(function (){
-
+        loadRolesData();//初始加载角色数据
+        $(".address").on('click','.el-button--default',cancelToUserList)
+                     .on('click','.el-button--primary',preservationUser);
     })
-
+    //添加或修改用户
+    function preservationUser(){
+        debugger
+        //判断名字，账号，电话号码，性别不能为空
+        var username = $("#usernameId").val();
+        var password = $("#passwordId").val();
+        var name = $("#nameId").val();
+        var phone = $("#phoneId").val();
+        var gender = $("input[name='typeId']").val();
+        var roles =$(".role-li input[type='checkbox']:checked");
+        var roleIds = [];
+        for(var i = 0; i <roles.length;i++){
+            var rid = $(roles[i]).val();
+            roleIds.push(rid.replace("role",""));
+        }
+        if(!username || !password || !roles){
+            debugger
+            alert("请将数据填写完整")
+            return
+        }
+        var params = {
+            username : username,
+            password : password,
+            name : name,
+            phone : phone,
+            gender : gender,
+            roleIds : roleIds
+        }
+        var url = !$("#cIframe").data("userId") ? "user/addUser" : "user/updateUser";
+        if ($("#cIframe").data("userId")){
+            params.id = $("#cIframe").data("userId");
+        }
+        $.get(url,params,function(result){
+            alert(result.message)
+        })
+    }
+    //初始加载角色数据
+    function loadRolesData(){
+        var url = "role/findAllRole";
+        $.get(url,{},function (result){
+            result = result.data;
+            for(var i in result){
+                var id = result[i].id;
+                var str ="<li class='role-li' style='list-style-type: none'>"
+                    + "<input type='checkbox' value='role"+ id + "' id='role"+ id + "'>"
+                    + "<label for='role"+ id +"'>" + result[i].roleName + "</label></li>"
+                $(".roles-ul").append(str)
+            }
+        })
+    }
+    //返回数据展示页面
+    function cancelToUserList(){
+        //把绑定的id清空
+        $("#cIframe").data("userId","");
+        $("#cIframe").load("user/list");
+    }
 </script>

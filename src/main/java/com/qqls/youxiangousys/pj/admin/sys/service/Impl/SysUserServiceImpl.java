@@ -2,19 +2,25 @@ package com.qqls.youxiangousys.pj.admin.sys.service.Impl;
 
 import com.qqls.youxiangousys.pj.admin.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.admin.sys.dao.SysUserDao;
+import com.qqls.youxiangousys.pj.admin.sys.dao.SysUserRoleDao;
 import com.qqls.youxiangousys.pj.admin.sys.entity.SysUser;
 import com.qqls.youxiangousys.pj.admin.sys.service.SysUserService;
 import com.qqls.youxiangousys.pj.admin.common.util.Assert;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private SysUserDao userDao;
+
+    @Autowired
+    private SysUserRoleDao userRoleDao;
 
     public Pagination findUser(String name, Integer curPage, Integer pageSize) {
         //验证curPage和pageSize是否有值
@@ -45,5 +51,27 @@ public class SysUserServiceImpl implements SysUserService {
         int n = userDao.updateValId(id,state);
         Assert.isEmpty(n == 0,"修改失败");
         return n;
+    }
+
+    /**
+     * 添加用户
+     * @param user
+     * @param roleIds
+     * @return
+     */
+    public int insertUser(SysUser user, Integer[] roleIds) {
+        Assert.isEmpty(user == null || user.getUsername() == null,"请填写用户信息");
+        String salt = UUID.randomUUID().toString();
+        //加密方式，原密码，盐，加密次数
+        SimpleHash sh = new SimpleHash("MD5",user.getPassword(),salt,1);
+        String password = sh.toHex();
+        user.setPassword(password);
+        user.setSalt(salt);
+        SysUser userByName = userDao.findUserByName(user.getUsername());//查找用户是否存在
+        Assert.isEmpty(userByName != null,"用户已存在");
+        int i = userDao.insertUser(user);
+        Assert.isEmpty(i == 0,"添加失败");
+        userRoleDao.insertUserRole(user.getId(),roleIds);//添加用户角色关系数据
+        return i;
     }
 }
