@@ -16,7 +16,7 @@ public interface SysItemDao {
      * @param itemName
      * @return
      */
-    int getCountItem(@Param("itemName")String itemName, @Param("itemState")Integer itemState);
+    Integer getCountItem(@Param("itemName")String itemName, @Param("itemState")Integer itemState);
 
     /**
      * 根据商品名查商品
@@ -34,7 +34,7 @@ public interface SysItemDao {
      * @return
      */
     @Update("update t_item set item_state = #{state} where id = #{id}")
-    int updateState(Integer id, Integer state);
+    Integer updateState(Integer id, Integer state);
 
     /**
      * 修改用户推荐状态

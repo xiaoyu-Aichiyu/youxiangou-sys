@@ -24,21 +24,21 @@ public class SysItemServiceImpl implements SysItemService {
      * @return
      */
     public Pagination findAllItem(String itemName, Integer curPage, Integer pageSize, Integer itemState) {
-        System.out.println(itemState);
         //1.验证参数
         Assert.isEmpty(curPage == null || pageSize == null,"请选择当前页码或者每页条数！！");
         //2.得到角色的总条数
-        int count = itemDao.getCountItem(itemName, itemState);
+        Integer count = itemDao.getCountItem(itemName, itemState);
         //3.创建分页对象，算出所有属性
         Pagination pageObj = new Pagination(curPage,count,pageSize);
         curPage = pageObj.getCurPage();//得到当前页
         pageSize = pageObj.getPageSize();//得到每页条数
         //分页跳过条数=（当前页 - 1）*每页条数
-        int start = (curPage - 1) * pageSize;
+        Integer start = (curPage - 1) * pageSize;
         //4.根据参数找角色
         List<SysItem> list = itemDao.findItemByItemName(itemName,start,pageSize,itemState);
         System.out.println(list);
         pageObj.setPageData(list);
+
         return pageObj;
     }
 
