@@ -23,8 +23,4 @@ public class PageUIController {
         return module + "/" + page;
     }
 
-    @RequestMapping("pageUI")
-    public String pageUI() {
-        return "common/page";
-    }
 }

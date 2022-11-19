@@ -33,3 +33,8 @@ spring:
     prefix: classpath:/templates/pages/
     suffix: .html
     cache: false
+
+#分页插件
+pagehelper:
+  helper-dialect: mysql #指定方言为sql
+  reasonable: true #分页查询合理化(当前页>最大页=最大页 当前页<1=1)

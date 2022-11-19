@@ -199,6 +199,7 @@
             params.itemState = 2;
             $("#load-item-id").data("isDeletePage",true);
         }
+        debugger;
         $.get(url,params,function(result){
             if(result.state == 1){
                 loadItemData(result.data.pageData);
