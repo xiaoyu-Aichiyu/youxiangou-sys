@@ -10,6 +10,14 @@
             <if test="itemName != null and itemName != ''">
                 item_name like concat("%",#{itemName},"%")
             </if>
+            <choose>
+                <when test="itemState != null and itemState != ''">
+                    item_state = #{itemState}
+                </when>
+                <otherwise>
+                    item_state != 2
+                </otherwise>
+            </choose>
         </where>
     </sql>
 
@@ -22,4 +30,10 @@
         select * from t_item <include refid="queryItemName"/> limit #{start},#{pageSize}
     </select>
 
+    <update id="deleteItemByIds">
+        update t_item set item_state = 2, itemSell = 0 where id in
+        <foreach collection="array" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </update>
 </mapper>
