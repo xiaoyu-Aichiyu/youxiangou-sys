@@ -43,6 +43,10 @@
 
 
 <div id="food-add-app" class="addBrand-container">
+    <div class="box-header with-border">
+        <h3 class="box-title">新增商品</h3>
+        <h3 class="msg"></h3>
+    </div>
     <div class="container">
         <form class="el-form demo-ruleForm el-form--inline">
             <div>
@@ -95,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="el-form-item"><label class="el-form-item__label" style="width: 180px;">口味做法配置:</label>
+           <!-- <div class="el-form-item"><label class="el-form-item__label" style="width: 180px;">口味做法配置:</label>
                 <div class="el-form-item__content">
                     <div class="el-form-item">
                         <div class="el-form-item__content">
@@ -103,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div></div>
             <div>
                 <div class="el-form-item uploadImg"><label for="region" class="el-form-item__label" style="width: 180px;">菜品图片:</label>
@@ -144,4 +148,25 @@
         </form>
     </div>
 </div>
+
 <script src="api/food/food.js"></script>
+<script>
+    $(function(){
+        $(".el-button--default").on("click",backToItemList);
+        $(".el-button--primary").on("click",saveAddOrUpdate);
+    })
+
+    /**
+     * 保存添加或者修改结果
+     */
+    function saveAddOrUpdate() {
+
+    }
+
+    /**
+     * 返回商品集合主界面
+     */
+    function backToItemList() {
+        $("#cIframe").load("item/list");
+    }
+</script>

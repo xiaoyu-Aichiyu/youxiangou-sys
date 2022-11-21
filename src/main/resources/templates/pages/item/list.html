@@ -76,7 +76,7 @@
                             <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
                                 <div class="cell">最后操作时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf" style="width: 153px">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -124,7 +124,7 @@
 </style>
 <script>
     $(function() {
-        $(".el-button--add").on("click", addPage);
+        $(".el-button--add").on("click", addPageOrUpdate);
         $("#btn-search").on("click", doGetObjects);
         $("#btn-deleteAfter").on("click",doGetObjects);
         $("#btn-delete").on("click",deleteItemList);
@@ -134,10 +134,32 @@
     })
 
     /**
+     * 加载添加和修改页面
+     */
+    function addPageOrUpdate() {
+        var bool = $(this).hasClass("el-button--update");
+        var title= bool ? "修改商品" : "新增商品";
+        if(bool){
+            var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
+            if(!boxCheck.length != 1){
+                alert("请选择要修改的一条数据！");
+                return;
+            }
+            $("#cIframe").data("itemId",boxCheck.val());
+            //拿到当前行绑定的数据
+            var rowData = boxCheck.parents("tr").data("itemRow");
+            //每行数据绑定到大盒子上,为了修改页面能拿到数据
+            $("#cIframe").data("itemRow",rowData)
+        }
+        $("#cIframe").load("item/add",function(){
+            $(".box-title").text(title);
+        });
+    }
+
+    /**
      * 按id删除商品数据
      */
     function deleteItemList() {
-        debugger;
         var checkboxs = $("#tbodyId input[type='checkbox']:checked");
         var ids = [];
         for (var i = 0; i < checkboxs.length; i++) {
@@ -199,7 +221,6 @@
             params.itemState = 2;
             $("#load-item-id").data("isDeletePage",true);
         }
-        debugger;
         $.get(url,params,function(result){
             if(result.state == 1){
                 loadItemData(result.data.pageData);
@@ -247,7 +268,7 @@
                             "<div class='sell-btn' style='width: 55px; cursor: pointer;transition: .5s; height:30px;border-radius: 15px; background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'></div>" +
                 "<div style='background-color: #ffffff;transition: .5s;width:24px;height: 24px;left:" + (data.itemSell ? "40" : "15") + "px;border-radius:15px;position: absolute;top: 20px; '></div></div></td>"
                 dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_9 is-center is-leaf'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_9 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue el-button--update' onclick='addPageOrUpdate()'>修改</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
                 $("#tbodyId").find("tr:last").data("itemId",data.id);//把每一行的id绑定到当前行
@@ -346,8 +367,5 @@
         $(".el-checkbox__input input[type='checkbox']:gt(0)").prop("checked", checked);
     }
 
-    function addPage() {
-        $("#cIframe").load("item/add");
-    }
 </script>
 <script src="api/food/food.js"></script>
