@@ -38,7 +38,6 @@ public class SysItemServiceImpl implements SysItemService {
         List<SysItem> list = itemDao.findItemByItemName(itemName,start,pageSize,itemState);
         System.out.println(list);
         pageObj.setPageData(list);
-
         return pageObj;
     }
 
@@ -76,7 +75,6 @@ public class SysItemServiceImpl implements SysItemService {
      * @return
      */
     public Integer deleteItem(Integer[] ids) {
-        System.out.println(ids);
         Assert.isEmpty(ids == null || ids.length == 0,"请选择要删除的数据！");
         Integer n = itemDao.deleteItemByIds(ids);
         Assert.isEmpty(n == 0,"商品状态删除失败！");

@@ -185,6 +185,9 @@
         })
     }
 
+    /**
+     * 查看已被删除的商品信息
+     */
     function getAfterDeletePage() {
         var url = "item/findAllItem";
         var curPage = $("#pageId").data("curPage");
@@ -232,7 +235,7 @@
     }
 
     /**
-     * 加载主题数据
+     * 加载主体数据
      * @param data
      */
     function loadItemData(datas) {
@@ -298,6 +301,12 @@
         changeSell(btn, itemSell, params);
     }
 
+    /**
+     * 修改推荐状态
+     * @param btn
+     * @param itemSell
+     * @param params
+     */
     function changeSell(btn, itemSell, params) {
         var url = "item/updateSell";
         $.get(url, params, function (result) {
