@@ -9,74 +9,150 @@
     <div class="container">
         <form class="el-form demo-ruleForm">
             <div class="el-form-item is-required">
-                <label for="username" class="el-form-item__label" style="width: 180px;">账号:</label>
+                <label for="name" class="el-form-item__label" style="width: 180px;">菜单名称:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner">
+                        <input type="text" id="name" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner">
                     </div>
                 </div>
             </div>
             <div class="el-form-item is-required">
-                <label for="name" class="el-form-item__label" style="width: 180px;">员工姓名:</label>
+                <label for="parentId" class="el-form-item__label" style="width: 180px;">上级菜单:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入员工姓名" maxlength="20" class="el-input__inner">
+                        <input type="text" class="form-control load-sys-menu" readonly="readonly" id="parentId" placeholder="上级菜单">
                     </div>
                 </div>
             </div>
             <div class="el-form-item is-required">
-                <label for="phone" class="el-form-item__label" style="width: 180px;">手机号:</label>
+                <label for="permissionId" class="el-form-item__label" style="width: 180px;">标识:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入手机号" maxlength="20" class="el-input__inner">
+                        <input type="text" id="permissionId" autocomplete="off" placeholder="请输入身份证号" maxlength="20" class="el-input__inner">
                     </div>
                 </div>
             </div>
-            <div class="el-form-item">
-                <label for="sex" class="el-form-item__label" style="width: 180px;">性别:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div role="radiogroup" class="el-radio-group" style="margin-top: 10px;">
-                        <label role="radio" aria-checked="true" tabindex="0" class="el-radio is-checked">
-                            <span class="el-radio__input is-checked">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="男" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">男</span>
-                        </label>
-                        <label role="radio" tabindex="-1" class="el-radio">
-                            <span class="el-radio__input">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="女" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">女</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+
             <div class="el-form-item is-required">
-                <label for="idNumber" class="el-form-item__label" style="width: 180px;">身份证号:</label>
+                <label for="nameId" class="el-form-item__label" style="width: 180px;">类型:</label>
                 <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入身份证号" maxlength="20" class="el-input__inner">
-                    </div>
+                    <label class="radio-inline">
+                        <input type="radio" name="typeId" value="1" checked> 菜单 </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="typeId" value="2"> 按钮 </label>
                 </div>
             </div>
             <div class="subBox address">
                 <div class="el-form-item">
                     <div class="el-form-item__content" style="margin-left: 180px;">
-                        <button type="button" class="el-button el-button--default">
-                            <span>取消</span>
-                        </button>
-                        <button type="button" class="el-button el-button--primary">
-                            <span>保存</span>
-                        </button>
-                        <button type="button" class="el-button continue el-button--primary">
-                            <span>保存并继续添加</span>
-                        </button>
+                        <button type="button" class="el-button el-button--default btn-default">取消</button>
+                        <button type="button" class="el-button el-button--primary btn-save">保存</button>
                     </div>
                 </div>
             </div>
         </form>
+        <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="menuLayer" type="page" times="2" showtime="0" contype="object"
+             style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 640px; display:none">
+            <div class="layui-layer-title" style="cursor: move;">选择菜单</div>
+            <div class="layui-layer-content" style="height: 358px;">
+                <div style="padding: 10px;" class="layui-layer-wrap">
+                    <ul id="menuTree" class="ztree"></ul>    <!-- 动态加载树 -->
+                </div>
+            </div>
+            <span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+            <div class="layui-layer-btn layui-layer-btn-">
+                <a class="layui-layer-btn0 btn-confirm">确定</a>
+                <a class="layui-layer-btn1 btn-cancel">取消</a>
+            </div>
+        </div>
     </div>
 </div>
 <script src="api/member/member.js"></script>
+<script type="text/javascript" src="../bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../bower_components/layer/layer.js"></script>
+<script>
+    var zTree;
+    var setting = {
+        data:{
+            simpleData:{
+                //默认是false,把数据当做array，true会转json
+                enable : true,
+                idKey : "id",//菜单id
+                pIdKey : "parentId",//父菜单is
+                rootId : null //根节点
+            }
+        }
+    };
+    $(function(){
+        $(".load-sys-menu").click(zTreeMenu);//动态绑定
+        $(".layui-layer-close,.layui-layer-btn1").click(zTreeMenuHide)//取消
+        $(".btn-confirm").click(choiceParentMenu);//确定
+        $(".btn-default").click(backToMenuList);//取消
+        $(".btn-save").click(doSaveOrUpdate);//确定
+        if($("#cIframe").data("rowData")) {
+            UpdateMenuData();
+
+        }
+    })
+
+    function UpdateMenuData(){
+        var data=$("#cIframe").data("rowData");
+        $($("input[name='typeId']")[data.menuType -1]).prop("checked",true);
+        $("#name").val(data.name);
+        $("#permissionId").val(data.permission);
+        $("#parentId").val(data.parentName);
+        $("#parentId").data("parentId",data.parentId);
+    }
+    function doSaveOrUpdate(){
+        var params = {
+            name : $("#name").val(),
+            permission : $("#permissionId").val(),
+            parentId : $("#parentId").data("parentId"),
+            menuType : $("form input[name='typeId']:checked").val(),
+        };
+        var url = "menu/saveMenu";
+        if($("#cIframe").data("rowData")){
+            params.id = $("#cIframe").data("rowData").id;
+            var url = "menu/updateMenu";
+        }
+        if(!params.name){
+            alert("请填写菜单名!")
+            return
+        }
+        $.get(url,params,function(result){
+            alert(result.message);
+        })
+    }
+
+    function zTreeMenuHide(){
+        $("#menuLayer").hide();
+    }
+
+
+    function choiceParentMenu(){
+        var selects = zTree.getSelectedNodes();//获取被选中的节点集合
+        if(!selects.length){
+            alert("未选中父菜单");
+            return
+        }
+        $("#parentId").val(selects[0].name);//把父菜单名填写进去
+        $("#parentId").data("parentId",selects[0].id);
+        zTreeMenuHide();//隐藏
+    }
+
+
+    function backToMenuList(){
+        $("#cIframe").load("menu/list");
+        $("#cIframe").data("rowData","")
+    }
+
+
+    function zTreeMenu(){
+        var url = "menu/findZtreeMenu";
+        $.get(url,{},function(result){
+            zTree = $.fn.zTree.init($("#menuTree"),setting,result.data);
+            zTree.expandAll(true);
+            $("#menuLayer").css("display","block");
+        })
+    }
+</script>
