@@ -60,3 +60,20 @@ function validID (rule,value,callback) {
     callback(new Error('身份证号码不正确'))
   }
 }
+
+function isImage(file) {
+  var fileType = file.prop("files")[0].type;
+  if (fileType.indexOf("image") == -1) {
+    alert("请上传后缀名为png、jpg、jpeg的图片!");
+    return false;
+  }
+  return true;
+}
+
+function isExcel(file) {
+  var fileType = file.prop("files")[0].type;
+  if (fileType.indexOf("image") == -1) {
+    alert("请上传后缀名为xls、xlsx的表格!");
+    return;
+  }
+}
