@@ -45,7 +45,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param state
      * @return
      */
-    public int updateValId(Integer id, Integer state) {
+    public Integer updateValId(Integer id, Integer state) {
         Assert.isEmpty(id == null || id == 0,"请选择要修改的用户");
         Assert.isEmpty(state == null, "操作有误");
         int n = userDao.updateValId(id,state);
@@ -59,7 +59,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param roleIds
      * @return
      */
-    public int insertUser(SysUser user, Integer[] roleIds) {
+    public Integer insertUser(SysUser user, Integer[] roleIds) {
         Assert.isEmpty(user == null || user.getUsername() == null,"请填写用户信息");
         String salt = UUID.randomUUID().toString();
         //加密方式，原密码，盐，加密次数
@@ -73,5 +73,32 @@ public class SysUserServiceImpl implements SysUserService {
         Assert.isEmpty(i == 0,"添加失败");
         userRoleDao.insertUserRole(user.getId(),roleIds);//添加用户角色关系数据
         return i;
+    }
+
+    /**
+     * 通过用户id修改用户
+     * @param user
+     * @param Ids
+     * @return
+     */
+    public Integer updateUser(SysUser user, Integer[] Ids) {
+        Assert.isEmpty(user==null || user.getId() == 0,"请选择要修改的数据");
+        Assert.isEmpty(Ids == null || Ids.length == 0,"请至少选择一个角色");
+        int n = userDao.updateUser(user);
+        userRoleDao.deleteUserRoleByUserId(user.getId());
+        userRoleDao.insertUserRole(user.getId(),Ids);
+        Assert.isEmpty(n == 0,"修改失败");
+        return n;
+    }
+
+    /**
+     * 通过用户id找角色id
+     * @param userId
+     * @return
+     */
+    public List<Integer> findRoleUserById(Integer userId) {
+        Assert.isEmpty(userId==null || userId == 0,"请选择要修改的用户");
+        List<Integer> list =userRoleDao.findRoleUserById(userId);
+        return list;
     }
 }
