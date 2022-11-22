@@ -3,13 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
         
 <!-- namespace:命名空间，对应一个dao层接口的全路径 -->
-<mapper namespace="com.qqls.youxiangousys.pj.admin.sys.dao.SysMenuDao">
+<mapper namespace="com.qqls.youxiangousys.sys.dao.SysMenuDao">
 
     <select id="findObjects" resultType="map">
         select c.id id,c.name name,c.parent_id parentId,c.menu_type menuType,c.permission permission ,p.name parentName from t_menu c left join t_menu p on c.parent_id=p.id
     </select>
 
-    <select id="findZtreeMenu" resultType="com.qqls.youxiangousys.pj.admin.common.entity.Node">
+    <select id="findZtreeMenu" resultType="com.qqls.youxiangousys.common.entity.Node">
         select * from t_menu
     </select>
 
