@@ -1,0 +1,397 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+<div id="food-app" class="dashboard-container">
+    <div class="container">
+        <div class="tableBar">
+            <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
+                <input type="text" autocomplete="off" placeholder="请输入菜品名称" class="el-input__inner">
+                <span class="el-input__prefix">
+                        <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
+                </span>
+            </div>
+            <button type="button" class="el-button el-button--primary" id="btn-search">
+                <span>查询</span>
+            </button>
+            <div class="tableLab" >
+                <button type="button" class="el-button el-button--primary" id="btn-deletePage">
+                    <span>已删除的商品</span>
+                </button>
+                <button type="button" class="el-button el-button--primary">
+                    <span>导入</span>
+                </button>
+                <button type="button" class="el-button el-button--primary continue">
+                    <span>导出</span>
+                </button>
+                <button type="button" class="el-button el-button--primary el-button--add">
+                    <span>新建商品</span>
+                </button>
+                <button type="button" class="el-button el-button--primary continue" id="btn-delete">
+                    <span>删除商品</span>
+                </button>
+            </div>
+        </div>
+        <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
+            <div class="hidden-columns">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="el-table__header-wrapper">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_1   #tbody  is-leaf" style="width: 25px;">
+                                <div class="cell">
+                                    <label class="el-checkbox is-disabled">
+                                        <span class="el-checkbox__input">
+                                            <input type="checkbox" value="" onchange='commonChoiceAll()'>
+                                        </span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_2 is-leaf">
+                                <div class="cell">商品名称</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_3 is-center is-leaf">
+                                <div class="cell">图片</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
+                                <div class="cell">商品分类</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
+                                <div class="cell">售价</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
+                                <div class="cell">售卖状态</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
+                                <div class="cell">商品推荐</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
+                                <div class="cell">最后操作时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf" style="width: 153px">
+                                <div class="cell">操作</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="el-table__body-wrapper is-scrolling-none">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%;">
+                    <tbody id="tbodyId"></tbody>
+                </table>
+                <div class="el-table__empty-block" style="height: 100%; width: 100%; display: none;">
+                    <span class="el-table__empty-text">暂无数据</span>
+                </div>
+            </div>
+            <div class="el-table__column-resize-proxy" style="display: none;"></div>
+        </div>
+        <div class="pageList el-pagination" id="pageId">
+
+        </div>
+
+    </div>
+</div>
+<style>
+    .fa {
+        -webkit-transition: -webkit-transform linear 0.3s;
+        -moz-transition: -moz-transform linear 0.3s;
+        -o-transition: -o-transform linear 0.3s;
+        transition: transform linear 0.3s;
+    }
+    .fa:hover {
+        -webkit-transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+        -o-transform: rotate(30deg);
+        transform: rotate(30deg);
+    }
+    .fa-search-plus:before {
+        content: "\f00e";
+    }
+    .fa-search-minus:before {
+        content: "\f010";
+    }
+    .fa-search:before {
+        content: "\f002";
+    }
+</style>
+<script>
+    $(function() {
+        $("#load-item-id").data("isDeletePage", false);
+        $(".el-button--add").on("click", addPageOrUpdate);
+        $("#btn-search").on("click", doGetObjects);
+        $("#btn-deletePage").on("click",doGetObjects);
+        $("#btn-delete").on("click",deleteItemList);
+        $("#pageId").load("page/page",function(){
+            doGetObjects();
+        });
+    })
+
+    /**
+     * 加载添加和修改页面
+     */
+    function addPageOrUpdate() {
+        var bool = $(this).hasClass("el-button--update");
+        var title= bool ? "修改商品" : "新增商品";
+        if(bool){
+            var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
+            if(!boxCheck.length != 1){
+                alert("请选择要修改的一条数据！");
+                return;
+            }
+            $("#cIframe").data("itemId",boxCheck.val());
+            //拿到当前行绑定的数据
+            var rowData = boxCheck.parents("tr").data("itemRow");
+            //每行数据绑定到大盒子上,为了修改页面能拿到数据
+            $("#cIframe").data("itemRow",rowData)
+        }
+        $("#cIframe").load("item/add",function(){
+            $(".box-title").text(title);
+        });
+    }
+
+    /**
+     * 按id删除商品数据
+     */
+    function deleteItemList() {
+        var checkboxs = $("#tbodyId input[type='checkbox']:checked");
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push(checkboxs.eq(i).val());
+        }
+        if(!ids.length){
+            alert("请至少选择1条要删除的商品数据！");
+            return;
+        }
+        //二次删除确认
+        if(!confirm("确认删除吗?")){
+            return;
+        }
+        var url = "item/deleteItem";
+        var param ={ids:ids};
+        $.get(url,param,function(result){
+            if(result.state == 1){
+                alert("成功修改删除状态" + result.data + "条数据！");
+                doGetObjects();
+            }else{
+                alert(result.message);
+            }
+        })
+    }
+
+    /**
+     * 查看已被删除的商品信息
+     */
+/*    function getAfterDeletePage() {
+        var url = "item/findAllItem";
+        var curPage = $("#pageId").data("curPage");
+        var params = {
+            itemName : $(".el-input__inner").val(),
+            curPage: curPage ?  curPage : 1,
+            pageSize : 10
+        };
+        params.itemState = 2;
+        $.get(url,params,function(result){
+            if(result.state == 1){
+                setPageData(result.data);//加载分页数据
+            }else{
+                alert(result.message);
+            }
+        })
+    }*/
+
+    /**
+     * 初始查询商品数据
+     */
+    function doGetObjects() {
+        if ($(this).prop("id") == "btn-deletePage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-selectPage");
+            $(this).text("未删除的商品");
+            $("#load-item-id").data("isDeletePage",true);
+        } else if ($(this).prop("id") == "btn-selectPage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-deletePage");
+            $(this).text("已删除的商品");
+            $("#load-item-id").data("isDeletePage", false);
+        } else if ($(this).prop("id") == "btn-search") {
+            $("#pageId").data("curPage", 1);
+        }
+        var url = "item/findAllItem";
+        var curPage = $("#pageId").data("curPage");
+        var params = {
+            itemName : $(".el-input__inner").val(),
+            curPage: curPage ?  curPage : 1,
+            pageSize : 10
+        };
+        if ($("#load-item-id").data("isDeletePage")) {
+            params.itemState = 2;
+        }
+        $.get(url,params,function(result){
+            if(result.state == 1){
+                loadItemData(result.data.pageData);
+                setPageData(result.data);//加载分页数据
+            }else{
+                alert(result.message);
+            }
+        })
+    }
+
+    /**
+     * 加载主体数据
+     * @param data
+     */
+    function loadItemData(datas) {
+        $("#tbodyId").empty();
+        var dataStr = "";
+        if(!datas.length){
+            dataStr += "<td colspan='7'>数据正在加载中...</td>";
+        }else{
+            for (var i = 0; i < datas.length; i++){
+                dataStr = "";
+                var data = datas[i];
+                var stateStr = "";
+                var stateBtnStr = "";
+                if (data.itemState == 0) {
+                    stateStr = "下架";
+                    stateBtnStr = "上架"
+                } else if (data.itemState == 1) {
+                    stateStr = "上架";
+                    stateBtnStr = "下架";
+                } else if (data.itemState == 2) {
+                    stateStr = "已被删除";
+                    stateBtnStr = "上架";
+                }
+                //dataStr += "<tr><td><input type='checkbox' value='"+ data[i].id+"'>" + (i+1) +"</td>"
+                dataStr += "<tr><td class='el-table_1_column_1   el-table-column--selection  is-leaf' style='width: 25px'><div class='cell'><label class='el-checkbox'><span class='el-checkbox__input'>" +
+                    "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + data.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
+                dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.itemName + "</div></td>";
+                dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'><img src="+data.itemImg+" width='40px' height='40px'></div></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemTitle + "</div></td>";
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.itemPrice + "</div></td>";
+                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" +
+                            "<div class='sell-btn sell-btn-common' style='background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'>" +
+                            "<div style='margin-left:" + (data.itemSell ? "26" : "5") + "px; '></div></div></div></td>"
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_9 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue el-button--update' onclick='addPageOrUpdate()'>修改</button></div></td></td>";
+                dataStr += "</tr>"
+                $("#tbodyId").append(dataStr);
+                $("#tbodyId").find("tr").last().data("itemId",data.id);//把每一行的id绑定到当前行
+            }
+            $(".sell-btn").on('click', changeSellBtn);
+        }
+    }
+
+    /**
+     * 按钮开关和推荐
+     */
+    function changeSellBtn() {
+        var btn = $(this);
+        var bgColor = $(this).css("background-color");
+        var id = $(this).parents("tr").find("input[type='checkbox']").val();
+        var itemSell = 0;
+        //判断是否是不推荐的 是的话状态=1，不是的话状态=0
+        if (bgColor == 'rgb(227, 227, 227)') {
+            itemSell = 1;
+        }
+        var params = {id:id,itemSell:itemSell};
+        var btnText = btn.parents("tr").children(":eq(8)").children().children().eq(0).text();
+        if (btnText == '上架') {
+            alert("商品处于下架状态，暂不能推荐！");
+            return;
+        }
+        changeSell(btn, itemSell, params);
+    }
+
+    /**
+     * 修改推荐状态
+     * @param btn
+     * @param itemSell
+     * @param params
+     */
+    function changeSell(btn, itemSell, params) {
+        var url = "item/updateSell";
+        $.get(url, params, function (result) {
+            alert(result.message);
+            btn.css("background-color", !itemSell ? "#e3e3e3" :"#ffc200");
+            btn.children().css("margin-left",  !itemSell ? "5px" : "26px");
+        })
+    }
+
+    /**
+     * 修改上架下架状态
+     * @param btn
+     */
+    function changeState(btn){
+        var stateStr = $(btn).parents("tr").children().eq(5).text();
+        var id= $(btn).parents("tr").find("input").val();
+        var url = "item/updateState";
+        var state = $(btn).text() == '下架' ? 0 : 1;
+        var sellBtn = $(btn).parents("tr").find(".sell-btn-common");
+        if (state == 0) {
+            changeSell(sellBtn, 0, {id:id, itemSell:0});
+        }
+        var params = {id:id,state:state};
+        $.get(url,params,function(result){
+            alert(result.message);
+            //刷新页面
+            //doGetObjects();
+            //静态刷新
+            if (stateStr == "已被删除") {
+                $(btn).parents("tr").remove();
+                getAfterDeletePage();
+            } else {
+                $(btn).text(state == 0 ? "上架" : "下架");
+                $(btn).parents("tr").children().eq(5).html("<div class='cell'>" + (state == 1 ? "上架" : "下架") + "</div>");
+            }
+        })
+    }
+
+    /**
+     * 选中当前多选框事件方法
+     */
+    function commonChoiceThis() {
+        //主体数据部分所有多选框
+        var totalInp = $("#tbodyId input[type='checkbox']");
+        //主题数据部分所有被选中的多选框
+        var totalCkd = $("#tbodyId input[type='checkbox']:checked");
+        //title部分多选框（全选，全不选）
+        var firstInp = $(".el-checkbox__input input[type='checkbox']").first();
+        //如果所有多选框的数量等于被选中多选框的数据，则勾上全选，否则取消全选
+        /*if (totalInp.length == totalCkd.length) {
+            firstInp.prop("checked",true);
+        }else{
+            firstInp.prop("checked",false);
+        }*/
+        firstInp.prop("checked",totalInp.length == totalCkd.length);
+    }
+
+    /**
+     * 多选框全选事件方法
+     */
+    function commonChoiceAll() {
+        //$():$包起来的是jq对象，是一个dom数组
+        //加下标：变成js对象
+        var firstInp = $(".el-checkbox__input input[type='checkbox']").first();
+        var checked = firstInp[0].checked;//加下标变js对象
+        //:gt(0) --->选择下标大于0的元素
+        $(".el-checkbox__input input[type='checkbox']").gt(0).prop("checked", checked);
+    }
+
+</script>
+<script src="api/food/food.js"></script>

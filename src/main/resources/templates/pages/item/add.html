@@ -1,0 +1,177 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+<style>
+    .selectInput {
+        position: relative;
+        width: 100%;
+        min-width: 100px;
+    }
+
+    .selectInput .flavorSelect {
+        position: absolute;
+        width: 100%;
+        padding: 0 10px;
+        border-radius: 3px;
+        border: solid 1px #FF903D;
+        line-height: 30px;
+        text-align: center;
+        background: #fff;
+        top: 50px;
+        z-index: 99;
+    }
+
+    .selectInput .flavorSelect .items {
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        line-height: 35px;
+        border-bottom: solid 1px #f4f4f4;
+        color: #666;
+    }
+
+    .selectInput .flavorSelect .none {
+        font-size: 14px;
+    }
+
+    #food-add-app .uploadImg .el-form-item__label::before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+</style>
+
+
+<div id="food-add-app" class="addBrand-container">
+    <div class="box-header with-border">
+        <h3 class="box-title">新增商品</h3>
+        <h3 class="msg"></h3>
+    </div>
+    <div class="container">
+        <form class="el-form demo-ruleForm el-form--inline">
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="name" class="el-form-item__label" style="width: 180px;">菜品名称:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="请填写菜品名称" maxlength="20" class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+                <div class="el-form-item is-required"><label for="categoryId" class="el-form-item__label" style="width: 180px;">菜品分类:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-select">
+                            <div class="el-input el-input--suffix">
+                                <input type="text" readonly="readonly" autocomplete="off" placeholder="请选择菜品分类" class="el-input__inner">
+                                <span class="el-input__suffix">
+                                    <span class="el-input__suffix-inner">
+                                        <i class="el-select__caret el-input__icon el-icon-arrow-up"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="el-select-dropdown el-popper" style="display: none; min-width: 293px;">
+                                <div class="el-scrollbar" style="display: none;">
+                                    <div class="el-select-dropdown__wrap el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px;">
+                                        <ul class="el-scrollbar__view el-select-dropdown__list"></ul>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-horizontal">
+                                        <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-vertical">
+                                        <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+                                    </div>
+                                </div>
+                                <p class="el-select-dropdown__empty">
+                                    无数据
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="price" class="el-form-item__label" style="width: 180px;">菜品价格:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="请设置菜品价格" class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <!-- <div class="el-form-item"><label class="el-form-item__label" style="width: 180px;">口味做法配置:</label>
+                <div class="el-form-item__content">
+                    <div class="el-form-item">
+                        <div class="el-form-item__content">
+                            <div class="flavorBox"><span class="addBut"> + 添加口味</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div></div>
+            <div>
+                <div class="el-form-item uploadImg"><label for="region" class="el-form-item__label" style="width: 180px;">菜品图片:</label>
+                    <div class="el-form-item__content">
+                        <div class="avatar-uploader">
+                            <div tabindex="0" class="el-upload el-upload--text">
+                                <i class="el-icon-plus avatar-uploader-icon"></i>
+                                <input type="file" name="file" class="el-upload__input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="address">
+                <div class="el-form-item"><label for="region" class="el-form-item__label" style="width: 180px;">菜品描述:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-textarea">
+                            <textarea autocomplete="off" rows="3" placeholder="菜品描述，最长200字" maxlength="200" class="el-textarea__inner" style="min-height: 33px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default">
+                            <span> 取消 </span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存 </span>
+                        </button>
+                        <button type="button" class="el-button continue el-button--primary">
+                            <span>保存并继续添加菜品</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="api/food/food.js"></script>
+<script>
+    $(function(){
+        $(".el-button--default").on("click",backToItemList);
+        $(".el-button--primary").on("click",saveAddOrUpdate);
+    })
+
+    /**
+     * 保存添加或者修改结果
+     */
+    function saveAddOrUpdate() {
+
+    }
+
+    /**
+     * 返回商品集合主界面
+     */
+    function backToItemList() {
+        $("#cIframe").load("item/list");
+    }
+</script>

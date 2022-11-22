@@ -1,0 +1,313 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+<style>
+    .addDish .el-input {
+        width: 130px;
+    }
+
+    .addDish .el-input-number__increase {
+        border-left: solid 1px #FFE1CA;
+        background: #fff3ea;
+    }
+
+    .addDish .el-input-number__decrease {
+        border-right: solid 1px #FFE1CA;
+        background: #fff3ea;
+    }
+
+    .addDish input {
+        border: 1px solid #ffe1ca;
+    }
+
+    .addDish .table {
+        border: solid 1px #EBEEF5;
+        border-radius: 3px;
+    }
+
+    .addDish .table th {
+        padding: 5px 0;
+    }
+
+    .addDish .table td {
+        padding: 7px 0;
+    }
+
+    .addDishList .seachDish {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .addDishList .el-dialog__body {
+        padding: 0;
+        border-bottom: solid 1px #ccc;
+    }
+
+    .addDishList .el-dialog__footer {
+        padding-top: 27px;
+    }
+
+    .addDish {
+        width: 777px;
+    }
+
+    .addDish .addBut {
+        background: #ffc200;
+        display: inline-block;
+        padding: 0px 20px;
+        border-radius: 3px;
+        line-height: 40px;
+        cursor: pointer;
+        border-radius: 4px;
+        color: #333333;
+        font-weight: 500;
+    }
+
+    .addDish .content {
+        background: #fafafb;
+        padding: 20px;
+        border: solid 1px #ccc;
+        border-radius: 3px;
+    }
+
+    .addDishCon {
+        padding: 0 20px;
+        display: flex;
+        line-height: 40px;
+    }
+
+    .addDishCon .leftCont {
+        display: flex;
+        border-right: solid 2px #E4E7ED;
+        width: 60%;
+        padding: 15px;
+    }
+
+    .addDishCon .leftCont .tabBut {
+        width: 110px;
+    }
+
+    .addDishCon .leftCont .tabBut span {
+        display: block;
+        text-align: center;
+        border-right: solid 2px #f4f4f4;
+        cursor: pointer;
+    }
+
+    .addDishCon .leftCont .act {
+        border-color: #FFC200 !important;
+        color: #FFC200 !important;
+    }
+
+    .addDishCon .leftCont .tabList {
+        flex: 1;
+        padding: 15px;
+    }
+
+    .addDishCon .leftCont .tabList .table {
+        border: solid 1px #f4f4f4;
+        border-bottom: solid 1px #f4f4f4;
+    }
+
+    .addDishCon .leftCont .tabList .table .items {
+        border-bottom: solid 1px #f4f4f4;
+        padding: 0 10px;
+        display: flex;
+    }
+
+    .addDishCon .leftCont .tabList .table .items .el-checkbox,
+    .addDishCon .leftCont .tabList .table .items .el-checkbox__label {
+        width: 100%;
+    }
+
+    .addDishCon .leftCont .tabList .table .items .item {
+        display: flex;
+        padding-right: 20px;
+    }
+
+    .addDishCon .leftCont .tabList .table .items .item span {
+        display: inline-block;
+        text-align: center;
+        flex: 1;
+    }
+
+    .addDishCon .ritCont {
+        width: 40%;
+        padding: 0 15px;
+    }
+
+    .addDishCon .ritCont .item {
+        box-shadow: 0px 1px 4px 3px rgba(0, 0, 0, 0.03);
+        display: flex;
+        text-align: center;
+        padding: 0 10px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        color: #818693;
+    }
+
+    .addDishCon .ritCont .item span:first-child {
+        text-align: left;
+        color: #20232A;
+    }
+
+    .addDishCon .ritCont .item .price {
+        display: inline-block;
+        flex: 1;
+    }
+
+    .addDishCon .ritCont .item .del {
+        cursor: pointer;
+    }
+
+    .addDishCon .ritCont .item .del img {
+        position: relative;
+        top: 5px;
+        width: 20px;
+    }
+
+    .addDishCon .el-checkbox__label {
+        width: 100%;
+    }
+
+    #combo-add-app .setmealFood .el-form-item__label::before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+
+    #combo-add-app .uploadImg .el-form-item__label::before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+</style>
+
+
+<div id="combo-add-app" class="addBrand-container">
+    <div class="container">
+        <form class="el-form demo-ruleForm el-form--inline">
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="name" class="el-form-item__label" style="width: 180px;">套餐名称:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="请填写套餐名称" maxlength="20"class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+                <div class="el-form-item is-required">
+                    <label for="idType" class="el-form-item__label" style="width: 180px;">套餐分类:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-select">
+                            <div class="el-input el-input--suffix">
+                                <input type="text" readonly="readonly" autocomplete="off" placeholder="请选择套餐分类" class="el-input__inner">
+                                <span class="el-input__suffix">
+                                    <span class="el-input__suffix-inner">
+                                        <i class="el-select__caret el-input__icon el-icon-arrow-up"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="el-select-dropdown el-popper" style="display: none; min-width: 293px;">
+                                <div class="el-scrollbar" style="display: none;">
+                                    <div class="el-select-dropdown__wrap el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px;">
+                                        <ul class="el-scrollbar__view el-select-dropdown__list"></ul>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-horizontal">
+                                        <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-vertical">
+                                        <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+                                    </div>
+                                </div>
+                                <p class="el-select-dropdown__empty">
+                                    无数据
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="price" class="el-form-item__label" style="width: 180px;">套餐价格:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="请设置套餐价格" class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="el-form-item setmealFood">
+                    <label class="el-form-item__label" style="width: 180px;">套餐菜品:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-form-item">
+                            <div class="el-form-item__content">
+                                <div class="addDish"><span class="addBut"> + 添加菜品</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="el-form-item uploadImg">
+                    <label class="el-form-item__label" style="width: 180px;">套餐图片:</label>
+                    <div class="el-form-item__content">
+                        <div class="avatar-uploader">
+                            <div tabindex="0" class="el-upload el-upload--text">
+                                <i class="el-icon-plus avatar-uploader-icon"></i>
+                                <input type="file" name="file" class="el-upload__input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="address">
+                <div class="el-form-item"><label class="el-form-item__label" style="width: 180px;">套餐描述:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-textarea">
+                            <textarea autocomplete="off" rows="3" placeholder="套餐描述，最长200字" maxlength="200" class="el-textarea__inner" style="min-height: 33px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default"><span> 取消 </span></button>
+                        <button type="button" class="el-button el-button--primary"><span> 保存 </span></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="el-dialog__wrapper addDishList" style="display: none; z-index: 99">
+        <div role="dialog" aria-modal="true" aria-label="添加菜品" class="el-dialog" style="margin-top: 15vh; width: 60%;">
+            <div class="el-dialog__header">
+                <span class="el-dialog__title">添加菜品</span>
+                <button type="button" aria-label="Close" class="el-dialog__headerbtn">
+                    <i class="el-dialog__close el-icon el-icon-close"></i>
+                </button>
+            </div>
+            <div class="el-dialog__footer">
+                <span class="dialog-footer">
+                    <button type="button" class="el-button el-button--default">
+                        <span>取 消</span>
+                    </button>
+                    <button type="button" class="el-button el-button--primary">
+                        <span>确 定</span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="api/combo/combo.js"></script>
+<script src="api/food/food.js"></script>

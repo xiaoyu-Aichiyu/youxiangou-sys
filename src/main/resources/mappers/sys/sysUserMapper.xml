@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qqls.youxiangousys.pj.admin.sys.dao.SysUserDao">
+    <sql id="userQuery">
+        <if test="name != null || name !=''">
+            where name like concat("%",#{name},"%")
+        </if>
+    </sql>
+    <!--添加用户-->
+    <insert id="insertUser" parameterType="com.qqls.youxiangousys.pj.admin.sys.entity.SysUser" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user(name, username, password, salt, user_img, phone, state, gender, createdTime, modifiedTime) values
+                    (#{name},#{username},#{password},#{salt},#{userImg},#{phone},#{state},#{gender},now(),now())
+    </insert>
+    <!--修改状态-->
+    <update id="updateValId">
+        update t_user set state = #{state} where id = #{id}
+    </update>
+    <!--通过id修改用户-->
+    <update id="updateUser">
+        update t_user set name=#{name},phone=#{phone},gender=#{gender} where id=#{id}
+    </update>
+
+    <select id="findUser" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysUser">
+        select * from t_user
+        <include refid="userQuery"></include>
+        limit #{start},#{pageSize};
+    </select>
+
+    <select id="countUser" resultType="Integer">
+        select count(1) from t_user
+        <include refid="userQuery"/>
+    </select>
+    <!--根据账号查找用户名-->
+    <select id="findUserByName" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysUser">
+        select * from t_user where username = #{name}
+    </select>
+</mapper>

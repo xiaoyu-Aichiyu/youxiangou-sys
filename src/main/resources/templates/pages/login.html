@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沙狗外卖管理端</title>
+    <link rel="shortcut icon" href="images/icons/favicon.ico">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="plugins/element-ui/index.css">
+    <link rel="stylesheet" href="styles/common/common.css">
+    <link rel="stylesheet" href="styles/login/login.css">
+    <link rel="stylesheet" href="styles/icon/iconfont.css">
+    <style>
+        .body {
+            min-width: 1366px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login-app" class="login">
+        <div class="login-box"><img src="images/login/login-l.png" alt="">
+            <div class="login-form">
+                <form class="el-form">
+                    <div class="login-form-title">
+                        <img src="images/login/logo.png" alt="" style="width: 139px; height: 42px;">
+                    </div>
+                    <div class="el-form-item">
+                        <div class="el-form-item__content">
+                            <div class="el-input el-input--prefix">
+                                <input type="text" autocomplete="off" placeholder="账号" maxlength="20" class="el-input__inner">
+                                <span class="el-input__prefix">
+                                    <i class="el-input__icon iconfont icon-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="el-form-item">
+                        <div class="el-form-item__content">
+                            <div class="el-input el-input--prefix">
+                                <input type="password" autocomplete="off" placeholder="密码" maxlength="20" class="el-input__inner">
+                                <span class="el-input__prefix">
+                                    <i class="el-input__icon iconfont icon-lock"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="el-form-item" style="width: 100%;">
+                        <div class="el-form-item__content">
+                            <button type="button" class="el-button login-btn el-button--primary el-button--medium" style="width: 100%;">
+                                <span>
+                                    <span>登录</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="plugins/element-ui/index.js"></script>
+    <!-- 引入axios -->
+    <script src="plugins/axios/axios.min.js"></script>
+    <script src="js/request/request.js"></script>
+    <script src="js/validate/validate.js"></script>
+    <script src="api/login/login.js"></script>
+
+</body>
+
+</html>

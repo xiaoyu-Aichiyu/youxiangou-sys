@@ -1,0 +1,86 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<!-- 引入样式 -->
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+
+<div id="member-add-app" class="addBrand-container">
+    <div class="container">
+        <form class="el-form demo-ruleForm">
+            <div class="el-form-item is-required">
+                <label for="username" class="el-form-item__label" style="width: 180px;">账号:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner">
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item is-required">
+                <label for="name" class="el-form-item__label" style="width: 180px;">员工姓名:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" placeholder="请输入员工姓名" maxlength="20" class="el-input__inner">
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item is-required">
+                <label for="phone" class="el-form-item__label" style="width: 180px;">手机号:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" placeholder="请输入手机号" maxlength="20" class="el-input__inner">
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item">
+                <label for="sex" class="el-form-item__label" style="width: 180px;">性别:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div role="radiogroup" class="el-radio-group" style="margin-top: 10px;">
+                        <label role="radio" aria-checked="true" tabindex="0" class="el-radio is-checked">
+                            <span class="el-radio__input is-checked">
+                                <span class="el-radio__inner"></span>
+                                <input type="radio" aria-hidden="true" tabindex="-1" value="男" class="el-radio__original">
+                            </span>
+                            <span class="el-radio__label">男</span>
+                        </label>
+                        <label role="radio" tabindex="-1" class="el-radio">
+                            <span class="el-radio__input">
+                                <span class="el-radio__inner"></span>
+                                <input type="radio" aria-hidden="true" tabindex="-1" value="女" class="el-radio__original">
+                            </span>
+                            <span class="el-radio__label">女</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item is-required">
+                <label for="idNumber" class="el-form-item__label" style="width: 180px;">身份证号:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" placeholder="请输入身份证号" maxlength="20" class="el-input__inner">
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content" style="margin-left: 180px;">
+                        <button type="button" class="el-button el-button--default">
+                            <span>取消</span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存</span>
+                        </button>
+                        <button type="button" class="el-button continue el-button--primary">
+                            <span>保存并继续添加</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="api/member/member.js"></script>

@@ -1,0 +1,206 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="plugins/element-ui/index.css">
+<link rel="stylesheet" href="styles/common/common.css">
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+
+<div id="member-app" class="dashboard-container">
+    <div class="container">
+        <div class="tableBar">
+            <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
+                <input type="text" autocomplete="off" placeholder="请输入员工姓名" class="el-input__inner">
+                <span class="el-input__prefix">
+                    <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
+                </span>
+            </div>
+            <button type="button" class="el-button el-button--primary" id="btn-search">
+                <span>查询</span>
+            </button>
+            <div class="tableLab" >
+                <button type="button" class="el-button el-button--primary continue" id="btn-delete">
+                    <span>- 删除日志</span>
+                </button>
+            </div>
+        </div>
+        <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
+            <div class="hidden-columns">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="el-table__header-wrapper">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_1 #tbody is-leaf" style="width: 25px;">
+                            <div class="cell">
+                                <label class="el-checkbox is-disabled">
+                                        <span class="el-checkbox__input">
+                                            <input type="checkbox" value="" onchange='commonChoiceAll()'>
+                                        </span>
+                                </label>
+                            </div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_2 is-leaf">
+                            <div class="cell">用户名</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_3 is-center is-leaf">
+                            <div class="cell">请求方法</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
+                            <div class="cell">操作</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
+                            <div class="cell">请求参数</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
+                            <div class="cell">执行时长</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
+                            <div class="cell">IP</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
+                            <div class="cell">创建时间</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="el-table__body-wrapper is-scrolling-none">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%;">
+                    <tbody id="tbodyId">
+
+                    </tbody>
+                </table>
+                <div class="el-table__empty-block" style="height: 100%; width: 100%;display: none;">
+                    <span class="el-table__empty-text">暂无数据</span>
+                </div>
+            </div>
+            <div class="el-table__column-resize-proxy" style="display: none;"></div>
+        </div>
+        <div class="pageList el-pagination" id="pageId">
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $("#btn-search").on("click", doGetObjects);
+        $("#btn-delete").on("click",deleteLog);
+        $("#pageId").load("page/page",function(){
+            doGetObjects();
+        });
+    })
+    
+    function deleteLog() {
+        var checkboxs = $("#tbodyId input[type='checkbox']:checked");
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push(checkboxs.eq(i).val());
+        }
+        if(!ids.length){
+            alert("请至少选择1条要删除的商品数据！");
+            return;
+        }
+        //二次删除确认
+        if(!confirm("确认删除吗?")){
+            return;
+        }
+        var url = "log/deleteLog";
+        var param ={ids:ids};
+        $.get(url,param,function(result){
+            if(result.state == 1){
+                alert("成功删除" + result.data + "条数据！");
+                doGetObjects();
+            }else{
+                alert(result.message);
+            }
+        })
+    }
+    
+    function  doGetObjects() {
+        debugger;
+        var url = "log/findAllLogList";
+        var curPage = $("#pageId").data("curPage");
+        var params = {
+            username : $(".el-input__inner").val(),
+            curPage: curPage ?  curPage : 1,
+            pageSize : 10
+        };
+        $.get(url,params,function(result) {
+            debugger;
+           if(result.state == 1){
+                loadLogDataList(result.data.pageData);
+                setPageData(result.data);//加载分页数据
+            }else{
+                alert(result.message);
+            }
+        })
+    }
+    
+    function loadLogDataList(datas) {
+        $("#tbodyId").empty();
+        var dataStr = "";
+        if(!datas.length){
+            dataStr += "<td colspan='7'>数据正在加载中...</td>";
+        }else{
+            for (var i = 0; i < datas.length; i++){
+                dataStr = "";
+                var data = datas[i];
+                //dataStr += "<tr><td><input type='checkbox' value='"+ data[i].id+"'>" + (i+1) +"</td>"
+                dataStr += "<tr><td colspan='1' rowspan='1' class='el-table_1_column_1 #tbody is-leaf' style='width: 25px;'><div class='cell'><label class='el-checkbox'><span class='el-checkbox__input'>" +
+                    "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + data.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
+                dataStr += "<td td colspan='1' rowspan='1' class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.username + "</div></td>";
+                dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'>" + data.operation + "</div></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.method + "</div></td>";
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.params + "</div></td>";
+                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + data.time + "</div></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + data.ip + "</td>"
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
+                dataStr += "</tr>"
+                $("#tbodyId").append(dataStr);
+                $("#tbodyId").find("tr:last").data("itemId",data.id);//把每一行的id绑定到当前行
+            }
+        }
+    }
+
+    /**
+     * 选中当前多选框事件方法
+     */
+    function commonChoiceThis() {
+        //主体数据部分所有多选框
+        var totalInp = $("#tbodyId input[type='checkbox']");
+        //主题数据部分所有被选中的多选框
+        var totalCkd = $("#tbodyId input[type='checkbox']:checked");
+        //title部分多选框（全选，全不选）
+        var firstInp = $(".el-checkbox__input input[type='checkbox']:first");
+        //如果所有多选框的数量等于被选中多选框的数据，则勾上全选，否则取消全选
+        /*if (totalInp.length == totalCkd.length) {
+            firstInp.prop("checked",true);
+        }else{
+            firstInp.prop("checked",false);
+        }*/
+        firstInp.prop("checked",totalInp.length == totalCkd.length);
+    }
+
+    /**
+     * 多选框全选事件方法
+     */
+    function commonChoiceAll() {
+        //$():$包起来的是jq对象，是一个dom数组
+        //加下标：变成js对象
+        var firstInp = $(".el-checkbox__input input[type='checkbox']:first");
+        var checked = firstInp[0].checked;//加下标变js对象
+        //:gt(0) --->选择下标大于0的元素
+        $(".el-checkbox__input input[type='checkbox']:gt(0)").prop("checked", checked);
+    }
+</script>
+<script src="api/member/member.js"></script>
