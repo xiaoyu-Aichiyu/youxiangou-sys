@@ -3,14 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
         
 <!-- namespace:命名空间，对应一个dao层接口的全路径 -->
-<mapper namespace="com.qqls.youxiangousys.pj.mp.sys.dao.ItemDao">
+<mapper namespace="com.qqls.youxiangousys.pj.mp.dao.ItemDao">
 
-    <select id="findSellItem" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysItem">
+    <select id="findSellItem" resultType="com.qqls.youxiangousys.pj.sys.entity.SysItem">
         select * from t_item where item_sell = #{sellState}
     </select>
 
 
-    <select id="findLikeItem" resultType="com.qqls.youxiangousys.pj.admin.sys.entity.SysItem">
+    <select id="findLikeItem" resultType="com.qqls.youxiangousys.pj.sys.entity.SysItem">
         select * from t_item where item_state = 1
         <choose>
             <when test="likeItemType = '0'">
