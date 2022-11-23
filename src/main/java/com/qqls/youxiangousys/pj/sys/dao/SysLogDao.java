@@ -25,7 +25,7 @@ public interface SysLogDao {
      * @param pageSize
      * @return
      */
-    List<SysItem> findItemByUsername(@Param("username") String username, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
+    List<SysLog> findItemByUsername(@Param("username") String username, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
 
     /**
      * 根据id删除日志信息
@@ -38,6 +38,5 @@ public interface SysLogDao {
      * 添加日志
      * @param log
      */
-    @Insert("insert into sys_logs value(null,#{username},#{operation},#{method},#{params},#{time},#{ip},#{createdTime})")
-    void insertLog(SysLog log);
+    Integer insertLog(SysLog log);
 }

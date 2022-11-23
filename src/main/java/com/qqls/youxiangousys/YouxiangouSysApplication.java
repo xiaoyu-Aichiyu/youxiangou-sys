@@ -6,8 +6,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-@EnableAsync//启动异步注解
-@EnableCaching//启动缓存注解
 public class YouxiangouSysApplication {
 
 	public static void main(String[] args) {

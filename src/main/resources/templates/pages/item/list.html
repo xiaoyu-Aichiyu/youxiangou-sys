@@ -148,7 +148,7 @@
         if(bool){
             var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
             if(!boxCheck.length != 1){
-                alert("请选择要修改的一条数据！");
+                commonShowTips("请选择要修改的一条数据！");
                 return;
             }
             $("#cIframe").data("itemId",boxCheck.val());
@@ -172,7 +172,7 @@
             ids.push(checkboxs.eq(i).val());
         }
         if(!ids.length){
-            alert("请至少选择1条要删除的商品数据！");
+            commonShowTips("请至少选择1条要删除的商品数据！");
             return;
         }
         //二次删除确认
@@ -183,10 +183,10 @@
         var param ={ids:ids};
         $.get(url,param,function(result){
             if(result.state == 1){
-                alert("成功修改删除状态" + result.data + "条数据！");
+                commonShowTips("成功修改删除状态" + result.data + "条数据！");
                 doGetObjects();
             }else{
-                alert(result.message);
+                commonShowTips(result.message);
             }
         })
     }
@@ -207,7 +207,7 @@
             if(result.state == 1){
                 setPageData(result.data);//加载分页数据
             }else{
-                alert(result.message);
+                commonShowTips(result.message);
             }
         })
     }*/
@@ -246,7 +246,7 @@
                 loadItemData(result.data.pageData);
                 setPageData(result.data);//加载分页数据
             }else{
-                alert(result.message);
+                commonShowTips(result.message);
             }
         })
     }
@@ -312,7 +312,7 @@
         var params = {id:id,itemSell:itemSell};
         var btnText = btn.parents("tr").children(":eq(8)").children().children().eq(0).text();
         if (btnText == '上架') {
-            alert("商品处于下架状态，暂不能推荐！");
+            commonShowTips("商品处于下架状态，暂不能推荐！");
             return;
         }
         changeSell(btn, itemSell, params);
@@ -327,7 +327,7 @@
     function changeSell(btn, itemSell, params) {
         var url = "item/updateSell";
         $.get(url, params, function (result) {
-            alert(result.message);
+            commonShowTips(result.message);
             btn.css("background-color", !itemSell ? "#e3e3e3" :"#ffc200");
             btn.children().css("margin-left",  !itemSell ? "5px" : "26px");
         })
@@ -348,7 +348,7 @@
         }
         var params = {id:id,state:state};
         $.get(url,params,function(result){
-            alert(result.message);
+            commonShowTips(result.message);
             //刷新页面
             //doGetObjects();
             //静态刷新

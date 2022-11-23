@@ -133,7 +133,7 @@
         if($(this).hasClass("continue")){
             var checked=$("tbody input[type='radio']:checked");
             if(!checked.length){
-                alert("请选择一个");
+                commonShowTips("请选择一个");
                 return;
             }
             var tr = checked.parents("tr");//拿到tr

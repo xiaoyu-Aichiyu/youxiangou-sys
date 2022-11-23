@@ -120,11 +120,11 @@
             var url = "menu/updateMenu";
         }
         if(!params.name){
-            alert("请填写菜单名!")
+            commonShowTips("请填写菜单名!")
             return
         }
         $.get(url,params,function(result){
-            alert(result.message);
+            commonShowTips(result.message);
         })
     }
 
@@ -136,7 +136,7 @@
     function choiceParentMenu(){
         var selects = zTree.getSelectedNodes();//获取被选中的节点集合
         if(!selects.length){
-            alert("未选中父菜单");
+            commonShowTips("未选中父菜单");
             return
         }
         $("#parentId").val(selects[0].name);//把父菜单名填写进去

@@ -121,7 +121,7 @@
         if (bool){
             var radioCheck = $("#tbodyId").find("input[type = 'checkbox']:checked");
             if (!radioCheck.length){
-                alert("请选择要修改的数据")
+                commonShowTips("请选择要修改的数据")
                 return;
             }
             $("#cIframe").data("userId",radioCheck.val())
@@ -145,7 +145,7 @@
         };
         $.get(url,params,function(result){
             if(result.state == 0){
-                alert(result.message);
+                commonShowTips(result.message);
             }else{
                 loadRoleData(result.data.pageData);//加载表格主体数据
                 setPageData(result.data);//分页
@@ -185,7 +185,7 @@
         var state = $(btn).text() == '禁用' ? 0 : 1;
         var params = {id : id,state : state};
         $.get(url,params,function(result){
-            alert(result.message);
+            commonShowTips(result.message);
             $(btn).text(state == 0 ? "启用" : "禁用");
             $(btn).parents('tr').children(":eq(5)").html("<div class='cell'>"+(state == 1 ? "启用":"禁用")+"</div>");
         })

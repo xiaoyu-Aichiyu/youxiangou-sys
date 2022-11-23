@@ -27,4 +27,9 @@
             #{ids}
         </foreach>
     </delete>
+
+    <insert id="insertLog">
+        insert into t_log value(null,#{username},#{operation},#{method},#{params},#{time},#{ip},#{createdTime})
+    </insert>
+
 </mapper>

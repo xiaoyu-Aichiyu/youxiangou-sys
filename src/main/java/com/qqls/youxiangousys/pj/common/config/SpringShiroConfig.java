@@ -1,5 +1,6 @@
 package com.qqls.youxiangousys.pj.common.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.RememberMeManager;
@@ -99,6 +100,11 @@ public class SpringShiroConfig {
                 new DefaultWebSessionManager();
         sManager.setGlobalSessionTimeout(60*60*1000);//单位毫秒
         return sManager;
+    }
+
+    @Bean
+    public ShiroDialect getShiroDialect(){
+        return new ShiroDialect();
     }
 
 }

@@ -1,10 +1,12 @@
 package com.qqls.youxiangousys.pj.sys.service.impl;
 
+import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.sys.dao.SysItemDao;
 import com.qqls.youxiangousys.pj.sys.entity.SysItem;
 import com.qqls.youxiangousys.pj.sys.service.SysItemService;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.common.util.Assert;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class SysItemServiceImpl implements SysItemService {
      * @param pageSize
      * @return
      */
+    @RequiredLog("查找商品")
+    @RequiresPermissions("sys:item:view")
     public Pagination findAllItem(String itemName, Integer curPage, Integer pageSize, Integer itemState) {
         //1.验证参数
         Assert.isEmpty(curPage == null || pageSize == null,"请选择当前页码或者每页条数！！");
@@ -41,11 +45,12 @@ public class SysItemServiceImpl implements SysItemService {
     }
 
     /**
-     * 修改用户启用禁用
+     * 修改商品上架下架
      * @param id
      * @param state
      * @return
      */
+    @RequiredLog("修改商品状态")
     public Integer updateState(Integer id, Integer state) {
         Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
         Assert.isEmpty(state == null, "操作有误！");
@@ -55,11 +60,12 @@ public class SysItemServiceImpl implements SysItemService {
     }
 
     /**
-     * 修改用户推荐状态
+     * 修改商品推荐状态
      * @param id
      * @param itemSell
      * @return
      */
+    @RequiredLog("修改商品推荐")
     public Integer updateSell(Integer id, Integer itemSell) {
         Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
         Assert.isEmpty(itemSell == null, "操作有误！");
@@ -73,6 +79,7 @@ public class SysItemServiceImpl implements SysItemService {
      * @param ids
      * @return
      */
+    @RequiredLog("删除商品")
     public Integer deleteItem(Integer[] ids) {
         Assert.isEmpty(ids == null || ids.length == 0,"请选择要删除的数据！");
         Integer n = itemDao.deleteItemByIds(ids);

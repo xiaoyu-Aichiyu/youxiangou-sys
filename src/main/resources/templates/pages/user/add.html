@@ -98,7 +98,7 @@
         }
         if(!username || !password || !roles){
             debugger
-            alert("请将数据填写完整")
+            commonShowTips("请将数据填写完整")
             return
         }
         var params = {
@@ -114,7 +114,7 @@
             params.id = $("#cIframe").data("userId");
         }
         $.get(url,params,function(result){
-            alert(result.message)
+            commonShowTips(result.message)
         })
     }
     //初始加载角色数据

@@ -14,7 +14,7 @@ public interface SysItemService {
     Pagination findAllItem(String itemName, Integer curPage, Integer pageSize, Integer itemState);
 
     /**
-     * 修改用户启用禁用
+     * 修改商品上架下架
      * @param id
      * @param state
      * @return
@@ -22,7 +22,7 @@ public interface SysItemService {
     Integer updateState(Integer id, Integer state);
 
     /**
-     * 修改用户推荐状态
+     * 修改商品推荐状态
      * @param id
      * @param itemSell
      * @return

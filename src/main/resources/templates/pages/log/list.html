@@ -53,10 +53,10 @@
                             <div class="cell">用户名</div>
                         </th>
                         <th colspan="1" rowspan="1" class="el-table_1_column_3 is-center is-leaf">
-                            <div class="cell">请求方法</div>
-                        </th>
-                        <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
                             <div class="cell">操作</div>
+                        </th>
+                        <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf" style="width: 500px; text-align: center">
+                            <div class="cell">请求方法</div>
                         </th>
                         <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
                             <div class="cell">请求参数</div>
@@ -107,7 +107,7 @@
             ids.push(checkboxs.eq(i).val());
         }
         if(!ids.length){
-            alert("请至少选择1条要删除的商品数据！");
+            commonShowTips("请至少选择1条要删除的商品数据！");
             return;
         }
         //二次删除确认
@@ -118,16 +118,15 @@
         var param ={ids:ids};
         $.get(url,param,function(result){
             if(result.state == 1){
-                alert("成功删除" + result.data + "条数据！");
+                commonShowTips("成功删除" + result.data + "条数据！");
                 doGetObjects();
             }else{
-                alert(result.message);
+                commonShowTips(result.message);
             }
         })
     }
     
     function  doGetObjects() {
-        debugger;
         var url = "log/findAllLogList";
         var curPage = $("#pageId").data("curPage");
         var params = {
@@ -136,12 +135,11 @@
             pageSize : 10
         };
         $.get(url,params,function(result) {
-            debugger;
            if(result.state == 1){
                 loadLogDataList(result.data.pageData);
                 setPageData(result.data);//加载分页数据
             }else{
-                alert(result.message);
+                commonShowTips(result.message);
             }
         })
     }
@@ -160,7 +158,7 @@
                     "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + data.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
                 dataStr += "<td td colspan='1' rowspan='1' class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.username + "</div></td>";
                 dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'>" + data.operation + "</div></td>";
-                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.method + "</div></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf' style='width: 500px;'><div class='cell'>" + data.method + "</div></td>";
                 dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.params + "</div></td>";
                 dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + data.time + "</div></td>";
                 dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + data.ip + "</td>"
