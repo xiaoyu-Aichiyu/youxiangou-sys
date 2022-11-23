@@ -60,8 +60,16 @@ public class SysItemController {
      * @return
      */
     @RequestMapping("deleteItem")
-    public JsonResult deleteItemList(@RequestParam("ids[]") Integer[] ids){
-        return new JsonResult(itemService.deleteItem(ids));
+    public JsonResult deleteItemList(@RequestParam("ids[]") Integer[] ids,Integer itemState){
+        return new JsonResult(itemService.deleteItem(ids,itemState));
     }
 
+    /**
+     * 导出所有商品
+     */
+    @RequestMapping("exportThisItem")
+    public JsonResult exportThisItem(){
+        itemService.exportThisItem();
+        return new JsonResult("导出成功！");
+    }
 }

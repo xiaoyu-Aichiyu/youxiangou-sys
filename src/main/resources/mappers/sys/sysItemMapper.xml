@@ -31,8 +31,8 @@
     </select>
 
     <update id="deleteItemByIds">
-        update t_item set item_state = 2, item_sell = 0 where id in
-        <foreach collection="array" open="(" separator="," close=")" item="ids">
+        update t_item set item_state = #{itemState}, item_sell = 0 where id in
+        <foreach collection="ids" open="(" separator="," close=")" item="ids">
             #{ids}
         </foreach>
     </update>

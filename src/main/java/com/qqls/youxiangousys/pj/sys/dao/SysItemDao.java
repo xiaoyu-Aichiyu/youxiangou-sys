@@ -50,7 +50,7 @@ public interface SysItemDao {
      * @param ids
      * @return
      */
-    Integer deleteItemByIds(Integer[] ids);
+    Integer deleteItemByIds(@Param("ids") Integer[] ids,@Param("itemState") Integer itemState);
 
     /**
      * 查看已被删除的商品数据
@@ -58,4 +58,10 @@ public interface SysItemDao {
      */
     @Select("select * from t_item where item_state = 2")
     List<SysItem> findDeleteAfter();
+
+    /**
+     * 导出所有商品
+     */
+    @Select("select * from t_item")
+    List<SysItem> findExportThisItem();
 }

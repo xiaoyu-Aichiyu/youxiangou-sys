@@ -34,5 +34,10 @@ public interface SysItemService {
      * @param ids
      * @return
      */
-    Integer deleteItem(Integer[] ids);
+    Integer deleteItem(Integer[] ids,Integer itemState);
+
+    /**
+     * 导出所有商品
+     */
+    void exportThisItem();
 }
