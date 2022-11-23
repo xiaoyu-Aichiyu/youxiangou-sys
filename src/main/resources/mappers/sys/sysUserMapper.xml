@@ -4,14 +4,24 @@
 
 <mapper namespace="com.qqls.youxiangousys.pj.sys.dao.SysUserDao">
     <sql id="userQuery">
-        <if test="name != null || name !=''">
-            where name like concat("%",#{name},"%")
-        </if>
+        <where>
+            <if test="name != null and name !='' ">
+                name like concat("%",#{name},"%") and
+            </if>
+            <choose>
+                <when test="state != null and state != '' ">
+                    state = #{state}
+                </when>
+                <otherwise>
+                    state != 2
+                </otherwise>
+            </choose>
+        </where>
     </sql>
     <!--添加用户-->
     <insert id="insertUser" parameterType="com.qqls.youxiangousys.pj.sys.entity.SysUser" keyProperty="id" useGeneratedKeys="true">
         insert into t_user(name, username, password, salt, user_img, phone, state, gender, createdTime, modifiedTime) values
-                    (#{name},#{username},#{password},#{salt},#{userImg},#{phone},#{state},#{gender},now(),now())
+            (#{name},#{username},#{password},#{salt},#{userImg},#{phone},#{state},#{gender},now(),now())
     </insert>
     <!--修改状态-->
     <update id="updateValId">
@@ -20,6 +30,13 @@
     <!--通过id修改用户-->
     <update id="updateUser">
         update t_user set name=#{name},phone=#{phone},gender=#{gender} where id=#{id}
+    </update>
+    <!--将状态改为2即删除-->
+    <update id="deleteUser">
+        update t_user set state = 2 where id in
+        <foreach collection="array" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
     </update>
 
     <select id="findUser" resultType="com.qqls.youxiangousys.pj.sys.entity.SysUser">

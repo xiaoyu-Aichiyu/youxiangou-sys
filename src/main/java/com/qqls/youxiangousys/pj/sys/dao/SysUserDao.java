@@ -23,7 +23,7 @@ public interface SysUserDao {
      * @param pageSize
      * @return
      */
-    List<SysUser> findUser(@Param("name") String name,@Param("start") Integer start,@Param("pageSize") Integer pageSize);
+    List<SysUser> findUser(@Param("name") String name,@Param("start") Integer start,@Param("pageSize") Integer pageSize,@Param("state") Integer state);
 
     /**
      * 根据用户id修改用户状态
@@ -53,4 +53,11 @@ public interface SysUserDao {
      * @return
      */
     Integer updateUser(SysUser user);
+
+    /**
+     * 根据ID删除用户
+     * @param ids
+     * @return
+     */
+    Integer deleteUser(Integer[] ids);
 }

@@ -10,7 +10,7 @@
     <div class="container">
         <div class="tableBar">
             <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
-                <input type="text" autocomplete="off" placeholder="请输入用户姓名" class="el-input__inner" id="searchNameId">
+                <input type="text" autocomplete="off" placeholder="请输入用户姓名" class="el-input__inner">
                 <span class="el-input__prefix">
                     <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
                 </span>
@@ -19,6 +19,9 @@
                 <span>查询</span>
             </button>
             <div class="tableLab" >
+                <button type="button" class="el-button el-button--primary" id="btn-deletePage">
+                    <span>已删除的用户</span>
+                </button>
                 <button type="button" class="el-button " style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>导入</span>
                 </button>
@@ -28,11 +31,11 @@
                 <button type="button" class="el-button el-button--update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>修改用户</span>
                 </button>
-                <button type="button" class="el-button el-button--primary">
+                <button type="button" class="el-button el-button--primary el-button--add">
                     <span>添加用户</span>
                 </button>
-                <button type="button" class="el-button continue el-button--delete" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
-                    <span>删除用户</span>
+                <button id="el-button-delete" type="button" class="el-button continue el-button--delete" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>批量删除用户</span>
                 </button>
             </div>
         </div>
@@ -107,13 +110,42 @@
     $(function() {
         //el-button--update
         //tableBar
-        $(".tableBar").on("click",".el-button--primary,.el-button--update",addPage);
-        $(".el-input__inner").on("click",doGetObjects)
+        $("#load-user-id").data("isDeletePage", false);
+        $(".tableBar").on("click",".el-button--add,.el-button--update",addPage);
+        $(".el-input__inner").on("click",doGetObjects);
+        $("#btn-deletePage").on("click",doGetObjects);
+        $("#el-button-delete").on("click",deleteUserList);
         //先加载数据，再查询数据
         $("#pageId").load("page/page",function(){
             doGetObjects();
         })
     })
+    //批量删除
+    function deleteUserList(){
+        var checkboxs = $("#tbodyId input[type='checkbox']:checked");
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push(checkboxs.eq(i).val());
+        }
+        if(!ids.length){
+            commonShowTips("请至少选择1条要删除的商品数据！");
+            return;
+        }
+        //二次删除确认
+        if(!confirm("确认删除吗?")){
+            return;
+        }
+        var url = "user/deleteUser";
+        var param ={ids:ids};
+        $.get(url,param,function(result){
+            if(result.state == 1){
+                commonShowTips("成功修改删除状态" + result.data + "条数据！");
+                doGetObjects();
+            }else{
+                commonShowTips(result.message);
+            }
+        })
+    }
     //跳转添加或修改页面
     function addPage() {
         var bool = $(this).hasClass("el-button--update");
@@ -135,14 +167,32 @@
         });
     }
     //初始加载
-    function doGetObjects(){
+    function doGetObjects() {
+        if ($(this).prop("id") == "btn-deletePage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-selectPage");
+            $(this).text("未删除的商品");
+            $("#load-user-id").data("isDeletePage",true);
+        } else if ($(this).prop("id") == "btn-selectPage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-deletePage");
+            $(this).text("已删除的商品");
+            $("#load-user-id").data("isDeletePage", false);
+        } else if ($(this).prop("id") == "btn-search") {
+            $("#pageId").data("curPage", 1);
+        }
         var url = "user/findUser";
         var curPage = $("#pageId").data("curPage");
         var params = {
-            "name" : $("#searchNameId").val(),
-            "curPage" :curPage ? curPage : 1,
-            "pageSize" : 10
+            "name" : $(".el-input__inner").val(),
+            curPage: curPage ?  curPage : 1,
+            pageSize : 10
         };
+        if ($("#load-user-id").data("isDeletePage")) {
+            params.state = 2;
+        }
         $.get(url,params,function(result){
             if(result.state == 0){
                 commonShowTips(result.message);
@@ -152,6 +202,24 @@
             }
         })
     }
+    /*function doGetObjects(){
+        var url = "user/findUser";
+        var curPage = $("#pageId").data("curPage");
+        var params = {
+            "name" : $(".el-input__inner").val(),
+            "curPage" :curPage ? curPage : 1,
+            "pageSize" : 5
+        };
+        $.get(url,params,function(result){
+            if(result.state == 0){
+                commonShowTips(result.message);
+            }else{
+                loadRoleData(result.data.pageData);//加载表格主体数据
+                setPageData(result.data);//分页
+            }
+        })
+    }*/
+
     function loadRoleData(data) {
         var tbody = $("#tbodyId");
         tbody.empty();

@@ -27,8 +27,8 @@ public class SysUserController {
      * @return
      */
     @RequestMapping("findUser")
-    public JsonResult findUser(String name,Integer curPage,Integer pageSize){
-        Pagination obj = userService.findUser(name,curPage,pageSize);
+    public JsonResult findUser(String name,Integer curPage,Integer pageSize,Integer state){
+        Pagination obj = userService.findUser(name,curPage,pageSize,state);
         return new JsonResult(obj);
     }
 
@@ -80,5 +80,15 @@ public class SysUserController {
     public JsonResult findRoleUserById(Integer userId){
         List<Integer> list = (userService.findRoleUserById(userId));
         return new JsonResult(list);
+    }
+
+    /**
+     * 根据ID删除用户
+     * @param ids
+     * @return
+     */
+    @RequestMapping("deleteUser")
+    public JsonResult deleteUser(@RequestParam(required = false,value = "ids[]") Integer[] ids){
+        return new JsonResult(userService.deleteUser(ids));
     }
 }

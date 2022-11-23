@@ -14,7 +14,7 @@ public interface SysUserService {
      * @param pageSize  每页条数
      * @return
      */
-    Pagination findUser(String name, Integer curPage, Integer pageSize);
+    Pagination findUser(String name, Integer curPage, Integer pageSize,Integer state);
 
     /**
      * 通过用户id修改用户禁用启用功能
@@ -46,4 +46,11 @@ public interface SysUserService {
      * @return
      */
     List<Integer> findRoleUserById(Integer userId);
+
+    /**
+     * 根据ID删除用户
+     * @param ids
+     * @return
+     */
+    Integer deleteUser(Integer[] ids);
 }

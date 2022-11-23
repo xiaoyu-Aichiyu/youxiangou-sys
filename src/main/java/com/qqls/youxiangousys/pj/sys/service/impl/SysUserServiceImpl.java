@@ -1,5 +1,6 @@
 package com.qqls.youxiangousys.pj.sys.service.impl;
 
+import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserDao;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserRoleDao;
@@ -22,7 +23,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserRoleDao userRoleDao;
 
-    public Pagination findUser(String name, Integer curPage, Integer pageSize) {
+    public Pagination findUser(String name, Integer curPage, Integer pageSize,Integer state) {
         //验证curPage和pageSize是否有值
         Assert.isEmpty(curPage == null || pageSize == null,"请选择当前页码或每页条数");
         //得到用户的总条数
@@ -32,7 +33,7 @@ public class SysUserServiceImpl implements SysUserService {
         curPage = pageObj.getCurPage();//得到当前页
         pageSize = pageObj.getPageSize();//得到每页条数
         int start =(curPage - 1) * pageSize;
-        List<SysUser> list =userDao.findUser(name,start,pageSize);//根据用户找角色
+        List<SysUser> list =userDao.findUser(name,start,pageSize,state);//根据用户找角色
         Assert.isEmpty(list==null || list.size()==0,"数据已被删除");
         pageObj.setPageData(list);
         return pageObj;
@@ -100,5 +101,18 @@ public class SysUserServiceImpl implements SysUserService {
         Assert.isEmpty(userId==null || userId == 0,"请选择要修改的用户");
         List<Integer> list =userRoleDao.findRoleUserById(userId);
         return list;
+    }
+
+    /**
+     * 根据ID删除用户
+     * @param ids
+     * @return
+     */
+    public Integer deleteUser(Integer[] ids) {
+        Assert.isEmpty(ids == null || ids.length == 0,"请选择要删除的用户");
+        Integer n =  userDao.deleteUser(ids);
+        Assert.isEmpty(n == 0,"用户删除失败");
+        System.out.println(ids);
+        return n;
     }
 }
