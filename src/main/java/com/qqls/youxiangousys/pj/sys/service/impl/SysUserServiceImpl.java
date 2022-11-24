@@ -47,7 +47,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @return
      */
     public Integer updateValId(Integer id, Integer state) {
-        Assert.isEmpty(id == null || id == 0,"请选择要修改的用户");
+        Assert.isEmpty(id == null || id == 0,"请先选择用户");
         Assert.isEmpty(state == null, "操作有误");
         int n = userDao.updateValId(id,state);
         Assert.isEmpty(n == 0,"修改失败");

@@ -28,9 +28,9 @@
                 <button type="button" class="el-button continue" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>导出</span>
                 </button>
-                <button type="button" class="el-button el-button--update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+               <!-- <button type="button" class="el-button el-button&#45;&#45;update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>修改用户</span>
-                </button>
+                </button>-->
                 <button type="button" class="el-button el-button--primary el-button--add">
                     <span>添加用户</span>
                 </button>
@@ -110,6 +110,7 @@
     $(function() {
         //el-button--update
         //tableBar
+        $("#cIframe").data("userId","");
         $("#load-user-id").data("isDeletePage", false);
         $(".tableBar").on("click",".el-button--add,.el-button--update",addPage);
         $(".el-input__inner").on("click",doGetObjects);
@@ -149,9 +150,9 @@
     //跳转添加或修改页面
     function addPage() {
         var bool = $(this).hasClass("el-button--update");
-        //var title = bool ? "修改用户" : "添加用户";
+        debugger
         if (bool){
-            var radioCheck = $("#tbodyId").find("input[type = 'checkbox']:checked");
+            var radioCheck = $(this).parents("tr").find("input[type='checkbox']");
             if (!radioCheck.length){
                 commonShowTips("请选择要修改的数据")
                 return;
@@ -166,19 +167,20 @@
             //$(".head-lable").text(title);
         });
     }
+
     //初始加载
     function doGetObjects() {
         if ($(this).prop("id") == "btn-deletePage") {
             $("#pageId").data("curPage", 1);
             $(".el-input__inner").val("")
             $(this).prop("id", "btn-selectPage");
-            $(this).text("未删除的商品");
+            $(this).text("未删除的用户");
             $("#load-user-id").data("isDeletePage",true);
         } else if ($(this).prop("id") == "btn-selectPage") {
             $("#pageId").data("curPage", 1);
             $(".el-input__inner").val("")
             $(this).prop("id", "btn-deletePage");
-            $(this).text("已删除的商品");
+            $(this).text("已删除的用户");
             $("#load-user-id").data("isDeletePage", false);
         } else if ($(this).prop("id") == "btn-search") {
             $("#pageId").data("curPage", 1);
@@ -239,11 +241,12 @@
                 +"<td class='el-table_1_column_10 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.modifiedTime+"</div></td>"
                 +"<td class='el-table_1_column_11 is-leaf' colspan='1' rowspan='1' style='width: 153px'><div>"
                 +"<button type='button' class='el-button el-button--primary' onclick='changeValid(this)'>"+(d.state?"禁用":"启用")+"</button>"
-                +"<button type='button' class='el-button el-button--primary continue' onclick='delete(this)'>删除</button></div></td></tr>";
+                +"<button type='button' class='el-button--primary el-button el-button--update continue up'>修改</button></div></td></tr>";
             tbody.append(tr);
             //每一行上面绑定当前行数据
             $("#tbodyId tr").last().data("user",data[i]);
         }
+        $(".el-button--update").on("click", addPage);
     }
     //修改状态
     function changeValid(btn){
