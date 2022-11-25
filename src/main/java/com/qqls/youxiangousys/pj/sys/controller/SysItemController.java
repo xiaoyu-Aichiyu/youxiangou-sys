@@ -1,5 +1,7 @@
 package com.qqls.youxiangousys.pj.sys.controller;
 
+import com.qqls.youxiangousys.pj.common.util.Assert;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelCarObj;
 import com.qqls.youxiangousys.pj.sys.service.SysItemService;
 import com.qqls.youxiangousys.pj.common.entity.JsonResult;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("item")
@@ -70,6 +73,16 @@ public class SysItemController {
     @RequestMapping("exportThisItem")
     public JsonResult exportThisItem(){
         itemService.exportThisItem();
-        return new JsonResult("导出成功！");
+        return new JsonResult("商品数据导出成功！！");
+    }
+
+    /**
+     * 导入所有商品
+     * @return
+     */
+    @RequestMapping("saveExportItem")
+    public JsonResult saveExportItem(MultipartFile file){
+        Assert.isEmpty(file == null,"上传的文件不存在！！");
+        return new JsonResult(itemService.saveExportItem(file));
     }
 }
