@@ -1,12 +1,11 @@
 package com.qqls.youxiangousys.pj.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -28,6 +27,20 @@ public class SysItem implements Serializable {
     private String createdUser;
     private String modifiedUser;
     private int typeId;
-    private Integer itemState = 1;
-    private Integer itemSell;
+    private int itemState = 1;
+    private int itemSell;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysItem sysItem = (SysItem) o;
+        return Objects.equals(itemName, sysItem.itemName) && Objects.equals(itemTitle, sysItem.itemTitle) && Objects.equals(itemImg, sysItem.itemImg) && Objects.equals(itemNote, sysItem.itemNote);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemName, itemTitle, itemImg, itemNote);
+    }
+
 }

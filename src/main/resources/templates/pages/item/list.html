@@ -22,6 +22,12 @@
                 <button type="button" class="el-button el-button--primary" id="btn-deletePage">
                     <span>已删除的商品</span>
                 </button>
+                <input type="file" id="saveItem" style="display: none">
+                <button type="button" class="el-button el-button--primary continue">
+                    <label for="saveItem" style="display: inline">
+                        <span>上传excel</span>
+                    </label>
+                </button>
                 <button type="button" class="el-button el-button--primary btn-save">
                     <span>导入</span>
                 </button>
@@ -67,21 +73,24 @@
                                 <div class="cell">图片</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
-                                <div class="cell">商品分类</div>
+                                <div class="cell">商品标题</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
-                                <div class="cell">售价</div>
+                                <div class="cell">商品分类</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
-                                <div class="cell">售卖状态</div>
+                                <div class="cell">售价</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
-                                <div class="cell">商品推荐</div>
+                                <div class="cell">售卖状态</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
+                                <div class="cell">商品推荐</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-leaf">
                                 <div class="cell">最后操作时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf" style="width: 153px">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_10 is-center is-leaf" style="width: 153px">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -135,6 +144,7 @@
         $("#btn-deletePage").on("click",doGetObjects);
         $("#btn-delete").on("click",deleteItemList);
         $(".btn-export").on("click",exportThis);
+        $(".btn-save").on("click",saveExport);
         $("#pageId").load("page/page",function(){
             doGetObjects();
         });
@@ -201,7 +211,49 @@
     }
 
     /**
-     * 导出指定商品
+     * 导入所有商品
+     */
+    function saveExport() {
+        //获取文件名他的目录是虚拟路径
+        var fileName = $("#saveItem").val();
+        if(!fileName.endsWith(".xlsx")){
+            commonShowTips("文件格式有误！只能是.xlsx文件");
+            return;
+        }
+        //判断文件控件的大小不能超过5M
+        var uploadFile = $("#saveItem").get(0).files[0];
+        if (uploadFile.size > 5 * 1024 * 1024) {
+            commonShowTips("选择的文件限制在5MB以内!");
+            return;
+        }
+        //ajax提供的对象，存储文件相关信息(key-value的形式)
+        var formData = new FormData();
+        //key的名字自定义，value为文件控件对象
+        formData.append("file",uploadFile);
+        $("#sl").show();
+        $.ajax({
+            url:"item/saveExportItem",
+            data:formData,
+            dateType:"json",
+            type:"post",
+            //提交参数之前是否把参数转换为字符串：true--是，false--不是，默认是true
+            processData:false,
+            //提交之前，是否把参数统一按URLEncoded编码:true--是，false--不是，默认是true
+            contentType:false,
+            success:function(result){
+                if (result.state == 1) {
+                    commonShowTips("商品数据导入成功！");
+                    doGetObjects();//刷新数据
+                } else{
+                    commonShowTips(result.message);
+                }
+                $("#sl").hide();
+            }
+        })
+    }
+
+    /**
+     * 导出所有商品
      */
     function exportThis(){
         //二次导出确认
@@ -312,13 +364,14 @@
                 dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.itemName + "</div></td>";
                 dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'><img src="+data.itemImg+" width='40px' height='40px'></div></td>";
                 dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemTitle + "</div></td>";
-                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.itemPrice + "</div></td>";
-                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
-                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" +
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.itemNote + "</div></td>";
+                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + data.itemPrice + "</div></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +
                             "<div class='sell-btn sell-btn-common' style='background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'>" +
                             "<div style='margin-left:" + (data.itemSell ? "26" : "5") + "px; '></div></div></div></td>"
-                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_9 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue el-button--update' onclick='addPageOrUpdate()'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_9 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue el-button--update' onclick='addPageOrUpdate()'>修改</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
                 $("#tbodyId").find("tr").last().data("itemId",data.id);//把每一行的id绑定到当前行

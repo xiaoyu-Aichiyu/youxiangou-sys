@@ -36,4 +36,11 @@
             #{ids}
         </foreach>
     </update>
+
+    <insert id="insertItemExcel">
+        insert into t_item values
+        <foreach collection="list" separator="," item="item">
+            (null,#{item.itemName},#{item.itemTitle},#{item.itemImg},#{item.itemNote},#{item.itemPrice},#{item.itemNum},#{item.saleNum},now(),now(),#{item.createdUser},#{item.modifiedUser},#{item.typeId},#{item.itemState},#{item.itemSell})
+        </foreach>
+    </insert>
 </mapper>

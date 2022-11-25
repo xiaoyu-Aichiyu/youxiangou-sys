@@ -64,4 +64,20 @@ public interface SysItemDao {
      */
     @Select("select * from t_item")
     List<SysItem> findExportThisItem();
+
+    /**
+     * 导入插入商品
+     * @param itemData
+     * @return
+     */
+    Integer insertItemExcel(List<SysItem> itemData);
+
+    /**
+     * 查询重复的导入商品
+     * @param itemName
+     * @param itemNote
+     * @return
+     */
+    @Select("select * from t_item where item_name=#{itemName} and item_note=#{itemNote}")
+    SysItem findCarByNameAndNote(@Param("itemName") String itemName, @Param("itemNote") String itemNote);
 }

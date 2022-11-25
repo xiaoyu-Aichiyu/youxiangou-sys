@@ -1,6 +1,8 @@
 package com.qqls.youxiangousys.pj.sys.service;
 
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelCarObj;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface SysItemService {
 
@@ -40,4 +42,10 @@ public interface SysItemService {
      * 导出所有商品
      */
     void exportThisItem();
+
+    /**
+     * 导入所有商品
+     * @param file
+     */
+    saveExcelCarObj saveExportItem(MultipartFile file);
 }
