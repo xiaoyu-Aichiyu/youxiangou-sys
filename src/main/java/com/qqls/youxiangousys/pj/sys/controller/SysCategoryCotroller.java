@@ -2,21 +2,45 @@ package com.qqls.youxiangousys.pj.sys.controller;
 
 
 import com.qqls.youxiangousys.pj.common.entity.JsonResult;
+import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
+import com.qqls.youxiangousys.pj.sys.entity.SysMenu;
 import com.qqls.youxiangousys.pj.sys.service.SysCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("categoty")
+@RequestMapping("category")
 public class SysCategoryCotroller {
 
     @Autowired
     private SysCategoryService service;
 
-    @RequestMapping("doFindCategoty")
+    @RequestMapping("doFindCategory")
     public JsonResult doFindCategory(){
         return new JsonResult(service.doFindCategory());
     }
 
+    /**
+     * 找菜单id，菜单名，父菜单id
+     * @return
+     */
+    @RequestMapping("findZtreeCategory")
+    public JsonResult findZtreeCategory(){
+        return new JsonResult(service.findZtreeCategory());
+    }
+
+    @RequestMapping("saveCategory")
+    public JsonResult saveCategory(SysCategory category){
+        JsonResult jr = new JsonResult(service.saveCategory(category));
+        jr.setMessage("添加成功");
+        return jr;
+    }
+
+    @RequestMapping("updateCategory")
+    public JsonResult updateCategory (SysCategory category){
+        JsonResult jr = new JsonResult(service.updateCategory(category));
+        jr.setMessage("修改成功");
+        return jr;
+    }
 }
