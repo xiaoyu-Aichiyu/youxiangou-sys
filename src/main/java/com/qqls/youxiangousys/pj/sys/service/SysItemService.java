@@ -1,7 +1,8 @@
 package com.qqls.youxiangousys.pj.sys.service;
 
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
-import com.qqls.youxiangousys.pj.sys.entity.saveExcelCarObj;
+import com.qqls.youxiangousys.pj.sys.entity.SysItem;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelItemObj;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface SysItemService {
@@ -32,7 +33,7 @@ public interface SysItemService {
     Integer updateSell(Integer id, Integer itemSell);
 
     /**
-     * 根据id删除商品
+     * 根据id批量删除商品
      * @param ids
      * @return
      */
@@ -47,5 +48,27 @@ public interface SysItemService {
      * 导入所有商品
      * @param file
      */
-    saveExcelCarObj saveExportItem(MultipartFile file);
+    saveExcelItemObj saveExportItem(MultipartFile file);
+
+    /**
+     * 根据id删除一行商品数据
+     * @param id
+     * @param itemState
+     * @return
+     */
+    Integer deleteItemById(Integer id, Integer itemState);
+
+    /**
+     * 添加商品数据
+     * @param item
+     * @return
+     */
+    Integer insertItemData(SysItem item);
+
+    /**
+     * 修改商品数据
+     * @param item
+     * @return
+     */
+    Integer updateItemData(SysItem item);
 }

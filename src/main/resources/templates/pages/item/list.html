@@ -37,8 +37,11 @@
                 <button type="button" class="el-button el-button--primary el-button--add">
                     <span>新建商品</span>
                 </button>
-                <button type="button" class="el-button el-button--primary continue" id="btn-delete">
-                    <span>删除商品</span>
+                <button type="button" class="el-button el-button--primary continue el-button--update">
+                    <span>修改商品</span>
+                </button>
+                <button type="button" class="el-button el-button--primary" id="btn-deletes">
+                    <span>批量删除</span>
                 </button>
             </div>
         </div>
@@ -76,7 +79,7 @@
                                 <div class="cell">商品标题</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
-                                <div class="cell">商品分类</div>
+                                <div class="cell">商品详情</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
                                 <div class="cell">售价</div>
@@ -139,10 +142,10 @@
 <script>
     $(function() {
         $("#load-item-id").data("isDeletePage", false);
-        $(".el-button--add").on("click", addPageOrUpdate);
+        $(".el-button--add,.el-button--update").on("click", addPageOrUpdate);
         $("#btn-search").on("click", doGetObjects);
         $("#btn-deletePage").on("click",doGetObjects);
-        $("#btn-delete").on("click",deleteItemList);
+        $("#btn-deletes").on("click",deleteItemList);
         $(".btn-export").on("click",exportThis);
         $(".btn-save").on("click",saveExport);
         $("#pageId").load("page/page",function(){
@@ -158,7 +161,7 @@
         var title= bool ? "修改商品" : "新增商品";
         if(bool){
             var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
-            if(!boxCheck.length != 1){
+            if(!boxCheck.length){
                 commonShowTips("请选择要修改的一条数据！");
                 return;
             }
@@ -174,7 +177,7 @@
     }
 
     /**
-     * 按id删除商品数据
+     * 按id批量删除商品数据
      */
     function deleteItemList() {
         var tipsStr = "删除";
@@ -207,6 +210,35 @@
             }else{
                 commonShowTips(result.message);
             }
+        })
+    }
+
+    /**
+     * 按id删除一行商品数据
+     */
+    function deleteItem() {
+        debugger;
+        var tipsStr = "删除";
+        var confirmStr = "确认删除吗?";
+        var itemState = 2;
+        if($("#load-item-id").data("isDeletePage")){
+            tipsStr = "上架";
+            confirmStr = "确认重新上架吗?";
+            itemState = 1;
+        }
+        if(!confirm("确定删除吗？")){
+            return;
+        }
+        var url = "item/deleteItemThis";
+        var tr = $(this).parents("tr");
+        //找到当前的tr绑定的itemId
+        var id = tr.data("itemId");
+        var param = {id:id,itemState:itemState};
+        $.get(url,param,function(result){
+            commonShowTips(result.message);
+            //刷新数据
+            doGetObjects();
+            //tr.remove();//每分页可用静态刷新
         })
     }
 
@@ -303,13 +335,15 @@
             $(this).text("未删除的商品");
             $("#load-item-id").data("isDeletePage",true);
             $("#btn-delete").text("重新上架");
+            $("#btn-deletes").text("重新上架");
         } else if ($(this).prop("id") == "btn-selectPage") {
             $("#pageId").data("curPage", 1);
             $(".el-input__inner").val("")
             $(this).prop("id", "btn-deletePage");
             $(this).text("已删除的商品");
             $("#load-item-id").data("isDeletePage", false);
-            $("#btn-delete").text("删除商品");
+            $("#btn-delete").text("批量删除");
+            $("#btn-deletes").text("批量删除");
         } else if ($(this).prop("id") == "btn-search") {
             $("#pageId").data("curPage", 1);
         }
@@ -371,12 +405,14 @@
                             "<div class='sell-btn sell-btn-common' style='background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'>" +
                             "<div style='margin-left:" + (data.itemSell ? "26" : "5") + "px; '></div></div></div></td>"
                 dataStr += "<td class='el-table_1_column_9 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue el-button--update' onclick='addPageOrUpdate()'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue' id='btn-delete'>删除</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
+                $("#tbodyId").find("tr").last().data("itemRow",data);//把每一行的id绑定到当前行
                 $("#tbodyId").find("tr").last().data("itemId",data.id);//把每一行的id绑定到当前行
             }
             $(".sell-btn").on('click', changeSellBtn);
+            $("#btn-delete").on("click",deleteItem);
         }
     }
 
@@ -393,7 +429,7 @@
             itemSell = 1;
         }
         var params = {id:id,itemSell:itemSell};
-        var btnText = btn.parents("tr").children(":eq(8)").children().children().eq(0).text();
+        var btnText = btn.parents("tr").children(":eq(9)").children().children().eq(0).text();
         if (btnText == '上架') {
             commonShowTips("商品处于下架状态，暂不能推荐！");
             return;
@@ -440,7 +476,7 @@
                 //getAfterDeletePage();
             } else {
                 $(btn).text(state == 0 ? "上架" : "下架");
-                $(btn).parents("tr").children().eq(5).html("<div class='cell'>" + (state == 1 ? "上架" : "下架") + "</div>");
+                $(btn).parents("tr").children().eq(6).html("<div class='cell'>" + (state == 1 ? "上架" : "下架") + "</div>");
             }
         })
     }

@@ -1,10 +1,7 @@
 package com.qqls.youxiangousys.pj.sys.dao;
 
 import com.qqls.youxiangousys.pj.sys.entity.SysItem;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -46,7 +43,7 @@ public interface SysItemDao {
     Integer updateSell(Integer id, Integer itemSell);
 
     /**
-     * 根据id删除商品信息
+     * 根据id批量删除商品信息
      * @param ids
      * @return
      */
@@ -80,4 +77,26 @@ public interface SysItemDao {
      */
     @Select("select * from t_item where item_name=#{itemName} and item_note=#{itemNote}")
     SysItem findCarByNameAndNote(@Param("itemName") String itemName, @Param("itemNote") String itemNote);
+
+    /**
+     * 根据id删除一行商品数据
+     * @param id
+     * @param itemState
+     * @return
+     */
+    Integer deleteItemById(Integer id, Integer itemState);
+
+    /**
+     * 添加商品数据
+     * @param item
+     * @return
+     */
+    Integer insertItemData(SysItem item);
+
+    /**
+     * 修改商品数据
+     * @param item
+     * @return
+     */
+    Integer updateItemData(SysItem item);
 }

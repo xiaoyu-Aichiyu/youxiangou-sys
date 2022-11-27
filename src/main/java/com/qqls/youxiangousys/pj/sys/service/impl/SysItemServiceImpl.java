@@ -2,10 +2,9 @@ package com.qqls.youxiangousys.pj.sys.service.impl;
 
 import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.common.web.ServiceException;
-import com.qqls.youxiangousys.pj.mp.service.ItemService;
 import com.qqls.youxiangousys.pj.sys.dao.SysItemDao;
 import com.qqls.youxiangousys.pj.sys.entity.SysItem;
-import com.qqls.youxiangousys.pj.sys.entity.saveExcelCarObj;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelItemObj;
 import com.qqls.youxiangousys.pj.sys.service.SysItemService;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.common.util.Assert;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -88,7 +86,7 @@ public class SysItemServiceImpl implements SysItemService {
     }
 
     /**
-     * 根据id删除商品信息
+     * 根据id批量删除商品信息
      * @param ids
      * @return
      */
@@ -140,8 +138,8 @@ public class SysItemServiceImpl implements SysItemService {
      * @return
      */
     @RequiredLog("导入商品")
-    public saveExcelCarObj saveExportItem(MultipartFile file) {
-        saveExcelCarObj sec = new saveExcelCarObj();
+    public saveExcelItemObj saveExportItem(MultipartFile file) {
+        saveExcelItemObj sec = new saveExcelItemObj();
         try {
             //获取输入流
             InputStream is = file.getInputStream();
@@ -162,6 +160,49 @@ public class SysItemServiceImpl implements SysItemService {
         return sec;
     }
 
+    /**
+     * 根据id删除一行商品数据
+     * @param id
+     * @param itemState
+     * @return
+     */
+    public Integer deleteItemById(Integer id, Integer itemState) {
+        Assert.isEmpty(id == null,"请选择要删除的一条数据");
+        Integer n = itemDao.deleteItemById(id,itemState);
+        Assert.isEmpty(n == 0,"商品数据删除失败！！");
+        return n;
+    }
+
+    /**
+     * 添加商品数据
+     * @param item
+     * @return
+     */
+    public Integer insertItemData(SysItem item) {
+        Assert.isEmpty(item == null,"请将表单信息填写完整！！");
+        Integer n = itemDao.insertItemData(item);
+        Assert.isEmpty(n == 0,"商品数据添加失败！！");
+        return n;
+    }
+
+    /**
+     * 修改商品数据
+     * @param item
+     * @return
+     */
+    public Integer updateItemData(SysItem item) {
+        Assert.isEmpty(item == null,"请将表单信息填写完整！！");
+        Integer n = itemDao.updateItemData(item);
+        Assert.isEmpty(n == 0,"商品数据修改失败！！");
+        return n;
+    }
+
+    /**
+     * 返回重复行号集合
+     * @param is
+     * @return
+     * @throws IOException
+     */
     public Map<String, List<?>> getListCarExcel(InputStream is) throws IOException {
         //获取Workbook对象
         Workbook workbook = new XSSFWorkbook(is);

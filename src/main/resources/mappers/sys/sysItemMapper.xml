@@ -21,15 +21,18 @@
         </where>
     </sql>
 
+    <!-- 统计商品总条数 -->
     <select id="getCountItem" resultType="int">
         select count(1) from t_item
         <include refid="queryItemName"/>
     </select>
 
+    <!-- 查询所有商品数据并且分页 -->
     <select id="findItemByItemName" resultType="com.qqls.youxiangousys.pj.sys.entity.SysItem">
         select * from t_item <include refid="queryItemName"/> limit #{start},#{pageSize}
     </select>
 
+    <!-- 修改状态为2即为删除 -->
     <update id="deleteItemByIds">
         update t_item set item_state = #{itemState}, item_sell = 0 where id in
         <foreach collection="ids" open="(" separator="," close=")" item="ids">
@@ -37,10 +40,26 @@
         </foreach>
     </update>
 
+    <!-- 修改状态为2即为删除 -->
+    <update id="deleteItemById">
+        update t_item set item_state = #{itemState}, item_sell = 0 where id = #{id}
+    </update>
+
+    <!-- 导入插入数据 -->
     <insert id="insertItemExcel">
         insert into t_item values
         <foreach collection="list" separator="," item="item">
             (null,#{item.itemName},#{item.itemTitle},#{item.itemImg},#{item.itemNote},#{item.itemPrice},#{item.itemNum},#{item.saleNum},now(),now(),#{item.createdUser},#{item.modifiedUser},#{item.typeId},#{item.itemState},#{item.itemSell})
         </foreach>
     </insert>
+
+    <!-- 插入商品数据 -->
+    <insert id="insertItemData">
+        insert into t_item values(null,#{itemName},#{itemTitle},#{itemImg},#{itemNote},#{itemPrice},#{itemNum},#{saleNum},now(),now(),#{createdUser},#{modifiedUser},#{typeId},#{itemState},#{itemSell})
+    </insert>
+
+    <!-- 修改商品数据 -->
+    <update id="updateItemData">
+        update t_item set item_name =#{itemName},item_title=#{itemTitle},item_title=#{itemTitle},item_img=#{itemImg},item_note=#{itemNote},item_price=#{itemPrice},item_num=#{itemNum},sale_num=#{saleNum},created_time=now(),modified_time=now(),created_user=#{createdUser},modified_user=#{modifiedUser},type_id=#{typeId},item_state=#{itemState},item_sell=#{itemSell} where id=#{id}
+    </update>
 </mapper>

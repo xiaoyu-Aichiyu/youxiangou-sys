@@ -59,15 +59,15 @@
                     <label for="name" class="el-form-item__label" style="width: 180px;">菜品名称:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="text" autocomplete="off" placeholder="请填写菜品名称" maxlength="20" class="el-input__inner">
+                            <input type="text" autocomplete="off" id="itemNameId" placeholder="请填写菜品名称" maxlength="20" class="el-input__inner">
                         </div>
                     </div>
                 </div>
-                <div class="el-form-item is-required"><label for="categoryId" class="el-form-item__label" style="width: 180px;">菜品分类:</label>
+                <div class="el-form-item is-required"><label for="parentId" class="el-form-item__label" style="width: 180px;">菜品分类:</label>
                     <div class="el-form-item__content">
                         <div class="el-select">
                             <div class="el-input el-input--suffix">
-                                <input type="text" readonly="readonly" autocomplete="off" placeholder="请选择菜品分类" class="el-input__inner">
+                                <input type="text" readonly="readonly" id="parentId" autocomplete="off" placeholder="请选择菜品分类" class="el-input__inner load-sys-zTree">
                                 <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                         <i class="el-select__caret el-input__icon el-icon-arrow-up"></i>
@@ -99,8 +99,14 @@
                     <label for="price" class="el-form-item__label" style="width: 180px;">菜品价格:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="text" autocomplete="off" placeholder="请设置菜品价格" class="el-input__inner">
+                            <input type="text" id="itemPriceId" placeholder="请设置菜品价格" class="el-input__inner">
                         </div>
+                    </div>
+                </div>
+                <label for="title" class="el-form-item__label" style="width: 180px;">菜品标题:</label>
+                <div class="el-form-item__content">
+                    <div class="el-input">
+                        <input type="text" autocomplete="off" id="itemTitleId" placeholder="请设置菜品标题" class="el-input__inner">
                     </div>
                 </div>
             </div>
@@ -120,7 +126,7 @@
                         <div class="avatar-uploader">
                             <div tabindex="0" class="el-upload el-upload--text">
                                 <i class="el-icon-plus avatar-uploader-icon"></i>
-                                <input type="file" name="file" class="el-upload__input">
+                                <input type="file" name="file" id="itemImgId" class="el-upload__input">
                             </div>
                         </div>
                     </div>
@@ -130,7 +136,7 @@
                 <div class="el-form-item"><label for="region" class="el-form-item__label" style="width: 180px;">菜品描述:</label>
                     <div class="el-form-item__content">
                         <div class="el-textarea">
-                            <textarea autocomplete="off" rows="3" placeholder="菜品描述，最长200字" maxlength="200" class="el-textarea__inner" style="min-height: 33px;"></textarea>
+                            <textarea rows="3" id="itemNoteId" placeholder="菜品描述，最长200字" maxlength="200" class="el-textarea__inner" style="min-height: 33px;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -144,34 +150,145 @@
                         <button type="button" class="el-button el-button--primary">
                             <span>保存 </span>
                         </button>
-                        <button type="button" class="el-button continue el-button--primary">
-                            <span>保存并继续添加菜品</span>
-                        </button>
                     </div>
                 </div>
             </div>
         </form>
+        <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="menuLayer" type="page" times="2" showtime="0" contype="object"
+             style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 640px; display:none">
+            <div class="layui-layer-title" style="cursor: move;">选择菜单</div>
+            <div class="layui-layer-content" style="height: 358px;">
+                <div style="padding: 10px;" class="layui-layer-wrap">
+                    <ul id="menuTree" class="ztree"></ul>    <!-- 动态加载树 -->
+                </div>
+            </div>
+            <span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+            <div class="layui-layer-btn layui-layer-btn-">
+                <a class="layui-layer-btn0 btn-confirm">确定</a>
+                <a class="layui-layer-btn1 btn-cancel">取消</a>
+            </div>
+        </div>
     </div>
 </div>
 
 <script src="api/food/food.js"></script>
+<script type="text/javascript" src="../bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../bower_components/layer/layer.js"></script>
 <script>
+    var zTree;
+    var setting = {
+        data:{
+            simpleData:{
+                //默认是false,把数据当做array，true会转json
+                enable : true,
+                idKey : "id",//菜单id
+                pIdKey : "parentId",//父菜单is
+                rootId : null //根节点
+            }
+        }
+    };
+
     $(function(){
-        $(".el-button--default").on("click",backToItemList);
-        $(".el-button--primary").on("click",saveAddOrUpdate);
+        $(".load-sys-zTree").on("click",zTreeMenu);//加载zTree树
+        $(".el-button--default").on("click",backToItemList);//取消返回主界面
+        $(".el-button--primary").on("click",saveAddOrUpdate);//添加或者修改
+        var data = $("#cIframe").data("itemRow");
+        if(data)doInitEditFormData(data);
+        $(".layui-layer-close,.btn-cancel").click(zTreeMenuHide)//取消
+        $(".btn-confirm").click(choiceParentMenu);//确定
     })
+
+    /**
+     * 如果是修改的话拿到要填充的数据
+     */
+    function doInitEditFormData(data) {
+        $("#itemNameId").val(data.itemName),
+        $("#parentId").val(data.parentName),
+        $("#parentId").data("parentId",data.typeId),
+        $("#itemPriceId").val(data.itemPrice),
+        $("#itemTitleId").val(data.itemTitle),
+        $("#itemImgId").val(data.itemImg),
+        $("#itemNoteId").val(data.itemNote)
+    }
 
     /**
      * 保存添加或者修改结果
      */
     function saveAddOrUpdate() {
+        debugger;
+        var insertUrl = "item/saveItemData";//保存菜单url
+        var updateUrl = "item/updateItemData";//修改
+        var params = doGetEditFormData();
+        var itemRow = $("#cIframe").data("itemRow");
+        var url=itemRow?updateUrl:insertUrl;
+        if(itemRow)params.id=itemRow.id;
+        if (!params.itemName || !params.typeId || !params.itemPrice || !params.itemNote){
+            commonShowTips("请将表单信息填写完整！！");
+        }
+        $.get(url, params, function(result) {
+            if (result.state == 1) {
+                commonShowTips(result.message);
+                backToItemList();
+            } else {
+                commonShowTips(result.message);
+            }
+        })
+    }
 
+    /**
+     *表单数据封装
+     */
+    function doGetEditFormData() {
+        var params={
+            itemName : $("#itemNameId").val(),
+            typeId : $("#parentId").data("parentId"),
+            itemPrice : $("#itemPriceId").val(),
+            itemTitle : $("#itemTitleId").val(),
+            itemImg : $("#itemImgId").val(),
+            itemNote : $("#itemNoteId").val()
+        }
+        return params;
     }
 
     /**
      * 返回商品集合主界面
      */
     function backToItemList() {
+        //把绑定的id清空
+        $("#mainContentId").data("itemId","");
         $("#cIframe").load("item/list");
+    }
+
+    /**
+     * 选择父菜单，并把父菜单名填写进去
+     */
+    function choiceParentMenu(){
+        var selects = zTree.getSelectedNodes();//获取被选中的节点集合
+        if(!selects.length){
+            commonShowTips("未选中父菜单");
+            return
+        }
+        $("#parentId").val(selects[0].name);//把父菜单名填写进去
+        $("#parentId").data("parentId",selects[0].id);
+        zTreeMenuHide();//隐藏
+    }
+
+    /**
+     * 隐藏zTree树
+     */
+    function zTreeMenuHide(){
+        $("#menuLayer").hide();
+    }
+
+    /**
+     * 加载zTree树
+     */
+    function zTreeMenu(){
+        var url = "category/findZtreeCategory";
+        $.get(url,{},function(result){
+            zTree = $.fn.zTree.init($("#menuTree"),setting,result.data);
+            zTree.expandAll(true);
+            $("#menuLayer").css("display","block");
+        })
     }
 </script>

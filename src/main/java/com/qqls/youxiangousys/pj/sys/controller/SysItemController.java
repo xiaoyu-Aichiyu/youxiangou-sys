@@ -1,7 +1,7 @@
 package com.qqls.youxiangousys.pj.sys.controller;
 
 import com.qqls.youxiangousys.pj.common.util.Assert;
-import com.qqls.youxiangousys.pj.sys.entity.saveExcelCarObj;
+import com.qqls.youxiangousys.pj.sys.entity.SysItem;
 import com.qqls.youxiangousys.pj.sys.service.SysItemService;
 import com.qqls.youxiangousys.pj.common.entity.JsonResult;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
@@ -58,13 +58,49 @@ public class SysItemController {
     }
 
     /**
-     * 根据id删除商品
+     * 根据id批量删除商品
      * @param ids
      * @return
      */
     @RequestMapping("deleteItem")
     public JsonResult deleteItemList(@RequestParam("ids[]") Integer[] ids,Integer itemState){
         return new JsonResult(itemService.deleteItem(ids,itemState));
+    }
+
+    /**
+     * 根据id删除一行商品数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteItemThis")
+    public JsonResult deleteItemThis(Integer id,Integer itemState){
+        JsonResult jr = new JsonResult(itemService.deleteItemById(id,itemState));
+        jr.setMessage("商品数据删除成功！");
+        return jr;
+    }
+
+    /**
+     * 添加商品数据
+     * @param item
+     * @return
+     */
+    @RequestMapping("saveItemData")
+    public JsonResult insertMenu(SysItem item) {
+        JsonResult jr = new JsonResult(itemService.insertItemData(item));
+        jr.setMessage("商品数据添加成功！");//设置提示信息
+        return jr;
+    }
+
+    /**
+     * 修改商品数据
+     * @param item
+     * @return
+     */
+    @RequestMapping("updateItemData")
+    public JsonResult updateItemData(SysItem item){
+        JsonResult jr = new JsonResult(itemService.updateItemData(item));
+        jr.setMessage("商品数据修改成功！");//设置提示信息
+        return jr;
     }
 
     /**
