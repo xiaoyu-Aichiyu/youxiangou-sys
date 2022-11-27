@@ -91,4 +91,14 @@ public class SysUserController {
     public JsonResult deleteUser(@RequestParam(required = false,value = "ids[]") Integer[] ids){
         return new JsonResult(userService.deleteUser(ids));
     }
+
+    /**
+     * 导出所有
+     * @return
+     */
+    @RequestMapping("exportAll")
+    public JsonResult exportAll(){
+        userService.exportAll();
+        return new JsonResult("导出成功!");
+    }
 }

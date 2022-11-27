@@ -53,4 +53,9 @@ public interface SysUserService {
      * @return
      */
     Integer deleteUser(Integer[] ids);
+
+    /**
+     * 导出所有
+     */
+    void exportAll();
 }

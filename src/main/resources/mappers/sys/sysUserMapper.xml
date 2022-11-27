@@ -53,4 +53,8 @@
     <select id="findUserByName" resultType="com.qqls.youxiangousys.pj.sys.entity.SysUser">
         select * from t_user where username = #{name}
     </select>
+    <!--导出:查询所有用户信息-->
+    <select id="findAllUser" resultType="com.qqls.youxiangousys.pj.sys.entity.SysUser">
+        select * from t_user;
+    </select>
 </mapper>

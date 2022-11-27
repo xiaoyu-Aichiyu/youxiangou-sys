@@ -7,10 +7,18 @@ import com.qqls.youxiangousys.pj.sys.dao.SysUserRoleDao;
 import com.qqls.youxiangousys.pj.sys.entity.SysUser;
 import com.qqls.youxiangousys.pj.sys.service.SysUserService;
 import com.qqls.youxiangousys.pj.common.util.Assert;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -114,5 +122,71 @@ public class SysUserServiceImpl implements SysUserService {
         Assert.isEmpty(n == 0,"用户删除失败");
         System.out.println(ids);
         return n;
+    }
+
+    /**
+     * 导出所有
+     */
+    public void exportAll() {
+        //创建XSSFWorkbook对象
+        @SuppressWarnings("resource")
+        Workbook workbook = new XSSFWorkbook();
+        //创建一个sheet
+        Sheet sheet = workbook.createSheet("用户数据详情表");
+        //创建行，从0开始
+        Row row = sheet.createRow(0);
+        //处理表头
+        handlerRowTitle(row);
+        List<SysUser> list = userDao.findAllUser();
+        for (int i = 0; i < list.size(); i++) {
+            Row rowUser = sheet.createRow(i + 1);
+            //把每一个用户信息对象写入行中
+            handlerRowUser(rowUser,list.get(i));
+        }
+        try(FileOutputStream fos = new FileOutputStream("D:/user.xlsx");){
+            workbook.write(fos);//把文件写出到指定路径
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 把每一个用户信息对象写入行中
+     * @param rowUser
+     * @param sysUser
+     */
+    private void handlerRowUser(Row rowUser, SysUser sysUser) {
+        Cell cell0 = rowUser.createCell(0);
+        cell0.setCellValue(rowUser.getRowNum());//id
+        Cell cell1 = rowUser.createCell(1);
+        cell1.setCellValue(sysUser.getName());//用户姓名
+        Cell cell2 = rowUser.createCell(2);
+        cell2.setCellValue(sysUser.getUsername());//账号
+        Cell cell3 = rowUser.createCell(3);
+        cell3.setCellValue(sysUser.getUserImg());//头像
+        Cell cell4 = rowUser.createCell(4);
+        cell4.setCellValue(sysUser.getPhone());//手机号
+        Cell cell5 = rowUser.createCell(5);
+        cell5.setCellValue(sysUser.getState());//账号状态
+        Cell cell6 = rowUser.createCell(6);
+        cell6.setCellValue(sysUser.getGender());//性别
+        Cell cell7 = rowUser.createCell(7);
+        cell7.setCellValue(sysUser.getCreatedTime());//创建时间
+        Cell cell8 = rowUser.createCell(8);
+        cell8.setCellValue(sysUser.getModifiedTime());//修改时间
+    }
+
+    /**
+     * 数据导入导出的表头
+     * @param row
+     */
+    private void handlerRowTitle(Row row) {
+        String [] tities = {"ID","用户姓名","账号","头像","手机号","账号状态","性别","创建时间","修改时间"};
+        for (int i = 0; i < tities.length; i++) {
+            //创建一个单元格
+            Cell cell = row.createCell(i);
+            //设置单元格的值
+            cell.setCellValue(tities[i]);
+        }
     }
 }

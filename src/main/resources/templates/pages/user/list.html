@@ -25,8 +25,8 @@
                 <button type="button" class="el-button " style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>导入</span>
                 </button>
-                <button type="button" class="el-button continue" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
-                    <span>导出</span>
+                <button onclick="exportAll()" type="button" class="el-button continue" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>导出所有</span>
                 </button>
                <!-- <button type="button" class="el-button el-button&#45;&#45;update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>修改用户</span>
@@ -121,6 +121,21 @@
             doGetObjects();
         })
     })
+    //导出所有
+    function exportAll(){
+        //二次导出确认
+        if(!confirm("确认导出吗?")){
+            return;
+        }
+        var url = "user/exportAll";
+        $.get(url,{},function (result){
+            if (result.state == 1){
+                commonShowTips("导出成功!");
+            }else {
+                commonShowTips("导出失败!");
+            }
+        })
+    }
     //批量删除
     function deleteUserList(){
         var checkboxs = $("#tbodyId input[type='checkbox']:checked");

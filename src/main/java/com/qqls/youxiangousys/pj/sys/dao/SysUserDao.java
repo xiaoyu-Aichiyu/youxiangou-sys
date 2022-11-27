@@ -60,4 +60,10 @@ public interface SysUserDao {
      * @return
      */
     Integer deleteUser(Integer[] ids);
+
+    /**
+     * 导出:查询所有用户信息
+     * @return
+     */
+    List<SysUser> findAllUser();
 }
