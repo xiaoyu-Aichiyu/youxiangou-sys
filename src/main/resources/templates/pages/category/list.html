@@ -11,7 +11,7 @@
     <div class="container">
         <div class="tableBar" style="display: inline-block;">
             <button type="button" class="el-button continue el-button--primary">
-                <span>+ 新增菜品分类</span>
+                <span>+ 修改菜品分类</span>
             </button>
             <button type="button" class="el-button el-button--primary">
                 <span>+ 新增套餐分类</span>
@@ -110,14 +110,30 @@
 
     $(function() {
         doGetObjects();
-        $(".tableLab").on("click",".el-button--primary", addPage);//添加和修改
+        $(".tableBar").on("click",".el-button--primary", addPage);//添加和修改
     })
     function doGetObjects(){
         var tableId="menuTable";
-        var url="categoty/doFindCategoty";
+        var url="category/doFindCategory";
         var treeTable = new TreeTable(tableId, url, columns);
         treeTable.setExpandColumn(2);
         treeTable.init();
         $(".treegrid-tbody").height(0);
+    }
+    function addPage(){
+        if($(this).hasClass("continue")){
+            var checked=$("tbody input[type='radio']:checked");
+            if(!checked.length){
+                commonShowTips("请选择一个");
+                return;
+            }
+            var tr = checked.parents("tr");//拿到tr
+            var param = tr.data("rowData");//拿到tr绑定的当前菜单行数据
+            $("#cIframe").data("rowData",param);//绑定到大盒子中
+        }
+        var url = "category/add";
+        $("#cIframe").load(url,function(){
+
+        })
     }
 </script>

@@ -9,17 +9,16 @@
         select c.id id,c.name name,c.type_type typeType,c.parent_id parentId,c.type_sell typeSell,c.created_time createdTime ,p.name parentName from t_type c left join t_type p on c.parent_id=p.id
     </select>
 
-    <select id="findZtreeMenu" resultType="com.qqls.youxiangousys.pj.common.entity.Node">
-        select * from t_menu
+    <select id="findZtreeCategory" resultType="com.qqls.youxiangousys.pj.common.entity.Node">
+        select * from t_type
     </select>
 
-    <insert id="saveMenu">
-        insert into t_menu values(null,#{name},#{menuNote},#{menuType},#{parentId},#{permission},null,null,now(),now())
+    <insert id="saveCategory">
+        insert into t_type values(null,#{name},#{typeType},#{parentId},#{typeSell},null,null,now(),now())
     </insert>
 
-    <delete id="updateMenu">
-        update t_menu set name=#{name},menu_note=#{menuNote},menu_type=#{menuType},parent_id=#{parentId},permission=#{permission},modified_user=#{modifiedUser}, modified_time=now() where id=#{id}
+    <delete id="updateCategory">
+        update t_type set name=#{name},type_type=#{typeType},parent_id=#{parentId},type_sell=#{typeSell},modified_user=#{modifiedUser}, modified_time=now() where id=#{id}
     </delete>
 
-    <!--select c.id id,c.menu_name menuName,c.parent_id parentId,p.menu_name parentName from t_menu c left join t_menu p on c.parent_id=p.id-->
 </mapper>
