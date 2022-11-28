@@ -22,9 +22,15 @@
                 <button type="button" class="el-button el-button--primary" id="btn-deletePage">
                     <span>已删除的用户</span>
                 </button>
-                <button type="button" class="el-button " style="color: #333333;background-color: #ffc200;border-color: #ffc200">
-                    <span>导入</span>
+                <!--<input type="file" id="saveUser" style="display: none">
+                <button type="button" class="el-button el-button&#45;&#45;primary continue">
+                    <label for="saveUser" style="display: inline">
+                        <span>上传excel</span>
+                    </label>
                 </button>
+                <button type="button" class="el-button btn-save" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>导入</span>
+                </button>-->
                 <button onclick="exportAll()" type="button" class="el-button continue" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
                     <span>导出所有</span>
                 </button>
@@ -35,7 +41,7 @@
                     <span>添加用户</span>
                 </button>
                 <button id="el-button-delete" type="button" class="el-button continue el-button--delete" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
-                    <span>批量删除用户</span>
+                    <span>删除用户</span>
                 </button>
             </div>
         </div>
@@ -116,11 +122,54 @@
         $(".el-input__inner").on("click",doGetObjects);
         $("#btn-deletePage").on("click",doGetObjects);
         $("#el-button-delete").on("click",deleteUserList);
+        //$(".btn-save").on("click",saveExport);//导入
         //先加载数据，再查询数据
         $("#pageId").load("page/page",function(){
             doGetObjects();
         })
     })
+
+    /**
+     * 导入所有
+     */
+    /*function saveExport(){
+        //获取文件名的路径是虚拟路径
+        var fileName = $("#saveUser").val();//获取文件名
+        if (!fileName.endsWith(".xlsx")){
+            commonShowTips("文件格式有误！请选择.xlsx文件");
+            return;
+        }
+        //判断文件控件的大小不能超过5M
+        var uploadFile = $("#saveUser").get(0).files[0];
+        if (uploadFile.size > 5 * 1024 * 1024){
+            commonShowTips("请将文件大小控制在5M之内");
+            return;
+        }
+        //ajax提供的对象，储存文件相关信息(key-value的形式)
+        var forData = new FormData();
+        //key的名字自定义,value为文件控件对象
+        forData.append("file",uploadFile);
+        $("#su").show();
+        $.ajax({
+            url:"user/saveExportUser",
+            data:forData,
+            dateType:"json",
+            type:"post",
+            //提交参数之前是否把参数转换为字符串：true--是，false--不是，默认是true
+            processData:false,
+            //提交之前，是否把参数统一按URLEncoded编码:true--是，false--不是，默认是true
+            contentType:false,
+            success:function(result){
+                if (result.state == 1) {
+                    commonShowTips("用户数据导入成功！");
+                    doGetObjects();//刷新数据
+                } else{
+                    commonShowTips(result.message);
+                }
+                $("#su").hide();
+            }
+        })
+    }*/
     //导出所有
     function exportAll(){
         //二次导出确认

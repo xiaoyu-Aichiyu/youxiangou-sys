@@ -2,6 +2,8 @@ package com.qqls.youxiangousys.pj.sys.service;
 
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.sys.entity.SysUser;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelUserObj;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -58,4 +60,11 @@ public interface SysUserService {
      * 导出所有
      */
     void exportAll();
+
+    /**
+     * 导入所有用户
+     * @param file
+     * @return
+     */
+    //saveExcelUserObj saveExportUser(MultipartFile file);
 }

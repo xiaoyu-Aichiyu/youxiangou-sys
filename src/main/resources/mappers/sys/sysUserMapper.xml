@@ -23,6 +23,13 @@
         insert into t_user(name, username, password, salt, user_img, phone, state, gender, createdTime, modifiedTime) values
             (#{name},#{username},#{password},#{salt},#{userImg},#{phone},#{state},#{gender},now(),now())
     </insert>
+    <!--&lt;!&ndash;导入插入商品&ndash;&gt;
+    <insert id="insertUserExcel">
+        insert into t_user values
+        <foreach collection="list" separator="," item="user">
+            (null,#{user.name},#{user.username},#{user.password},#{user.salt},#{user.userImg},#{user.phone},#{user.state},#{user.gender},#{user.createdUser},#{user.modifiedUser})
+        </foreach>
+    </insert>-->
     <!--修改状态-->
     <update id="updateValId">
         update t_user set state = #{state} where id = #{id}
@@ -56,5 +63,9 @@
     <!--导出:查询所有用户信息-->
     <select id="findAllUser" resultType="com.qqls.youxiangousys.pj.sys.entity.SysUser">
         select * from t_user;
+    </select>
+    <!--查找重复导入的用户-->
+    <select id="findUserByNameAnduserName" resultType="com.qqls.youxiangousys.pj.sys.entity.SysUser">
+        select * from t_user where name = #{name} and username = #{username}
     </select>
 </mapper>

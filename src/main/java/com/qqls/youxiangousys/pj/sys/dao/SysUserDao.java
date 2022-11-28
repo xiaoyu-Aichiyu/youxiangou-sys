@@ -66,4 +66,19 @@ public interface SysUserDao {
      * @return
      */
     List<SysUser> findAllUser();
+
+    /**
+     * 查询重复导入的用户
+     * @param name
+     * @param username
+     * @return
+     */
+    SysUser findUserByNameAnduserName(String name, String username);
+
+    /**
+     * 导入插入商品
+     * @param userData
+     * @return
+     */
+    Integer insertUserExcel(List<SysUser> userData);
 }

@@ -2,12 +2,14 @@ package com.qqls.youxiangousys.pj.sys.controller;
 
 import com.qqls.youxiangousys.pj.common.entity.JsonResult;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.common.util.Assert;
 import com.qqls.youxiangousys.pj.sys.entity.SysUser;
 import com.qqls.youxiangousys.pj.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -101,4 +103,15 @@ public class SysUserController {
         userService.exportAll();
         return new JsonResult("导出成功!");
     }
+
+    /**
+     * 导入所有用户
+     * @param file
+     * @return
+     */
+    /*@RequestMapping("saveExportUser")
+    public JsonResult saveExportUser(MultipartFile file){
+        Assert.isEmpty(file==null,"文件不存在！");
+        return new JsonResult(userService.saveExportUser(file));
+    }*/
 }

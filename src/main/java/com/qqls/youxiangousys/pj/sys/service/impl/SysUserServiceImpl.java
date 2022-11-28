@@ -1,10 +1,12 @@
 package com.qqls.youxiangousys.pj.sys.service.impl;
 
-import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.common.web.ServiceException;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserDao;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserRoleDao;
+import com.qqls.youxiangousys.pj.sys.entity.SysItem;
 import com.qqls.youxiangousys.pj.sys.entity.SysUser;
+import com.qqls.youxiangousys.pj.sys.entity.saveExcelUserObj;
 import com.qqls.youxiangousys.pj.sys.service.SysUserService;
 import com.qqls.youxiangousys.pj.common.util.Assert;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,12 +17,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.io.InputStream;
+import java.util.*;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -151,6 +152,100 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     /**
+     * 导入所有用户
+     * @param file
+     * @return
+     */
+    /*public saveExcelUserObj saveExportUser(MultipartFile file) {
+        saveExcelUserObj seu = new saveExcelUserObj();
+        try{
+            InputStream ins = file.getInputStream();//获取输入流
+            Map<String,List<?>> map = getListUserExcel(ins);
+            System.out.println(map.get("userData"));
+            Integer n = 0;
+            if (map.get("userData").size() != 0){
+                n = userDao.insertUserExcel((List<SysUser>)map.get("userData"));
+            }
+            Assert.isEmpty(n == 0,"数据导入失败!");
+            seu.setSuccessNumber(n);
+            seu.setErrorNumber((List<Integer>) map.get("numList"));
+        }catch (Exception e){
+            throw new ServiceException("数据导入失败或无数据！");
+        }
+        return seu;
+    }
+    private Map<String, List<?>> getListUserExcel(InputStream ins) throws Exception {
+        //获取Workbook对象
+        Workbook workbook = new XSSFWorkbook(ins);
+        //获取有效sheet的数量
+        int sheetNumber = workbook.getNumberOfSheets();
+        List<SysUser> userList = new ArrayList<>();
+        List<Integer> numList = new ArrayList<>();
+        for (int i = 0; i < sheetNumber; i++){
+            //获取sheet对象
+            Sheet sheet = workbook.getSheetAt(i);
+            //如果sheet表为空则跳过
+            if (sheet == null) {
+                continue;
+            }
+            //获取初始行号
+            int startRowNum = sheet.getFirstRowNum();
+            //获取结束行号
+            int endRowNum = sheet.getLastRowNum();
+            for (int j = startRowNum + 1; j <= endRowNum; j++) {
+                //获取行
+                Row row = sheet.getRow(j);
+                Cell cell0 = row.getCell(0);
+                //getNumericCellValue:获取double数字
+                int id = (int)cell0.getNumericCellValue();
+                Cell cell1 = row.getCell(1);
+                String name = cell1.getStringCellValue();
+                Cell cell2 = row.getCell(2);
+                String username = cell2.getStringCellValue();
+                Cell cell3 = row.getCell(3);
+                String password = cell3.getStringCellValue();
+                Cell cell4 = row.getCell(4);
+                String salt = cell4 == null ? "" : getCellValue(cell4);
+                Cell cell5 = row.getCell(5);
+                String userImg = getCellValue(cell5);
+                Cell cell6 = row.getCell(6);
+                String phone = cell6.getStringCellValue();
+                Cell cell7 = row.getCell(7);
+                String stateStr = getCellValue(cell7);
+                int state = (int)Double.parseDouble(stateStr);
+                Cell cell8 = row.getCell(8);
+                int gender = (int)cell8.getNumericCellValue();
+                Cell cell9 = row.getCell(9);
+                Date createdTime = cell9.getDateCellValue();
+                Cell cell10 = row.getCell(10);
+                Date modifiedTime = cell10.getDateCellValue();
+                SysUser user = new SysUser(id,name,username,password,salt,userImg,phone,state,gender,createdTime,modifiedTime);
+                SysUser u = userDao.findUserByNameAnduserName(name,username);
+                if (u == null && !userList.contains(user)){
+                    userList.add(user);
+                }else {
+                    numList.add(j + 1);//重复数据的行号
+                }
+            }
+        }
+        Map<String,List<?>> map = new HashMap<>();
+        map.put("userData",userList);//需要存入数据库的SysUser集合
+        map.put("numLiat",numList);//重复行号集合
+        return map;
+    }
+
+    public String getCellValue(Cell cell) {
+        if (cell.getCellType() == cell.CELL_TYPE_STRING) {
+            return cell.getStringCellValue();
+        } else if(cell.getCellType() == cell.CELL_TYPE_NUMERIC) {
+            return cell.getNumericCellValue()+"";
+        } else {
+            //如果是其它类型，自己找判断条件。比如时间日期判断
+            return "......";
+        }
+    }*/
+
+    /**
      * 把每一个用户信息对象写入行中
      * @param rowUser
      * @param sysUser
@@ -165,9 +260,9 @@ public class SysUserServiceImpl implements SysUserService {
         Cell cell3 = rowUser.createCell(3);
         cell3.setCellValue(sysUser.getUserImg());//头像
         Cell cell4 = rowUser.createCell(4);
-        cell4.setCellValue(sysUser.getPhone());//手机号
+        cell4.setCellValue(sysUser.getPhone());//电话
         Cell cell5 = rowUser.createCell(5);
-        cell5.setCellValue(sysUser.getState());//账号状态
+        cell5.setCellValue(sysUser.getState());//状态
         Cell cell6 = rowUser.createCell(6);
         cell6.setCellValue(sysUser.getGender());//性别
         Cell cell7 = rowUser.createCell(7);
@@ -181,7 +276,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param row
      */
     private void handlerRowTitle(Row row) {
-        String [] tities = {"ID","用户姓名","账号","头像","手机号","账号状态","性别","创建时间","修改时间"};
+        String [] tities = {"ID","用户姓名","账号","头像","电话","状态","性别","创建时间","修改时间"};
         for (int i = 0; i < tities.length; i++) {
             //创建一个单元格
             Cell cell = row.createCell(i);
