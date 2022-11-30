@@ -44,14 +44,15 @@
         color: #F56C6C;
         margin-right: 4px;
     }
+    .img-upload{
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 </style>
 
 
 <div id="food-add-app" class="addBrand-container">
-    <div class="box-header with-border">
-        <h3 class="box-title">新增商品</h3>
-        <h3 class="msg"></h3>
-    </div>
     <div class="container">
         <form class="el-form demo-ruleForm el-form--inline">
             <div>
@@ -126,8 +127,11 @@
                         <div class="avatar-uploader">
                             <div tabindex="0" class="el-upload el-upload--text">
                                 <i class="el-icon-plus avatar-uploader-icon"></i>
-                                <input type="file" name="file" id="itemImgId" class="el-upload__input">
+                                <input type="file" name="file" id="itemImgId" class="el-upload__input" onchange="upload()">
                             </div>
+                        </div>
+                        <div class="img-upload">
+                            <img id="itemImg" style="display: none" width="261px" height="165px">
                         </div>
                     </div>
                 </div>
@@ -192,8 +196,8 @@
         $(".load-sys-zTree").on("click",zTreeMenu);//加载zTree树
         $(".el-button--default").on("click",backToItemList);//取消返回主界面
         $(".el-button--primary").on("click",saveAddOrUpdate);//添加或者修改
-        var data = $("#cIframe").data("itemRow");
-        if(data)doInitEditFormData(data);
+        var data = $("#cIframe").data("itemId");
+        if(data)doInitEditFormData($("#cIframe").data("itemRow"));
         $(".layui-layer-close,.btn-cancel").click(zTreeMenuHide)//取消
         $(".btn-confirm").click(choiceParentMenu);//确定
     })
@@ -202,20 +206,21 @@
      * 如果是修改的话拿到要填充的数据
      */
     function doInitEditFormData(data) {
-        $("#itemNameId").val(data.itemName),
-        $("#parentId").val(data.parentName),
-        $("#parentId").data("parentId",data.typeId),
-        $("#itemPriceId").val(data.itemPrice),
-        $("#itemTitleId").val(data.itemTitle),
-        $("#itemImgId").val(data.itemImg),
-        $("#itemNoteId").val(data.itemNote)
+        debugger
+        $("#itemNameId").val(data.itemName);
+        $("#parentId").val(data.sysCategory.name);
+        $("#parentId").data("parentId",data.typeId);
+        $("#itemPriceId").val(data.itemPrice);
+        $("#itemTitleId").val(data.itemTitle);
+        $("#itemNoteId").val(data.itemNote);
+        //$("#itemImg").attr("src",data.itemImg);
+       // $("#itemImg").show();
     }
 
     /**
      * 保存添加或者修改结果
      */
     function saveAddOrUpdate() {
-        debugger;
         var insertUrl = "item/saveItemData";//保存菜单url
         var updateUrl = "item/updateItemData";//修改
         var params = doGetEditFormData();
@@ -244,7 +249,7 @@
             typeId : $("#parentId").data("parentId"),
             itemPrice : $("#itemPriceId").val(),
             itemTitle : $("#itemTitleId").val(),
-            itemImg : $("#itemImgId").val(),
+            itemImg : $("#itemImgId").val(),//file
             itemNote : $("#itemNoteId").val()
         }
         return params;
@@ -255,9 +260,37 @@
      */
     function backToItemList() {
         //把绑定的id清空
-        $("#mainContentId").data("itemId","");
+        $("#cIframe").data("itemId","");
         $("#cIframe").load("item/list");
     }
+
+    /**
+     * 上传图片
+     */
+    function upload(){
+        debugger
+       // var fileName = $("#itemImgId").val();//file
+        var uploadFile = $("#itemImgId").get(0).files[0];
+        var formData = new FormData();
+        //key的名字自定义，value为文件控件对象
+        formData.append("file",uploadFile);
+        $.ajax({
+            url:"upload/upload",
+            data:formData,
+            dateType:"json",
+            type:"post",
+            //提交参数之前是否把参数转换为字符串：true--是，false--不是，默认是true
+            processData:false,
+            //提交之前，是否把参数统一按URLEncoded编码:true--是，false--不是，默认是true
+            contentType:false,
+            success:function(result){
+                debugger
+               $("#itemImg").attr("src",result);
+               $("#itemImg").show();
+            }
+        })
+    }
+
 
     /**
      * 选择父菜单，并把父菜单名填写进去

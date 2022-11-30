@@ -2,6 +2,7 @@ package com.qqls.youxiangousys.pj.sys.dao;
 
 import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
 import com.qqls.youxiangousys.pj.sys.entity.SysMenu;
+import com.qqls.youxiangousys.pj.sys.vo.SysItemParentVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -46,4 +47,12 @@ public interface SysCategoryDao {
      * @return
      */
     int updateCategory(SysCategory category);
+
+    /**
+     * 通过分类id查找分类所有信息
+     * @param typeId
+     * @return
+     */
+    @Select("select * from t_type where id = #{typeId}")
+    SysCategory findTypeId(Integer typeId);
 }

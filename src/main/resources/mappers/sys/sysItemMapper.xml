@@ -28,10 +28,15 @@
     </select>
 
     <!-- 查询所有商品数据并且分页 -->
-    <select id="findItemByItemName" resultType="com.qqls.youxiangousys.pj.sys.entity.SysItem">
+    <select id="findItemByItemName" resultMap="itemCategoryVO">
         select * from t_item <include refid="queryItemName"/> limit #{start},#{pageSize}
     </select>
-
+    <resultMap id="itemCategoryVO" type="com.qqls.youxiangousys.pj.sys.vo.SysItemParentVO">
+        <association property="sysCategory" column="type_id"
+                     select="com.qqls.youxiangousys.pj.sys.dao.SysCategoryDao.findTypeId">
+        </association>
+    </resultMap>
+    
     <!-- 修改状态为2即为删除 -->
     <update id="deleteItemByIds">
         update t_item set item_state = #{itemState}, item_sell = 0 where id in

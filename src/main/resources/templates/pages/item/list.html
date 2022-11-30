@@ -37,10 +37,7 @@
                 <button type="button" class="el-button el-button--primary el-button--add">
                     <span>新建商品</span>
                 </button>
-                <button type="button" class="el-button el-button--primary continue el-button--update">
-                    <span>修改商品</span>
-                </button>
-                <button type="button" class="el-button el-button--primary" id="btn-deletes">
+                <button type="button" class="el-button el-button--primary continue" id="btn-deletes">
                     <span>批量删除</span>
                 </button>
             </div>
@@ -78,8 +75,11 @@
                             <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
                                 <div class="cell">商品标题</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
                                 <div class="cell">商品详情</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
+                                <div class="cell">商品分类</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
                                 <div class="cell">售价</div>
@@ -113,7 +113,6 @@
         <div class="pageList el-pagination" id="pageId">
 
         </div>
-
     </div>
 </div>
 <style>
@@ -141,8 +140,9 @@
 </style>
 <script>
     $(function() {
+        $("#cIframe").data("itemId", "");
         $("#load-item-id").data("isDeletePage", false);
-        $(".el-button--add,.el-button--update").on("click", addPageOrUpdate);
+        $(".tableBar").on("click",".el-button--add,.el-button--update",saveAddOrUpdate);
         $("#btn-search").on("click", doGetObjects);
         $("#btn-deletePage").on("click",doGetObjects);
         $("#btn-deletes").on("click",deleteItemList);
@@ -156,23 +156,23 @@
     /**
      * 加载添加和修改页面
      */
-    function addPageOrUpdate() {
+    function saveAddOrUpdate() {
         var bool = $(this).hasClass("el-button--update");
-        var title= bool ? "修改商品" : "新增商品";
         if(bool){
-            var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
-            if(!boxCheck.length){
+            //var boxCheck = $("#tbodyId").find("input[type='checkbox']:checked");
+           /* if(!boxCheck.length){
                 commonShowTips("请选择要修改的一条数据！");
                 return;
-            }
-            $("#cIframe").data("itemId",boxCheck.val());
+            }*/
+            //$("#cIframe").data("itemId",boxCheck.val());
             //拿到当前行绑定的数据
-            var rowData = boxCheck.parents("tr").data("itemRow");
+            var rowData = $(this).parents("tr").data("itemRow");
+            $("#cIframe").data("itemId",rowData.id);
             //每行数据绑定到大盒子上,为了修改页面能拿到数据
             $("#cIframe").data("itemRow",rowData)
         }
         $("#cIframe").load("item/add",function(){
-            $(".box-title").text(title);
+            //$(".box-title").text(title);
         });
     }
 
@@ -216,8 +216,7 @@
     /**
      * 按id删除一行商品数据
      */
-    function deleteItem() {
-        debugger;
+    /*function deleteItem() {
         var tipsStr = "删除";
         var confirmStr = "确认删除吗?";
         var itemState = 2;
@@ -240,7 +239,7 @@
             doGetObjects();
             //tr.remove();//每分页可用静态刷新
         })
-    }
+    }*/
 
     /**
      * 导入所有商品
@@ -398,21 +397,21 @@
                 dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.itemName + "</div></td>";
                 dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'><img src="+data.itemImg+" width='40px' height='40px'></div></td>";
                 dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemTitle + "</div></td>";
-                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + data.itemNote + "</div></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemNote + "</div></td>";
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + (data.sysCategory?data.sysCategory.name:'未分配') + "</div></td>";
                 dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + data.itemPrice + "</div></td>";
                 dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
                 dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +
                             "<div class='sell-btn sell-btn-common' style='background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'>" +
                             "<div style='margin-left:" + (data.itemSell ? "26" : "5") + "px; '></div></div></div></td>"
                 dataStr += "<td class='el-table_1_column_9 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary continue' id='btn-delete'>删除</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
-                $("#tbodyId").find("tr").last().data("itemRow",data);//把每一行的id绑定到当前行
-                $("#tbodyId").find("tr").last().data("itemId",data.id);//把每一行的id绑定到当前行
+                $("#tbodyId").find("tr:last").data("itemRow",data);//把每一行的数据绑定到当前行
             }
             $(".sell-btn").on('click', changeSellBtn);
-            $("#btn-delete").on("click",deleteItem);
+            $(".el-button--update").on("click",saveAddOrUpdate);
         }
     }
 

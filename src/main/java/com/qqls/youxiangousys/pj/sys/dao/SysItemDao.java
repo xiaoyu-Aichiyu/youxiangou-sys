@@ -1,6 +1,8 @@
 package com.qqls.youxiangousys.pj.sys.dao;
 
+import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
 import com.qqls.youxiangousys.pj.sys.entity.SysItem;
+import com.qqls.youxiangousys.pj.sys.vo.SysItemParentVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public interface SysItemDao {
      * @param pageSize
      * @return
      */
-    List<SysItem> findItemByItemName(@Param("itemName") String itemName,@Param("start")Integer start,@Param("pageSize")Integer pageSize, @Param("itemState") Integer itemState);
+    List<SysItemParentVO> findItemByItemName(@Param("itemName") String itemName, @Param("start")Integer start, @Param("pageSize")Integer pageSize, @Param("itemState") Integer itemState);
 
     /**
      * 修改用户启用禁用

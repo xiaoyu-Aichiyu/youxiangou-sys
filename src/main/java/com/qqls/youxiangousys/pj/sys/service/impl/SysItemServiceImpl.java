@@ -8,6 +8,7 @@ import com.qqls.youxiangousys.pj.sys.entity.saveExcelItemObj;
 import com.qqls.youxiangousys.pj.sys.service.SysItemService;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
 import com.qqls.youxiangousys.pj.common.util.Assert;
+import com.qqls.youxiangousys.pj.sys.vo.SysItemParentVO;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -50,7 +51,7 @@ public class SysItemServiceImpl implements SysItemService {
         //分页跳过条数=（当前页 - 1）*每页条数
         Integer start = (curPage - 1) * pageSize;
         //4.根据参数找角色
-        List<SysItem> list = itemDao.findItemByItemName(itemName,start,pageSize,itemState);
+        List<SysItemParentVO> list = itemDao.findItemByItemName(itemName,start,pageSize,itemState);
         pageObj.setPageData(list);
         return pageObj;
     }

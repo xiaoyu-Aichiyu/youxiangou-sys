@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadController {
 
     @RequestMapping("upload")
-    public String upload(MultipartFile file, String test) {
+    public String upload(MultipartFile file) {
+        //, String test
+        System.out.println("上传"+file);
         String uploadPath = FileUtils.uploadImg(file);
         return uploadPath;
     }
