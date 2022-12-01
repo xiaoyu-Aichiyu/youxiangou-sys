@@ -119,7 +119,7 @@
         $("#cIframe").data("userId","");
         $("#load-user-id").data("isDeletePage", false);
         $(".tableBar").on("click",".el-button--add,.el-button--update",addPage);
-        $(".el-input__inner").on("click",doGetObjects);
+        $(".el-button--primary").on("click",doGetObjects);
         $("#btn-deletePage").on("click",doGetObjects);
         $("#el-button-delete").on("click",deleteUserList);
         //$(".btn-save").on("click",saveExport);//导入
