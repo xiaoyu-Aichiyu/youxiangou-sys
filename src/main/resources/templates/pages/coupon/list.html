@@ -19,7 +19,7 @@
                     <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
                 </span>
             </div>
-            <button type="button" class="el-button el-button--primary">
+            <button type="button" class="el-button el-button--primary el-button--add">
                 <span>+ 添加优惠券</span>
             </button>
         </div>
@@ -83,6 +83,7 @@
 </div>
 <script>
     $(function() {
+        $(".tableBar").on("click",".el-button--add,.el-button--update",loadAddOrUpdate);
         $("#pageId").load("page/page",function(){
             doGetObjects();
         });
@@ -92,8 +93,10 @@
 
     }
 
-    function addPage() {
-        $("#cIframe").load("member/add");
+    function loadAddOrUpdate() {
+        $("#cIframe").load("coupon/add",function (){
+
+        });
     }
 </script>
 <script src="api/member/member.js"></script>

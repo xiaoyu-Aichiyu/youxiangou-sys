@@ -208,13 +208,13 @@
     function doInitEditFormData(data) {
         debugger
         $("#itemNameId").val(data.itemName);
-        $("#parentId").val(data.sysCategory.name);
-        $("#parentId").data("parentId",data.typeId);
+        $("#parentId").val(!data.sysCategory ? "" : data.sysCategory.name);
+        $("#parentId").data("parentId",!data.sysCategory ? 0 : data.sysCategory.id);
         $("#itemPriceId").val(data.itemPrice);
         $("#itemTitleId").val(data.itemTitle);
         $("#itemNoteId").val(data.itemNote);
-        //$("#itemImg").attr("src",data.itemImg);
-       // $("#itemImg").show();
+        $("#itemImg").attr("src",data.itemImg);
+        $("#itemImg").show();
     }
 
     /**
@@ -229,6 +229,7 @@
         if(itemRow)params.id=itemRow.id;
         if (!params.itemName || !params.typeId || !params.itemPrice || !params.itemNote){
             commonShowTips("请将表单信息填写完整！！");
+            return;
         }
         $.get(url, params, function(result) {
             if (result.state == 1) {
@@ -249,9 +250,10 @@
             typeId : $("#parentId").data("parentId"),
             itemPrice : $("#itemPriceId").val(),
             itemTitle : $("#itemTitleId").val(),
-            itemImg : $("#itemImgId").val(),//file
+            itemImg : $("#itemImg").attr("src"),//file
             itemNote : $("#itemNoteId").val()
         }
+        debugger
         return params;
     }
 
@@ -285,8 +287,8 @@
             contentType:false,
             success:function(result){
                 debugger
-               $("#itemImg").attr("src",result);
-               $("#itemImg").show();
+                $("#itemImg").attr("src",result);
+                $("#itemImg").show();
             }
         })
     }
