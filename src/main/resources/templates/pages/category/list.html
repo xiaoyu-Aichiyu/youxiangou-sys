@@ -11,13 +11,10 @@
     <div class="container">
         <div class="tableBar" style="display: inline-block;">
             <button type="button" class="el-button continue el-button--primary el-inputadd">
-                <span>+ 修改菜品分类</span>
+                <span>修改菜品分类</span>
             </button>
             <button type="button" class="el-button el-button--primary el-inputadd">
-                <span>+ 新增套餐分类</span>
-            </button>
-            <button type="button" class="el-button el-button--primary " id="btn-deletePage">
-                <span>已删除的分类</span>
+                <span>新增套餐分类</span>
             </button>
             <button type="button" class="el-button el-button--primary" id="btn-deletes">
                 <span>批量删除</span>
@@ -96,7 +93,6 @@
                     return '<span class="label label-warning">按钮</span>';
                 }
             }
-
         },
 
         {
@@ -131,9 +127,43 @@
     $(function() {
         doGetObjects();
         $(".tableBar").on("click",".el-inputadd", addPage);//添加和修改
-        $(".tableBar").on("click","#btn-deletePage",deletePage)
+        $("#btn-deletes").on("click",deleteItemList);//删除
+        $("#load-category-id").data("isDeletePage", false);
     })
 
+    /**
+     * 删除
+     */
+    function deleteItemList() {
+        var tipsStr = "删除";
+        var confirmStr = "确认删除吗?";
+        var typeType = 3;
+        var checkboxs = $("tbody input[type='radio']:checked");
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push(checkboxs.eq(i).val());
+        }
+        if(!ids.length){
+            commonShowTips("请至少选择1条要删除的商品数据！");
+            return;
+        }
+        //二次删除确认
+        if(!confirm(confirmStr)){
+            return;
+        }
+        var url = "category/deleteCategory";
+        var param ={ids:ids,typeType:typeType};
+        $.get(url,param,function(result){
+            if(result.state == 1){
+                commonShowTips("成功" + tipsStr + result.data + "条数据！");
+                doGetObjects();
+            }else{
+                commonShowTips(result.message);
+            }
+        })
+    }
+
+    //推荐
     function changeSellBtn(btn) {
         var btn = $(btn);
         var bgColor = btn.css("background-color");
@@ -167,7 +197,7 @@
         })
     }
 
-
+    //加载数据
     function doGetObjects(){
         var tableId="menuTable";
         var url="category/doFindCategory";
@@ -176,6 +206,8 @@
         treeTable.init();
         $(".treegrid-tbody").height(0);
     }
+
+    //添加和修改
     function addPage(){
         if($(this).hasClass("continue")){
             var checked=$("tbody input[type='radio']:checked");

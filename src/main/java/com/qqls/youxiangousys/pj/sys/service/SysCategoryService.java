@@ -34,5 +34,14 @@ public interface SysCategoryService {
      */
     int updateCategory(SysCategory category);
 
+    /**
+     * 修改推荐
+     * @param id
+     * @param typeSell
+     * @return
+     */
     int updateSell(Integer id, Integer typeSell);
+
+
+    int deleteCategory(Integer[] ids, Integer typeType);
 }

@@ -3,6 +3,7 @@ package com.qqls.youxiangousys.pj.sys.dao;
 import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
 import com.qqls.youxiangousys.pj.sys.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -65,4 +66,5 @@ public interface SysCategoryDao {
     @Select("select * from t_type where id = #{typeId}")
     SysCategory findTypeId(Integer typeId);
 
+    Integer deleteCategoryByIds(@Param("ids") Integer[] ids, @Param("typeType") Integer typeType);
 }

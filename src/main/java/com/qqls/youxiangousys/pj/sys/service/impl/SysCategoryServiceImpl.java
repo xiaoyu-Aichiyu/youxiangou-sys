@@ -16,7 +16,10 @@ public class SysCategoryServiceImpl implements SysCategoryService {
     @Autowired
     private SysCategoryDao dao;
 
-
+    /**
+     * 查询所有菜单及父菜单名称
+     * @return
+     */
     public List<Map<String, Object>> doFindCategory() {
         List<Map<String,Object>> list = dao.doFindCategory();
         Assert.isEmpty(list == null || list.size() == 0, "菜单不存在");
@@ -47,7 +50,11 @@ public class SysCategoryServiceImpl implements SysCategoryService {
         return n;
     }
 
-
+    /**
+     * 根据id修改
+     * @param category
+     * @return
+     */
     public int updateCategory(SysCategory category) {
         Assert.isEmpty(category == null || category.getId() == 0,"请填写数据" );
         SysCategory u = dao.findCategoryByName(category.getName(),category.getParentId());
@@ -57,6 +64,12 @@ public class SysCategoryServiceImpl implements SysCategoryService {
         return n;
     }
 
+    /**
+     * 根据id修改推荐
+     * @param id
+     * @param typeSell
+     * @return
+     */
     @RequiredLog("修改商品推荐")
     public int updateSell(Integer id,Integer typeSell) {
         System.out.println(typeSell);
@@ -65,5 +78,24 @@ public class SysCategoryServiceImpl implements SysCategoryService {
         Integer n = dao.updateSell(id, typeSell);
         Assert.isEmpty(n == 0,"推荐状态修改失败！");
         return n;
+    }
+
+    /**
+     * 根据id批量删除商品信息
+     * @param ids
+     * @return
+     */
+    public int deleteCategory(Integer[] ids, Integer typeType) {
+        System.out.println(typeType);
+            String message1 = "请选择要删除的数据！";
+            String message2 = "商品删除失败！";
+            if (typeType == 1){
+                message1 = "请选择要上架的数据！";
+                message2 = "商品上架失败！";
+            }
+            Assert.isEmpty(ids == null || ids.length == 0,message1);
+            Integer n = dao.deleteCategoryByIds(ids,typeType);
+            Assert.isEmpty(n == 0,message2);
+            return n;
     }
 }

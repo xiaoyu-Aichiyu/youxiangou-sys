@@ -13,24 +13,13 @@
 
 <div id="member-app" class="dashboard-container">
     <div class="container">
-        <div class="tableBar">
-            <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
-                <input type="text" autocomplete="off" placeholder="请输入员工姓名" class="el-input__inner">
-                <span class="el-input__prefix">
-                    <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
-                </span>
-            </div>
-            <button type="button" class="el-button el-button--primary" id="btn-search">
-                <span>查询</span>
+        <div class="tableBar" style="display: inline-block;">
+            <button type="button" class="el-button el-button--primary">
+                <span>添加菜单</span>
             </button>
-            <div class="tableLab" >
-                <button type="button" class="el-button el-button--primary">
-                    <span>添加菜单</span>
-                </button>
-                <button type="button" class="el-button el-button--primary continue">
-                    <span> 修改菜单</span>
-                </button>
-            </div>
+            <button type="button" class="el-button el-button--primary continue">
+                <span> 修改菜单</span>
+            </button>
         </div>
         <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover" >
             <div class="hidden-columns">
@@ -119,7 +108,7 @@
 
     $(function() {
         doGetObjects();
-        $(".tableLab").on("click",".el-button--primary", addPage);//添加和修改
+        $(".tableBar").on("click",".el-button--primary", addPage);//添加和修改
     })
     function doGetObjects(){
         var tableId="menuTable";
