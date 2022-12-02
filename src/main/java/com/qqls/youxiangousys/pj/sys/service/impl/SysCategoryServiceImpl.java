@@ -1,5 +1,6 @@
 package com.qqls.youxiangousys.pj.sys.service.impl;
 
+import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.common.util.Assert;
 import com.qqls.youxiangousys.pj.sys.dao.SysCategoryDao;
 import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
@@ -53,6 +54,16 @@ public class SysCategoryServiceImpl implements SysCategoryService {
         Assert.isEmpty(u != null ,"菜单已存在！");
         int n=dao.updateCategory(category);
         Assert.isEmpty(n == 0 ,"菜单修改失败或数据已不存在");
+        return n;
+    }
+
+    @RequiredLog("修改商品推荐")
+    public int updateSell(Integer id,Integer typeSell) {
+        System.out.println(typeSell);
+        Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
+        Assert.isEmpty(typeSell == null, "操作有误！");
+        Integer n = dao.updateSell(id, typeSell);
+        Assert.isEmpty(n == 0,"推荐状态修改失败！");
         return n;
     }
 }

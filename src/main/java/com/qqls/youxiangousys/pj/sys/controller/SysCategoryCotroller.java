@@ -43,4 +43,11 @@ public class SysCategoryCotroller {
         jr.setMessage("修改成功");
         return jr;
     }
+
+    @RequestMapping("updateSell")
+    public JsonResult updateSell(Integer id , Integer typeSell){
+        JsonResult jr = new JsonResult(service.updateSell(id,typeSell));
+        jr.setMessage("推荐成功");
+        return jr;
+    }
 }

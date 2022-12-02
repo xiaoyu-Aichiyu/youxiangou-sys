@@ -1,7 +1,6 @@
 package com.qqls.youxiangousys.pj.sys.service;
 
 import com.qqls.youxiangousys.pj.sys.entity.SysCategory;
-import com.qqls.youxiangousys.pj.sys.entity.SysMenu;
 
 import java.util.List;
 import java.util.Map;
@@ -35,4 +34,5 @@ public interface SysCategoryService {
      */
     int updateCategory(SysCategory category);
 
+    int updateSell(Integer id, Integer typeSell);
 }

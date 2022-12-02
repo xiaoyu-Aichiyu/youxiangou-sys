@@ -80,24 +80,26 @@
         }
     };
     $(function(){
-        $(".load-sys-menu").click(zTreeMenu);//动态绑定
-        $(".layui-layer-close,.layui-layer-btn1").click(zTreeMenuHide)//取消
-        $(".btn-confirm").click(choiceParentMenu);//确定
-        $(".btn-default").click(backToMenuList);//取消
+        $(".load-sys-menu").click(zTreeCategory);//动态绑定
+        $(".layui-layer-close,.layui-layer-btn1").click(zTreeCategoryHide)//取消
+        $(".btn-confirm").click(choiceParentCategory);//确定
+        $(".btn-default").click(backToCategoryList);//取消
         $(".btn-save").click(doSaveOrUpdate);//确定
         if($("#cIframe").data("rowData")) {
-            UpdateMenuData();
+            UpdateCategoryData();
 
         }
     })
 
-    function UpdateMenuData(){
+    function UpdateCategoryData(){
         var data=$("#cIframe").data("rowData");
         $($("input[name='typeId']")[data.menuType -1]).prop("checked",true);
         $("#name").val(data.name);
         $("#parentId").val(data.parentName);
         $("#parentId").data("parentId",data.parentId);
     }
+
+    //提交数据
     function doSaveOrUpdate(){
         var params = {
             name : $("#name").val(),
@@ -118,12 +120,14 @@
         })
     }
 
-    function zTreeMenuHide(){
-        $("#menuLayer").hide();
+    //取消返回页面
+    function backToCategoryList(){
+        $("#cIframe").load("category/list");
+        $("#cIframe").data("rowData","")
     }
 
-
-    function choiceParentMenu(){
+    //ztree确定
+    function choiceParentCategory(){
         var selects = zTree.getSelectedNodes();//获取被选中的节点集合
         if(!selects.length){
             commonShowTips("未选中父菜单");
@@ -131,17 +135,16 @@
         }
         $("#parentId").val(selects[0].name);//把父菜单名填写进去
         $("#parentId").data("parentId",selects[0].id);
-        zTreeMenuHide();//隐藏
+        zTreeCategoryHide();//隐藏
     }
 
-
-    function backToMenuList(){
-        $("#cIframe").load("category/list");
-        $("#cIframe").data("rowData","")
+    //ztree取消
+    function zTreeCategoryHide(){
+        $("#menuLayer").hide();
     }
 
-
-    function zTreeMenu(){
+    //ztree拿数据
+    function zTreeCategory(){
         var url = "category/findZtreeCategory";
         $.get(url,{},function(result){
             zTree = $.fn.zTree.init($("#menuTree"),setting,result.data);

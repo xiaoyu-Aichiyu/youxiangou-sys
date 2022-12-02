@@ -1,0 +1,103 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+<div id="member-app" class="dashboard-container">
+    <div class="container">
+        <div class="tableBar">
+            <div class="el-input el-input--prefix el-input--suffix" style="width: 250px;">
+                <input type="text" autocomplete="off" placeholder="请输入用户姓名" class="el-input__inner">
+                <span class="el-input__prefix">
+                    <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
+                </span>
+            </div>
+            <button type="button" class="el-button el-button--primary" id="btn-search">
+                <span>查询</span>
+            </button>
+            <div class="tableLab" >
+                <button type="button" class="el-button el-button--primary" id="btn-deletePage">
+                    <span>已删除的用户</span>
+                </button>
+                <button type="button" class="el-button " style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>导入</span>
+                </button>
+                <button onclick="exportAll()" type="button" class="el-button continue" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>导出所有</span>
+                </button>
+               <!-- <button type="button" class="el-button el-button&#45;&#45;update" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>修改用户</span>
+                </button>-->
+                <button type="button" class="el-button el-button--primary el-button--add">
+                    <span>添加用户</span>
+                </button>
+                <button id="el-button-delete" type="button" class="el-button continue el-button--delete" style="color: #333333;background-color: #ffc200;border-color: #ffc200">
+                    <span>批量删除用户</span>
+                </button>
+            </div>
+        </div>
+        <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
+            <div class="hidden-columns">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="el-table__header-wrapper">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 100%;">
+                    <thead class="">
+                        <tr class="">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_1   #tbody  is-leaf" style="width: 25px;">
+                                <div class="cell" style="padding-left: 11px">
+                                    <label class="el-checkbox is-disabled">
+                                        <span class="el-checkbox__input">
+                                            <input type="checkbox" value="" onchange='commonChoiceAll()'>
+                                        </span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_3 is-leaf">
+                                <div class="cell">用户姓名</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
+                                <div class="cell">账号</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
+                                <div class="cell">手机号</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
+                                <div class="cell">账号状态</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-leaf">
+                                <div class="cell">创建时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_10 is-leaf">
+                                <div class="cell">修改时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_11 is-center is-leaf" style="width: 153px">
+                                <div class="cell">操作</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="el-table__body-wrapper is-scrolling-none">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%;">
+                    <tbody id="tbodyId"></tbody>
+                </table>
+                <div class="el-table__empty-block" style="height: 100%; width: 100%;display: none">
+                    <span class="el-table__empty-text">暂无数据</span>
+                </div>
+            </div>
+            <div class="el-table__column-resize-proxy" style="display: none;"></div>
+        </div>
+        <div class="pageList el-pagination" id="pageId">
+
+        </div>
+    </div>
+</div>
+<script src="api/member/member.js"></script>

@@ -10,11 +10,17 @@
 <div id="category-app" class="dashboard-container">
     <div class="container">
         <div class="tableBar" style="display: inline-block;">
-            <button type="button" class="el-button continue el-button--primary">
+            <button type="button" class="el-button continue el-button--primary el-inputadd">
                 <span>+ 修改菜品分类</span>
             </button>
-            <button type="button" class="el-button el-button--primary">
+            <button type="button" class="el-button el-button--primary el-inputadd">
                 <span>+ 新增套餐分类</span>
+            </button>
+            <button type="button" class="el-button el-button--primary " id="btn-deletePage">
+                <span>已删除的分类</span>
+            </button>
+            <button type="button" class="el-button el-button--primary" id="btn-deletes">
+                <span>批量删除</span>
             </button>
         </div>
         <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
@@ -90,15 +96,28 @@
                     return '<span class="label label-warning">按钮</span>';
                 }
             }
+
         },
+
         {
             title : '推荐',
             field : 'typeSell',
             align : 'center',
             valign : 'middle',
             sortable : false,
-            width : '130px'
+            width : '130px',
+            formatter:function(value) {
+                if (value.typeSell == 1) {
+                    return "<div onclick='changeSellBtn(this)' class='sell-btn sell-btn-common' style='background-color: " + (value.typeSell ? "#ffc200" : "#e3e3e3") + ";'>" +
+                    "<div style='margin-left:" + (value.typeSell ? "26" : "5") + "px; '></div></div>"
+                }
+                if (value.typeSell == 0) {
+                    return "<div onclick='changeSellBtn(this)' class='sell-btn sell-btn-common' style='background-color: " + (value.typeSell ? "#ffc200" : "#e3e3e3") + ";'>" +
+                    "<div style='margin-left:" + (value.typeSell ? "26" : "5") + "px; '></div></div>"
+                }
+            }
         },
+
         {
             title : '时间',
             field : 'createdTime',
@@ -106,12 +125,52 @@
             valign : 'middle',
             sortable : false,
             width : '130px'
-        } ];
+        }];
+
 
     $(function() {
         doGetObjects();
-        $(".tableBar").on("click",".el-button--primary", addPage);//添加和修改
+        $(".tableBar").on("click",".el-inputadd", addPage);//添加和修改
+        $(".tableBar").on("click","#btn-deletePage",deletePage)//删除
     })
+
+    function deletePage(){
+
+    }
+    function changeSellBtn(btn) {
+        var btn = $(btn);
+        var bgColor = btn.css("background-color");
+        var id = btn.parents("tr").find("input[type='radio']").val();
+        var typeSell = 0;
+        //判断是否是不推荐的 是的话状态=1，不是的话状态=0
+        if (bgColor == 'rgb(227, 227, 227)') {
+            typeSell = 1;
+        }
+        var params = {id:id,typeSell:typeSell};
+        var btnText = btn.parents("tr").children(":eq(8)").children().children().eq(0).text();
+        if (btnText == '上架') {
+            commonShowTips("商品处于下架状态，暂不能推荐！");
+            return;
+        }
+        changeSell(btn, typeSell, params);
+    }
+
+    /**
+     * 修改推荐状态
+     * @param btn
+     * @param typeSell
+     * @param params
+     */
+    function changeSell(btn, typeSell, params) {
+        var url = "category/updateSell";
+        $.get(url, params, function (result) {
+            commonShowTips(result.message);
+            btn.css("background-color", !typeSell ? "#e3e3e3" :"#ffc200");
+            btn.children().css("margin-left",  !typeSell ? "5px" : "26px");
+        })
+    }
+
+
     function doGetObjects(){
         var tableId="menuTable";
         var url="category/doFindCategory";
@@ -136,4 +195,5 @@
 
         })
     }
+
 </script>

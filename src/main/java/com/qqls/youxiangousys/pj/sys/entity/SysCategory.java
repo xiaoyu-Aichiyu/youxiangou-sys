@@ -12,7 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SysCategory implements Serializable {
-    private int id;
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private String name;
     private Integer typeType=1;
     private Integer parentId;

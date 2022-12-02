@@ -81,8 +81,15 @@
                                 <div id="load-item-id">
                                     <li role="menuitem" tabindex="-1" class="el-menu-item"
                                         style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
-                                        <i class="iconfont icon-item"></i>
-                                        <span>商品管理</span>
+                                <i class="iconfont icon-item"></i>
+                                <span>商品管理</span>
+                                </li>
+                                </div>
+                                <div id="load-role-id">
+                                    <li role="menuitem" tabindex="-1" class="el-menu-item"
+                                        style="padding-left: 20px; color: rgb(191, 203, 217); background-color: rgb(52, 55, 68);">
+                                        <i class="iconfont icon-user"></i>
+                                        <span>角色管理</span>
                                     </li>
                                 </div>
                                 <div id="load-category-id">
@@ -208,6 +215,10 @@
             {
                 id:"load-order-id",
                 url:"order/list"
+            },
+            {
+                id:"load-role-id",
+                url:"role/list"
             }
         ];
         //侧边栏状态true:打开 false:关闭
