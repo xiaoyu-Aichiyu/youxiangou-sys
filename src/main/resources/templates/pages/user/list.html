@@ -214,7 +214,6 @@
     //跳转添加或修改页面
     function addPage() {
         var bool = $(this).hasClass("el-button--update");
-        debugger
         if (bool){
             var radioCheck = $(this).parents("tr").find("input[type='checkbox']");
             if (!radioCheck.length){
@@ -337,4 +336,5 @@
         $(".el-checkbox__input input[type='checkbox']:gt(0)").prop("checked", checked);
     }
 </script>
-<script src="api/member/member.js"></script>
+<script src="api/member/member.js">
+</script>

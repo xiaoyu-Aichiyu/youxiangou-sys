@@ -4,7 +4,26 @@
 
 <mapper namespace="com.qqls.youxiangousys.pj.sys.dao.SysRoleDao">
 
+    <sql id="roleQuery">
+        <if test="name != null and name != ''">
+            where name like concat("%",#{name},"%")
+        </if>
+    </sql>
+
     <select id="findAllRole" resultType="com.qqls.youxiangousys.pj.sys.entity.SysRole">
-        select id,role_name from t_role;
+        select id,name from t_role;
+    </select>
+
+    <!--统计角色总条数，用来分页-->
+    <select id="countRole" resultType="java.lang.Integer">
+        select count(1) from t_role
+        <include refid="roleQuery"></include>
+    </select>
+
+    <!--根据角色名找角色-->
+    <select id="findRole" resultType="com.qqls.youxiangousys.pj.sys.entity.SysRole">
+        select * from t_role
+        <include refid="roleQuery"/>
+        limit #{start},#{pageSize}
     </select>
 </mapper>

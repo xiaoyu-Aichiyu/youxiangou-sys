@@ -242,14 +242,14 @@
                 "<label class='el-checkbox'><span class='el-checkbox__input'>" +
                 "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + d.id+ "' ></span></label></div></td>"
                 +"<td class='el-table_1_column_2 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.orderNumber + "</div></td>"
-                +"<td class='el-table_1_column_3 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + (d.state == 1 ? "启用":"禁用")+ "</div></td>"
+                +"<td class='el-table_1_column_3 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.state + "</div></td>"
                 +"<td class='el-table_1_column_4 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.name + "</div></td>"
                 +"<td class='el-table_1_column_5 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.phone + "</div></td>"
                 +"<td class='el-table_1_column_6 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.address +"</div></td>"
                 +"<td class='el-table_1_column_7 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.orderTime+"</div></td>"
                 +"<td class='el-table_1_column_8 is-leaf' colspan='1' rowspan='1'><div class='cell'>" + d.collection+"</div></td>"
                 +"<td class='el-table_1_column_9 is-leaf' colspan='1' rowspan='1' style='width: 153px'><div>"
-                +"<button type='button' class='el-button el-button--primary' onclick='changeValid(this)'>"+(d.state?"禁用":"启用")+"</button>"
+                +"<button type='button' class='el-button el-button--primary' onclick='updateValid(this)' style='width: 73px;'>状态</button>"
                 +"<button type='button' class='el-button--primary el-button continue'>删除</button></div></td></tr>";
             tbody.append(tr);
             //每一行上面绑定当前行数据
@@ -267,18 +267,5 @@
         var checked = firstInp[0].checked;//加下标变js对象
         //:gt(0) --->选择下标大于0的元素
         $(".el-checkbox__input input[type='checkbox']:gt(0)").prop("checked", checked);
-    }
-    //修改状态
-    function changeValid(btn){
-        //找到当前行id
-        var id =$(btn).parents('tr').find("input").val();
-        var url = "user/updateValId";
-        var state = $(btn).text() == '禁用' ? 0 : 1;
-        var params = {id : id,state : state};
-        $.get(url,params,function(result){
-            commonShowTips(result.message);
-            $(btn).text(state == 0 ? "启用" : "禁用");
-            $(btn).parents('tr').children(":eq(5)").html("<div class='cell'>"+(state == 1 ? "启用":"禁用")+"</div>");
-        })
     }
 </script>

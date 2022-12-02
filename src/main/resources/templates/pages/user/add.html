@@ -126,7 +126,7 @@
                 var id = result[i].id;
                 var str ="<li class='role-li' style='list-style-type: none ;float: left' >"
                     + "<input type='checkbox' value='role"+ id + "' id='role"+ id + "'>"
-                    + "<label for='role"+ id +"'>" + result[i].roleName + "</label></li>"
+                    + "<label for='role"+ id +"'>" + result[i].name + "</label></li>"
                 $(".roles-ul").append(str)
             }
             if ($("#cIframe").data("userId")){
