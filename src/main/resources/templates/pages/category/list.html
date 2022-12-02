@@ -131,12 +131,9 @@
     $(function() {
         doGetObjects();
         $(".tableBar").on("click",".el-inputadd", addPage);//添加和修改
-        $(".tableBar").on("click","#btn-deletePage",deletePage)//删除
+        $(".tableBar").on("click","#btn-deletePage",deletePage)
     })
 
-    function deletePage(){
-
-    }
     function changeSellBtn(btn) {
         var btn = $(btn);
         var bgColor = btn.css("background-color");

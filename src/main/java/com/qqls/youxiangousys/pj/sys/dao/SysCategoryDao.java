@@ -56,4 +56,13 @@ public interface SysCategoryDao {
      */
     @Update("update t_type set type_sell = #{typeSell} where id = #{id}")
     Integer updateSell(Integer id, Integer typeSell);
+
+    /**
+     * 通过分类id查找分类所有信息
+     * @param typeId
+     * @return
+     */
+    @Select("select * from t_type where id = #{typeId}")
+    SysCategory findTypeId(Integer typeId);
+
 }
