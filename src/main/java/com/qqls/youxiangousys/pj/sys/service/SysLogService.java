@@ -26,4 +26,9 @@ public interface SysLogService {
      * @param log
      */
     void insertLogData(SysLog log);
+
+    /**
+     * 导出所有日志信息
+     */
+    void exportLogThis();
 }

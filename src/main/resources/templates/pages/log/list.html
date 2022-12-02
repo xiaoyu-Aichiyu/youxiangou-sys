@@ -23,7 +23,10 @@
                 <span>查询</span>
             </button>
             <div class="tableLab" >
-                <button type="button" class="el-button el-button--primary continue" id="btn-delete">
+                <button type="button" class="el-button el-button--primary continue" id="btn-saveExcel">
+                    <span>+ 导出日志</span>
+                </button>
+                <button type="button" class="el-button el-button--primary" id="btn-delete">
                     <span>- 删除日志</span>
                 </button>
             </div>
@@ -95,11 +98,31 @@
     $(function() {
         $("#btn-search").on("click", doGetObjects);
         $("#btn-delete").on("click",deleteLog);
+        $("#btn-saveExcel").on("click",exportLogThis)
         $("#pageId").load("page/page",function(){
             doGetObjects();
         });
     })
-    
+
+    /**
+     * 导出所有日志
+     */
+    function exportLogThis() {
+        //二次导出确认
+        if(!confirm("确认导出吗?")){
+            return;
+        }
+        var url = "log/exportLogThis";
+        $.get(url,{},function(result){
+            if(result.state == 1){
+                commonShowTips("日志数据导出成功！");
+                doGetObjects();
+            }else{
+                commonShowTips("日志数据导出失败！");
+            }
+        })
+    }
+
     function deleteLog() {
         var checkboxs = $("#tbodyId input[type='checkbox']:checked");
         var ids = [];

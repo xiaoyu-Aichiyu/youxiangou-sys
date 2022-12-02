@@ -2873,7 +2873,7 @@ input[type="number"] {
   margin-right: 3px;
 }
 .el-table-column--selection .cell {
-  padding-left: 14px;
+  padding-left: 10px;
   padding-right: 14px;
 }
 .el-table-filter {

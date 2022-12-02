@@ -64,7 +64,7 @@ public class SysItemServiceImpl implements SysItemService {
      */
     @RequiredLog("修改商品状态")
     public Integer updateState(Integer id, Integer state) {
-        Assert.isEmpty(id == null || id == 0, "请选择要修改状态的用户！");
+        Assert.isEmpty(id == null || id == 0, "请选择要修改状态的商品！");
         Assert.isEmpty(state == null, "操作有误！");
         Integer n = itemDao.updateState(id, state);
         Assert.isEmpty(n == 0, "状态修改失败！");
@@ -167,6 +167,7 @@ public class SysItemServiceImpl implements SysItemService {
      * @param itemState
      * @return
      */
+    @RequiredLog("删除商品")
     public Integer deleteItemById(Integer id, Integer itemState) {
         Assert.isEmpty(id == null,"请选择要删除的一条数据");
         Integer n = itemDao.deleteItemById(id,itemState);
@@ -179,6 +180,7 @@ public class SysItemServiceImpl implements SysItemService {
      * @param item
      * @return
      */
+    @RequiredLog("新增商品")
     public Integer insertItemData(SysItem item) {
         Assert.isEmpty(item == null,"请将表单信息填写完整！！");
         Integer n = itemDao.insertItemData(item);
@@ -191,6 +193,7 @@ public class SysItemServiceImpl implements SysItemService {
      * @param item
      * @return
      */
+    @RequiredLog("修改商品")
     public Integer updateItemData(SysItem item) {
         Assert.isEmpty(item == null,"请将表单信息填写完整！！");
         Integer n = itemDao.updateItemData(item);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<!-- namespace:命名空间，对应一个dao层接口的全路径 -->
+<mapper namespace="com.qqls.youxiangousys.pj.sys.dao.SysCouponDao">
+
+    <sql id="queryCouponName">
+        <where>
+            <if test="couponName != null and couponName != ''">
+                coupon_name like concat("%",#{couponName},"%") and
+            </if>
+            <choose>
+                <when test="couponState != null and couponState != ''">
+                    coupon_state = #{couponState}
+                </when>
+                <otherwise>
+                    coupon_state != 2
+                </otherwise>
+            </choose>
+        </where>
+    </sql>
+
+    <!-- 统计优惠券总条数 -->
+    <select id="getCouponCount" resultType="int">
+        select count(1) from t_coupon
+        <include refid="queryCouponName"/>
+    </select>
+
+    <!-- 查询所有优惠券数据并且分页 -->
+    <select id="findAllCoupon" resultType="com.qqls.youxiangousys.pj.sys.entity.SysCoupon">
+        select * from t_coupon <include refid="queryCouponName"/> limit #{start},#{pageSize}
+    </select>
+
+    <update id="deleteCouponByIds">
+        update t_coupon set coupon_state = #{couponState} where id in
+        <foreach collection="ids" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </update>
+</mapper>

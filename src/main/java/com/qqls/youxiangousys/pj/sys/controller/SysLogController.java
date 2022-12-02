@@ -40,4 +40,14 @@ public class SysLogController {
     public JsonResult deleteLog(@RequestParam("ids[]") Integer[] ids){
         return new JsonResult(logService.deleteLog(ids));
     }
+
+    /**
+     * 导出所有日志
+     * @return
+     */
+    @RequestMapping("exportLogThis")
+    public JsonResult exportLogThis(){
+        logService.exportLogThis();
+        return new JsonResult("日志数据导出成功！！");
+    }
 }

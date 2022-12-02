@@ -1,86 +1,173 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
-<!-- 引入样式 -->
 <style>
     .container {
         width: 100%;
     }
 </style>
+<style>
+    .selectInput {
+        position: relative;
+        width: 100%;
+        min-width: 100px;
+    }
 
-<div id="member-add-app" class="addBrand-container">
+    .selectInput .flavorSelect {
+        position: absolute;
+        width: 100%;
+        padding: 0 10px;
+        border-radius: 3px;
+        border: solid 1px #FF903D;
+        line-height: 30px;
+        text-align: center;
+        background: #fff;
+        top: 50px;
+        z-index: 99;
+    }
+
+    .selectInput .flavorSelect .items {
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        line-height: 35px;
+        border-bottom: solid 1px #f4f4f4;
+        color: #666;
+    }
+
+    .selectInput .flavorSelect .none {
+        font-size: 14px;
+    }
+
+    #food-add-app .uploadImg .el-form-item__label::before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+    .img-upload{
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>
+
+
+<div id="food-add-app" class="addBrand-container">
     <div class="container">
-        <form class="el-form demo-ruleForm">
-            <div class="el-form-item is-required">
-                <label for="username" class="el-form-item__label" style="width: 180px;">账号:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入账号" maxlength="20" class="el-input__inner">
+        <form class="el-form demo-ruleForm el-form--inline">
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="name" class="el-form-item__label" style="width: 180px;">优惠券名称:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" id="itemNameId" placeholder="请填写优惠券名称" maxlength="20" class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+                <div class="el-form-item is-required"><label for="parentId" class="el-form-item__label" style="width: 180px;">优惠金额:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-select">
+                            <div class="el-input el-input--suffix">
+                                <input type="text" autocomplete="off" id="price" placeholder="请填写优惠券金额" maxlength="20" class="el-input__inner">
+                            </div>
+                            <div class="el-select-dropdown el-popper" style="display: none; min-width: 293px;">
+                                <div class="el-scrollbar" style="display: none;">
+                                    <div class="el-select-dropdown__wrap el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px;">
+                                        <ul class="el-scrollbar__view el-select-dropdown__list"></ul>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-horizontal">
+                                        <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+                                    </div>
+                                    <div class="el-scrollbar__bar is-vertical">
+                                        <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+                                    </div>
+                                </div>
+                                <p class="el-select-dropdown__empty">
+                                    无数据
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="el-form-item is-required">
-                <label for="name" class="el-form-item__label" style="width: 180px;">员工姓名:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="price" class="el-form-item__label" style="width: 180px;">优惠折扣:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" id="itemPriceId" placeholder="请设置优惠券折扣" class="el-input__inner">
+                        </div>
+                    </div>
+                </div>
+                <label for="title" class="el-form-item__label" style="width: 180px;">优惠条件:</label>
+                <div class="el-form-item__content">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入员工姓名" maxlength="20" class="el-input__inner">
+                        <input type="text" autocomplete="off" id="itemTitleId" placeholder="请设置优惠条件" class="el-input__inner">
                     </div>
                 </div>
             </div>
-            <div class="el-form-item is-required">
-                <label for="phone" class="el-form-item__label" style="width: 180px;">手机号:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入手机号" maxlength="20" class="el-input__inner">
+           <!-- <div class="el-form-item"><label class="el-form-item__label" style="width: 180px;">口味做法配置:</label>
+                <div class="el-form-item__content">
+                    <div class="el-form-item">
+                        <div class="el-form-item__content">
+                            <div class="flavorBox"><span class="addBut"> + 添加口味</span></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="el-form-item">
-                <label for="sex" class="el-form-item__label" style="width: 180px;">性别:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
-                    <div role="radiogroup" class="el-radio-group" style="margin-top: 10px;">
-                        <label role="radio" aria-checked="true" tabindex="0" class="el-radio is-checked">
-                            <span class="el-radio__input is-checked">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="男" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">男</span>
-                        </label>
-                        <label role="radio" tabindex="-1" class="el-radio">
-                            <span class="el-radio__input">
-                                <span class="el-radio__inner"></span>
-                                <input type="radio" aria-hidden="true" tabindex="-1" value="女" class="el-radio__original">
-                            </span>
-                            <span class="el-radio__label">女</span>
-                        </label>
+            </div>-->
+            <div></div>
+            <div>
+                <div class="el-form-item is-required">
+                    <label for="price" class="el-form-item__label" style="width: 180px;">开始时间:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="date" placeholder="请设置优惠开始时间" class="el-input__inner">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="el-form-item is-required">
-                <label for="idNumber" class="el-form-item__label" style="width: 180px;">身份证号:</label>
-                <div class="el-form-item__content" style="margin-left: 180px;">
+                <label for="title" class="el-form-item__label" style="width: 180px;">结束时间:</label>
+                <div class="el-form-item__content">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" placeholder="请输入身份证号" maxlength="20" class="el-input__inner">
+                        <input type="date" autocomplete="off" placeholder="请设置优惠结束时间" class="el-input__inner">
                     </div>
                 </div>
             </div>
             <div class="subBox address">
                 <div class="el-form-item">
-                    <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-form-item__content">
                         <button type="button" class="el-button el-button--default">
-                            <span>取消</span>
+                            <span> 取消 </span>
                         </button>
                         <button type="button" class="el-button el-button--primary">
-                            <span>保存</span>
-                        </button>
-                        <button type="button" class="el-button continue el-button--primary">
-                            <span>保存并继续添加</span>
+                            <span>保存 </span>
                         </button>
                     </div>
                 </div>
             </div>
         </form>
+        <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="menuLayer" type="page" times="2" showtime="0" contype="object"
+             style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 640px; display:none">
+            <div class="layui-layer-title" style="cursor: move;">选择菜单</div>
+            <div class="layui-layer-content" style="height: 358px;">
+                <div style="padding: 10px;" class="layui-layer-wrap">
+                    <ul id="menuTree" class="ztree"></ul>    <!-- 动态加载树 -->
+                </div>
+            </div>
+            <span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+            <div class="layui-layer-btn layui-layer-btn-">
+                <a class="layui-layer-btn0 btn-confirm">确定</a>
+                <a class="layui-layer-btn1 btn-cancel">取消</a>
+            </div>
+        </div>
     </div>
 </div>
-<script src="api/member/member.js"></script>
+
+<script src="api/food/food.js"></script>
+<script type="text/javascript" src="../bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../bower_components/layer/layer.js"></script>
+<script>
+ 
+    $(function(){
+
+    })
+</script>

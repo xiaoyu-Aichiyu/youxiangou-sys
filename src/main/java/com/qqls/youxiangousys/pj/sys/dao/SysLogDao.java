@@ -5,6 +5,7 @@ import com.qqls.youxiangousys.pj.sys.entity.SysLog;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -39,4 +40,11 @@ public interface SysLogDao {
      * @param log
      */
     Integer insertLog(SysLog log);
+
+    /**
+     * 导出所有日志信息
+     * @return
+     */
+    @Select("select * from t_log")
+    List<SysLog> findExportThisLog();
 }

@@ -32,7 +32,7 @@ public class SysItemController {
     }
 
     /**
-     * 修改用户启用禁用
+     * 修改商品上架下架
      * @param id
      * @param state
      * @return

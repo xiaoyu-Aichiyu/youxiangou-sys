@@ -19,9 +19,20 @@
                     <i class="el-input__icon el-icon-search" style="cursor: pointer;"></i>
                 </span>
             </div>
-            <button type="button" class="el-button el-button--primary el-button--add">
-                <span>+ 添加优惠券</span>
+            <button type="button" class="el-button el-button--primary" id="btn-search">
+                <span> 查询</span>
             </button>
+            <div class="tableLab" >
+                <button type="button" class="el-button el-button--primary continue" id="btn-deletePage">
+                    <span> 已被删除的优惠券</span>
+                </button>
+            <button type="button" class="el-button el-button--primary el-button--add">
+                <span> 添加优惠券</span>
+            </button>
+            <button type="button" class="el-button el-button--primary continue" id="btn-delete">
+                <span> 删除优惠券</span>
+            </button>
+            </div>
         </div>
         <div class="el-table tableBox el-table--fit el-table--striped el-table--enable-row-hover">
             <div class="hidden-columns">
@@ -56,11 +67,17 @@
                             <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
                                 <div class="cell">条件</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
+                                <div class="cell">优惠券状态</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
                                 <div class="cell">开始时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
                                 <div class="cell">结束时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf">
+                                <div class="cell">操作</div>
                             </th>
                         </tr>
                     </thead>
@@ -68,7 +85,7 @@
             </div>
             <div class="el-table__body-wrapper is-scrolling-none">
                 <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%;">
-                    <tbody></tbody>
+                    <tbody id="tbodyId"></tbody>
                 </table>
                 <div class="el-table__empty-block" style="height: 100%; width: 100%;display: none;">
                     <span class="el-table__empty-text">暂无数据</span>
@@ -83,20 +100,190 @@
 </div>
 <script>
     $(function() {
+        $("#cIframe").data("couponId", "");
         $(".tableBar").on("click",".el-button--add,.el-button--update",loadAddOrUpdate);
+        $("#load-coupon-id").data("isDeletePage", false);
+        $("#btn-search").on("click", doGetObjects);
+        $("#btn-delete").on("click",deleteCoupon);
+        $("#btn-deletePage").on("click",doGetObjects);
         $("#pageId").load("page/page",function(){
             doGetObjects();
         });
     })
 
-    function doGetObjects(){
-
-    }
-
     function loadAddOrUpdate() {
+        debugger
+        var bool = $(this).hasClass("el-button--update");
+        if(bool) {
+            var rowData = $(this).parents("tr").data("couponRow");
+            $("#cIframe").data("couponId", rowData.id);
+            //每行数据绑定到大盒子上,为了修改页面能拿到数据
+            $("#cIframe").data("couponRow", rowData)
+        }
         $("#cIframe").load("coupon/add",function (){
 
         });
+    }
+
+    /**
+     * 按id删除优惠券数据
+     */
+    function deleteCoupon() {
+        var tipsStr = "删除";
+        var confirmStr = "确认删除吗?";
+        var couponState = 2;
+        if($("#load-coupon-id").data("isDeletePage")){
+            tipsStr = "启用";
+            confirmStr = "确认重新启用吗?";
+            couponState = 1;
+        }
+        var checkboxs = $("#tbodyId input[type='checkbox']:checked");
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push(checkboxs.eq(i).val());
+        }
+        if(!ids.length){
+            commonShowTips("请至少选择1条要删除的数据！");
+            return;
+        }
+        //二次删除确认
+        if(!confirm(confirmStr)){
+            return;
+        }
+        var url = "coupon/deleteCoupon";
+        var param ={ids:ids,couponState:couponState};
+        $.get(url,param,function(result){
+            if(result.state == 1){
+                commonShowTips("成功" + tipsStr + result.data + "条数据！");
+                doGetObjects();
+            }else{
+                commonShowTips(result.message);
+            }
+        })
+    }
+
+    /**
+     * 初始加载
+     */
+    function doGetObjects(){
+        if ($(this).prop("id") == "btn-deletePage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-selectPage");
+            $(this).text("未删除的商品");
+            $("#load-coupon-id").data("isDeletePage",true);
+            $("#btn-delete").text("重新启用");
+        } else if ($(this).prop("id") == "btn-selectPage") {
+            $("#pageId").data("curPage", 1);
+            $(".el-input__inner").val("")
+            $(this).prop("id", "btn-deletePage");
+            $(this).text("已删除的商品");
+            $("#load-coupon-id").data("isDeletePage", false);
+            $("#btn-delete").text("删除优惠券");
+        } else if ($(this).prop("id") == "btn-search") {
+            $("#pageId").data("curPage", 1);
+        }
+        var url = "coupon/findAllCoupon";
+        var curPage = $("#pageId").data("curPage");
+        var params = {
+            couponName : $(".el-input__inner").val(),
+            curPage: curPage ?  curPage : 1,
+            pageSize : 10
+        };
+        if ($("#load-coupon-id").data("isDeletePage")) {
+            params.couponState = 2;
+        }
+        $.get(url,params,function(result){
+            if(result.state == 1){
+                loadCouponData(result.data.pageData);
+                setPageData(result.data);//加载分页数据
+            }else{
+                commonShowTips(result.message);
+            }
+        })
+    }
+
+    /**
+     * 加载主体数据
+     * @param data
+     */
+    function loadCouponData(datas) {
+        $("#tbodyId").empty();
+        var dataStr = "";
+        if (!datas.length){
+            dataStr += "<td colspan='7'>数据正在加载中...</td>";
+            return;
+        }else{
+            for (var i =0; i < datas.length; i++){
+                dataStr = "";
+                var d = datas[i];
+                dataStr += "<tr><td class='el-table_1_column_1   el-table-column--selection  is-leaf' style='width: 25px'><div class='cell'><label class='el-checkbox'><span class='el-checkbox__input'>" +
+                    "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + d.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
+                dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ d.couponName + "</div></td>";
+                dataStr += "<td class='el-table_1_column_3 is-leaf'><div class='cell'>"+ d.couponMoney + "</div></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>"+ d.couponRebate + "</div></td>";
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>"+ d.couponTerm + "</div></td>";
+                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>"+ (d.couponState?"禁用":"启用") + "</div></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>"+ d.startTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>"+ d.endTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_9 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ (d.couponState?"启用":"禁用") +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
+                dataStr += "</tr>"
+                $("#tbodyId").append(dataStr);
+                $("#tbodyId").find("tr:last").data("couponRow",d);//把每一行的数据绑定到当前行
+            }
+            $(".el-button--update").on("click",loadAddOrUpdate);
+        }
+    }
+
+    /**
+     * 修改启用禁用状态
+     * @param btn
+     */
+    function changeState(btn){
+        var id= $(btn).parents("tr").find("input").val();
+        var url = "coupon/updateCouponState";
+        var state = $(btn).text() == '禁用' ? 0 : 1;
+        var params = {id:id,state:state};
+        $.get(url,params,function(result){
+            commonShowTips(result.message);
+            //刷新页面
+            //doGetObjects();
+            //静态刷新
+            $(btn).text(state == 0 ? "启用" : "禁用");
+            $(btn).parents("tr").children().eq(5).html("<div class='cell'>" + (state == 1 ? "启用" : "禁用") + "</div>");
+
+        })
+    }
+
+    /**
+     * 选中当前多选框事件方法
+     */
+    function commonChoiceThis() {
+        //主体数据部分所有多选框
+        var totalInp = $("#tbodyId input[type='checkbox']");
+        //主题数据部分所有被选中的多选框
+        var totalCkd = $("#tbodyId input[type='checkbox']:checked");
+        //title部分多选框（全选，全不选）
+        var firstInp = $(".el-checkbox__input input[type='checkbox']").first();
+        //如果所有多选框的数量等于被选中多选框的数据，则勾上全选，否则取消全选
+        /*if (totalInp.length == totalCkd.length) {
+            firstInp.prop("checked",true);
+        }else{
+            firstInp.prop("checked",false);
+        }*/
+        firstInp.prop("checked",totalInp.length == totalCkd.length);
+    }
+
+    /**
+     * 多选框全选事件方法
+     */
+    function commonChoiceAll() {
+        //$():$包起来的是jq对象，是一个dom数组
+        //加下标：变成js对象
+        var firstInp = $(".el-checkbox__input input[type='checkbox']").first();
+        var checked = firstInp[0].checked;//加下标变js对象
+        //:gt(0) --->选择下标大于0的元素
+        $(".el-checkbox__input input[type='checkbox']:gt(0)").prop("checked", checked);
     }
 </script>
 <script src="api/member/member.js"></script>
