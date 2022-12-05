@@ -57,18 +57,18 @@
         <form class="el-form demo-ruleForm el-form--inline">
             <div>
                 <div class="el-form-item is-required">
-                    <label for="name" class="el-form-item__label" style="width: 180px;">菜品名称:</label>
+                    <label for="name" class="el-form-item__label" style="width: 180px;">商品名称:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="text" autocomplete="off" id="itemNameId" placeholder="请填写菜品名称" maxlength="20" class="el-input__inner">
+                            <input type="text" autocomplete="off" id="itemNameId" placeholder="请填写商品名称" maxlength="20" class="el-input__inner">
                         </div>
                     </div>
                 </div>
-                <div class="el-form-item is-required"><label for="parentId" class="el-form-item__label" style="width: 180px;">菜品分类:</label>
+                <div class="el-form-item is-required"><label for="parentId" class="el-form-item__label" style="width: 180px;">商品分类:</label>
                     <div class="el-form-item__content">
                         <div class="el-select">
                             <div class="el-input el-input--suffix">
-                                <input type="text" readonly="readonly" id="parentId" autocomplete="off" placeholder="请选择菜品分类" class="el-input__inner load-sys-zTree">
+                                <input type="text" readonly="readonly" id="parentId" autocomplete="off" placeholder="请选择商品分类" class="el-input__inner load-sys-zTree">
                                 <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                         <i class="el-select__caret el-input__icon el-icon-arrow-up"></i>
@@ -97,17 +97,31 @@
             </div>
             <div>
                 <div class="el-form-item is-required">
-                    <label for="price" class="el-form-item__label" style="width: 180px;">菜品价格:</label>
+                    <label for="price" class="el-form-item__label" style="width: 180px;">商品价格:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="text" id="itemPriceId" placeholder="请设置菜品价格" class="el-input__inner">
+                            <input type="text" id="itemPriceId" placeholder="请设置商品价格" class="el-input__inner">
+                        </div>
+                    </div>
+                    <label for="price" class="el-form-item__label" style="width: 189px;">商品标题:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" id="itemTitle" placeholder="请设置商品标题" class="el-input__inner">
                         </div>
                     </div>
                 </div>
-                <label for="title" class="el-form-item__label" style="width: 180px;">菜品标题:</label>
-                <div class="el-form-item__content">
-                    <div class="el-input">
-                        <input type="text" autocomplete="off" id="itemTitleId" placeholder="请设置菜品标题" class="el-input__inner">
+                <div class="el-form-item is-required">
+                    <label for="price" class="el-form-item__label" style="width: 180px;">商品折扣:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" id="itemRebate" placeholder="请设置商品折扣" class="el-input__inner">
+                        </div>
+                    </div>
+                    <label for="price" class="el-form-item__label" style="width: 189px;">商品库存:</label>
+                    <div class="el-form-item__content">
+                        <div class="el-input">
+                            <input type="text" id="itemNum" placeholder="请设置商品库存" class="el-input__inner">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,6 +171,55 @@
                     </div>
                 </div>
             </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default">
+                            <span> 取消 </span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存 </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default">
+                            <span> 取消 </span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存 </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default">
+                            <span> 取消 </span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存 </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content">
+                        <button type="button" class="el-button el-button--default">
+                            <span> 取消 </span>
+                        </button>
+                        <button type="button" class="el-button el-button--primary">
+                            <span>保存 </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </form>
         <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="menuLayer" type="page" times="2" showtime="0" contype="object"
              style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 640px; display:none">
@@ -196,7 +259,7 @@
         $(".load-sys-zTree").on("click",zTreeMenu);//加载zTree树
         $(".el-button--default").on("click",backToItemList);//取消返回主界面
         $(".el-button--primary").on("click",saveAddOrUpdate);//添加或者修改
-        var data = $("#cIframe").data("itemId");
+        var data = $("#cIframe").data("itemRow");
         if(data)doInitEditFormData($("#cIframe").data("itemRow"));
         $(".layui-layer-close,.btn-cancel").click(zTreeMenuHide)//取消
         $(".btn-confirm").click(choiceParentMenu);//确定
@@ -206,12 +269,13 @@
      * 如果是修改的话拿到要填充的数据
      */
     function doInitEditFormData(data) {
-        debugger
         $("#itemNameId").val(data.itemName);
         $("#parentId").val(!data.sysCategory ? "" : data.sysCategory.name);
         $("#parentId").data("parentId",!data.sysCategory ? 0 : data.sysCategory.id);
         $("#itemPriceId").val(data.itemPrice);
-        $("#itemTitleId").val(data.itemTitle);
+        $("#itemRebate").val(data.itemRebate);
+        $("#itemNum").val(data.itemNum);
+        $("#itemTitle").val(data.itemTitle);
         $("#itemNoteId").val(data.itemNote);
         $("#itemImg").attr("src",data.itemImg);
         $("#itemImg").show();
@@ -249,11 +313,12 @@
             itemName : $("#itemNameId").val(),
             typeId : $("#parentId").data("parentId"),
             itemPrice : $("#itemPriceId").val(),
-            itemTitle : $("#itemTitleId").val(),
+            itemTitle : $("#itemTitle").val(),
             itemImg : $("#itemImg").attr("src"),//file
-            itemNote : $("#itemNoteId").val()
+            itemNote : $("#itemNoteId").val(),
+            itemRebate : $("#itemRebate").val(),
+            itemNum : $("#itemNum").val()
         }
-        debugger
         return params;
     }
 
@@ -262,7 +327,7 @@
      */
     function backToItemList() {
         //把绑定的id清空
-        $("#cIframe").data("itemId","");
+        $("#cIframe").data("itemRow","");
         $("#cIframe").load("item/list");
     }
 

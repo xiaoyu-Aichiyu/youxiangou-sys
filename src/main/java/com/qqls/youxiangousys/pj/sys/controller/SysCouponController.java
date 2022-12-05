@@ -3,6 +3,7 @@ package com.qqls.youxiangousys.pj.sys.controller;
 import com.qqls.youxiangousys.pj.common.annotation.RequiredLog;
 import com.qqls.youxiangousys.pj.common.entity.JsonResult;
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.sys.entity.SysCoupon;
 import com.qqls.youxiangousys.pj.sys.service.SysCouponService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,29 @@ public class SysCouponController {
     @RequestMapping("deleteCoupon")
     public JsonResult deleteCoupon(@RequestParam("ids[]") Integer[] ids, Integer couponState){
         return new JsonResult(couponService.deleteCoupon(ids,couponState));
+    }
+
+    /**
+     * 添加优惠券
+     * @param coupon
+     * @return
+     */
+    @RequestMapping("saveCouponData")
+    public JsonResult saveCouponData(SysCoupon coupon){
+        JsonResult jr = new JsonResult(couponService.insertCoupon(coupon));
+        jr.setMessage("优惠券数据添加成功！");//设置提示信息
+        return jr;
+    }
+
+    /**
+     * 修改优惠券
+     * @param coupon
+     * @return
+     */
+    @RequestMapping("updateCouponData")
+    public JsonResult updateCouponData(SysCoupon coupon){
+        JsonResult jr = new JsonResult(couponService.updateCoupon(coupon));
+        jr.setMessage("优惠券数据修改成功！");//设置提示信息
+        return jr;
     }
 }

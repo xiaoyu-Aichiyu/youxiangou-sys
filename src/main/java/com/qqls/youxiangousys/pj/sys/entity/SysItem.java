@@ -29,6 +29,7 @@ public class SysItem implements Serializable {
     private int typeId;
     private int itemState = 1;
     private int itemSell;
+    private double itemRebate;
 
     @Override
     public boolean equals(Object o) {

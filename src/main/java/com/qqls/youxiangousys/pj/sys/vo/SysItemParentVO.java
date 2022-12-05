@@ -17,6 +17,9 @@ public class SysItemParentVO {
     private double itemPrice;
     private Integer itemState;
     private Integer itemSell;
+    private double itemRebate;
+    private Integer saleNum;
+    private Integer itemNum;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdTime;
 }

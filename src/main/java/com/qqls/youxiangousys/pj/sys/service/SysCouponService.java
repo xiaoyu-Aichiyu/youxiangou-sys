@@ -1,6 +1,7 @@
 package com.qqls.youxiangousys.pj.sys.service;
 
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.sys.entity.SysCoupon;
 
 public interface SysCouponService {
 
@@ -29,4 +30,18 @@ public interface SysCouponService {
      * @return
      */
     Integer deleteCoupon(Integer[] ids, Integer couponState);
+
+    /**
+     * 添加优惠券信息
+     * @param coupon
+     * @return
+     */
+    Integer insertCoupon(SysCoupon coupon);
+
+    /**
+     * 修改优惠券信息
+     * @param coupon
+     * @return
+     */
+    Integer updateCoupon(SysCoupon coupon);
 }

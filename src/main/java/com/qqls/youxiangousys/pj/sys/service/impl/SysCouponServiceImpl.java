@@ -76,4 +76,30 @@ public class SysCouponServiceImpl implements SysCouponService {
         Assert.isEmpty(n == 0,message2);
         return n;
     }
+
+    /**
+     * 添加优惠券信息
+     * @param coupon
+     * @return
+     */
+    @RequiredLog("新增优惠券")
+    public Integer insertCoupon(SysCoupon coupon) {
+        Assert.isEmpty(coupon == null,"请将表单信息填写完整！！");
+        Integer n = couponDao.insertCoupon(coupon);
+        Assert.isEmpty(n == 0,"优惠券数据添加失败！！");
+        return n;
+    }
+
+    /**
+     * 修改优惠券信息
+     * @param coupon
+     * @return
+     */
+    @RequiredLog("修改优惠券")
+    public Integer updateCoupon(SysCoupon coupon) {
+        Assert.isEmpty(coupon == null,"请将表单信息填写完整！！");
+        Integer n = couponDao.updateCoupon(coupon);
+        Assert.isEmpty(n == 0,"优惠券数据修改失败！！");
+        return n;
+    }
 }

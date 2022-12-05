@@ -259,8 +259,10 @@ public class SysItemServiceImpl implements SysItemService {
                 int itemState = (int)cell13.getNumericCellValue();
                 Cell cell14 = row.getCell(14);
                 int itemSell = (int)cell14.getNumericCellValue();
+                Cell cell15 = row.getCell(15);
+                int itemRebate = (int)cell15.getNumericCellValue();
                 SysItem item = new SysItem(id,itemName,itemTitle,itemImg,itemNote,itemPrice,itemNum,saleNum,
-                        createdTime,modifiedTime,createdUser,modifiedUser,typeId,itemState,itemSell);
+                        createdTime,modifiedTime,createdUser,modifiedUser,typeId,itemState,itemSell,itemRebate);
                 SysItem c = itemDao.findCarByNameAndNote(itemName,itemNote);
                 if (c == null && !itemList.contains(item)) {
                     itemList.add(item);
@@ -312,6 +314,8 @@ public class SysItemServiceImpl implements SysItemService {
         cell13.setCellValue(item.getItemState());
         Cell cell14 = rowCar.createCell(14);
         cell14.setCellValue(item.getItemSell());
+        Cell cell15 = rowCar.createCell(15);
+        cell15.setCellValue(item.getItemRebate());
     }
 
     /**
@@ -319,7 +323,7 @@ public class SysItemServiceImpl implements SysItemService {
      * @param row
      */
     public void handlerRowTitle(Row row) {
-        String[] titles = {"编号","商品名","商品标题","图片","商品详情","价格","商品库存","售卖数量","创建时间","修改时间","创建用户","修改用户","类型id","商品 状态","商品推荐"};
+        String[] titles = {"编号","商品名","商品标题","图片","商品详情","价格","商品库存","售卖数量","创建时间","修改时间","创建用户","修改用户","类型id","商品 状态","商品推荐","商品折扣"};
         for (int i = 0; i < titles.length; i++) {//遍历titles数组，拿到里面的值进行操作
             //创建一个单元格
             Cell cell = row.createCell(i);
