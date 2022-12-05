@@ -1,8 +1,9 @@
 package com.qqls.youxiangousys.pj.mp.service;
 
 import com.qqls.youxiangousys.pj.common.entity.Pagination;
+import com.qqls.youxiangousys.pj.sys.entity.SysItem;
 
-public interface ItemService {
+public interface MpItemService {
 
 
     /**
@@ -16,10 +17,12 @@ public interface ItemService {
 
     /**
      * 查找首页猜你喜欢栏的商品
-     * @param likeCurPage
-     * @param likePageSize
-     * @param likeItemType
+     * @param likeCurPage 当前页
+     * @param likePageSize 每页条数
+     * @param likeItemType 商品类型id
      * @return
      */
     Pagination findLikeItem(Integer likeCurPage, Integer likePageSize, Integer likeItemType);
+
+    SysItem findItemById(Integer id);
 }
