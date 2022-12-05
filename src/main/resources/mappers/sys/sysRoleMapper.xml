@@ -9,21 +9,52 @@
             where name like concat("%",#{name},"%")
         </if>
     </sql>
-
+    <!--添加角色-->
+    <insert id="insertRole" parameterType="com.qqls.youxiangousys.pj.sys.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_role values(null,#{name},#{remarks},now(),now(),#{createUser},#{updateUser})
+    </insert>
+    <!--修改-->
+    <update id="updateRoleById">
+        update t_role set name=#{name},remarks=#{remarks}, modificationTime=now() where id=#{id}
+    </update>
+    <!--根据id删除角色-->
+    <delete id="deleteRoleById">
+        delete from t_role where id = #{id}
+    </delete>
     <select id="findAllRole" resultType="com.qqls.youxiangousys.pj.sys.entity.SysRole">
         select id,name from t_role;
     </select>
-
     <!--统计角色总条数，用来分页-->
     <select id="countRole" resultType="java.lang.Integer">
         select count(1) from t_role
         <include refid="roleQuery"></include>
     </select>
-
     <!--根据角色名找角色-->
     <select id="findRole" resultType="com.qqls.youxiangousys.pj.sys.entity.SysRole">
         select * from t_role
         <include refid="roleQuery"/>
         limit #{start},#{pageSize}
     </select>
+    <!-- resultType:返回值类型
+	resultMap:映射，与resultMap标签的id属性值相同
+	 -->
+    <select id="findRoleMenuIds" resultMap="roleMenuVO">
+        select id,name,remarks from t_role	oles where id=#{id};
+    </select>
+    <!-- type:返回值类型 -->
+    <resultMap type="com.qqls.youxiangousys.pj.sys.vo.SysRoleMenuVO" id="roleMenuVO">
+        <!--property:对应实体类的属性，一般是主键属性
+            column：字段名-->
+        <id property="id" column="id"/>
+        <!-- SysRoleMenuVO中一个id对应多个menuId,向这种1对多的情况要用collection标签
+             property:查出来的值注入到指定的属性中  column:根据该指定字段去查
+             select:dao接口全路径+方法，指定去这个地方查询
+
+             association:1对1    collection:1对多
+             -->
+
+        <collection property="menuIds" column="id"
+                    select="com.qqls.youxiangousys.pj.sys.dao.SysRoleMenuDao.findMenuIdsByRoleIds">
+        </collection>
+    </resultMap>
 </mapper>

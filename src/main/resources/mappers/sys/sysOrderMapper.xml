@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qqls.youxiangousys.pj.sys.dao.SysOrderDao">
+
+    <sql id="queryOrder">
+        <where>
+            <if test="orderNumber != null and orderNumber != ''">
+                orderNumber like concat("%",#{orderNumber},"%")
+            </if>
+        </where>
+    </sql>
+    <!--统计订单总条数用来分页-->
+    <select id="countOrder" resultType="java.lang.Integer">
+        select * from t_order
+        <include refid="queryOrder"></include>
+    </select>
+    <!--根据订单号找订单-->
+    <select id="findOrder" resultType="com.qqls.youxiangousys.pj.sys.entity.SysOrder">
+        select * from t_order
+        <include refid="queryOrder"></include>
+        limit #{start},#{pageSize};
+    </select>
+</mapper>

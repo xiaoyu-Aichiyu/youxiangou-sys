@@ -86,7 +86,7 @@
 <script src="api/member/member.js"></script>
 <script>
     $(function (){
-        $(".tableBar").on("click",".el-button--add,.el-button--update",addPage);//跳转修改或者添加
+        $(".container").on("click",".el-button--add,.el-button--update",addPage);//跳转修改或者添加
         $(".el-button--primary").on("click",doGetObjects);//初始加载分页数据
         //先加载数据，再查询数据
         $("#pageId").load("page/page",function(){
@@ -103,7 +103,6 @@
             "curPage" :curPage ? curPage : 1,
             "pageSize" : 5
         };
-        debugger
         $.get(url,params,function(result){
             if(result.state == 0){
                 commonShowTips(result.message);
@@ -129,13 +128,32 @@
                 +"<td class='el-table_1_column_6 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.createUser+"</div></td>"
                 +"<td class='el-table_1_column_7 is-leaf' colspan='1' rowspan='1'><div class='cell'>"+d.updateUser+"</div></td>"
                 +"<td class='el-table_1_column_8 is-leaf' colspan='1' rowspan='1' style='width: 153px'><div>"
-                +"<button type='button' class='el-button el-button--primary  continue up btn-delete'>删除</button>"
+                +"<button type='button' class='el-button el-button--primary  continue el-button--delete'>删除</button>"
                 +"<button type='button' class='el-button--primary el-button el-button--update'>修改</button></div></td></tr>";
             tbody.append(tr);
             //每一行上面绑定当前行数据
-            $("#tbodyId tr").last().data("role",data[i]);
+            $("#tbodyId tr").last().data("role",d.id);
         }
-        $(".btn-delete").on("click",deleteRoel);//动态绑定删除角色事件
+        $(".el-button--delete").on("click",deleteRoel);//动态绑定删除角色事件
+    }
+
+    /**
+     * 删除
+     */
+    function deleteRoel(){
+        if(!confirm("确定删除吗")){
+            return;
+        }
+        var url = "role/deleteRole";
+        //找到当前的tr绑定的roleId
+        var tr = $(this).parents("tr");
+        var id = tr.data("roleId");
+        var param ={id:id};
+        $.get(url,param,function(result){
+            alert(result.message);
+            //刷新数据
+            doGetObjects()
+        })
     }
     /**
      * 多选框全选事件方法
@@ -150,9 +168,9 @@
     }
     //添加或修改角色页面
     function addPage(){
-        var bool = $(this).hasClass("el-button--add");
+        var bool = $(this).hasClass("el-button--update");
         if(bool){
-            var roleId = $(this).parents("tr").data("roleId");
+            var roleId = $(this).parents("tr").data("role");
             $("#cIframe").data("roleId",roleId);
         }
         $("#cIframe").load("role/add" ,function(){

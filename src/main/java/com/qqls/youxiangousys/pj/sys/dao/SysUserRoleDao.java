@@ -29,4 +29,13 @@ public interface SysUserRoleDao {
      * @return
      */
     List<Integer> findRoleUserById(Integer userId);
+
+    /**
+     * 通过角色id删除用户角色关系数据
+     * @param roleId
+     * @return
+     */
+    Integer deleteRoleMenuByRoleId(Integer roleId);
+
+    List<Integer> findRoleByUserId(Integer userId);
 }

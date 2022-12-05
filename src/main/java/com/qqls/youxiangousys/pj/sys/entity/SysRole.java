@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor//有参
 public class SysRole implements Serializable {
     private Integer id;
-    private String name;//用户姓名
+    private String name;//角色姓名
     private String remarks;//备注
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date creationTime;//创建时间

@@ -2,6 +2,7 @@ package com.qqls.youxiangousys.pj.sys.dao;
 
 import com.qqls.youxiangousys.pj.sys.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -39,4 +40,11 @@ public interface SysMenuDao {
     SysMenu findMenuByName(String name, Integer parentId);
 
     int updateMenu(SysMenu menu);
+
+    /**
+     *通过菜单id找所有授权标识
+     * @param menuIds
+     * @return
+     */
+    List<String> findPermission(@Param("menuIds")Integer[] menuIds);
 }

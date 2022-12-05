@@ -1,0 +1,135 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<!-- 引入样式 -->
+<style>
+    .container {
+        width: 100%;
+    }
+</style>
+
+<div id="member-add-app" class="addBrand-container">
+    <div class="container">
+        <form class="el-form demo-ruleForm">
+            <div class="el-form-item is-required">
+                <label for="nameId" class="el-form-item__label" style="width: 180px;">角色名称:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" name="name" autocomplete="off" placeholder="请输入名称" maxlength="20" class="el-input__inner" id="nameId">
+                    </div>
+                </div>
+            </div>
+            <div class="el-form-item is-required">
+                <label for="remarks" class="el-form-item__label" style="width: 180px;">描述:</label>
+                <div class="el-form-item__content" style="margin-left: 180px;">
+                    <div class="el-input">
+                        <input type="text" name="remarks" autocomplete="off" placeholder="请输入描述" maxlength="20" class="el-input__inner"id="remarks">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="menuTree" class="el-form-item__label" style="width: 180px;">授权:</label>
+                <div class="el-input">
+                    <ul id="menuTree" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="subBox address">
+                <div class="el-form-item">
+                    <div class="el-form-item__content" style="margin-left: 180px;">
+                        <button type="button" class="el-button el-button--default">取消</button>
+                        <button type="button" class="el-button el-button--primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="api/member/member.js"></script>
+<script type="text/javascript" src="../bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../bower_components/layer/layer.js"></script>
+<script>
+    var zTree;
+    var setting = {
+        data : {
+            simpleData : {
+                enable : true,//
+                idKey : "id",  //节点数据中保存唯一标识的属性名称
+                pIdKey : "parentId",  //节点数据中保存其父节点唯一标识的属性名称
+                rootPId : null  //根节点id
+            }
+        },
+        check:{
+            enable:true,
+            nocheckInherit:true
+        }
+    }
+    $(function (){
+        zTreeMenu();
+        $(".address").on('click','.el-button--default',cancelToRoleList)
+                     .on('click','.el-button--primary',preservationRole);
+    })
+
+    function preservationRole(){
+        var roleId = $("#cIframe").data("roleId");
+        //1.url赋值
+        var url = roleId ? "role/updateRoleById" : "role/saveRole";
+        //2.拿到名称和描述的值
+        var params={
+            name:$("#nameId").val(),//名字
+            remarks:$("#remarks").val()//描述
+        };
+        if(roleId){//如果有值表示修改，则绑定要修改的数据id
+            params.id = roleId;
+        }
+        //3.调用zTree树的获取选中行的方法，返回节点集合，拿到所有节点的id
+        var nodes = zTree.getCheckedNodes();//勾选，getSelectedNodes():不是勾选，是点击选择行
+        var ids = [];
+        //k表示下标
+        for(var k in nodes){
+            ids.push(nodes[k].id);
+        }
+        params.menuIds = ids;//给params加一个key为ids的键值对，value为ids
+        //4.$.get()异步请求
+        //处理回调结果
+        $.get(url,params,function(result){
+            alert(result.message);
+        });
+    }
+    /**
+     * zTreeMenu
+     */
+    function zTreeMenu(){
+        var url = "menu/findZtreeMenu";
+        $.get(url,{},function(result){
+            zTree = $.fn.zTree.init($("#menuTree"),setting,result.data);
+            zTree.expandAll(true);
+            loadRoleUpdateData();//加载填充修改角色数据
+        })
+    }
+    function loadRoleUpdateData(){
+        var roleId  =$("#cIframe").data("roleId");//拿到修改角色的id
+        var param = {id : roleId};
+        var url = "role/findRoleMenuIdsByRoleId";//通过角色id找角色及角色菜单id
+        $.get(url,param,function(result){
+            debugger
+            $("#nameId").val(result.data.name);
+            $("#remarks").val(result.data.remarks);
+            var ids = result.data.menuIds;
+            //var i in ids : i 表示下标
+            for(var i in ids ){
+                //第一个参数为属性，第二个参数为属性值
+                //找到属性为id，属性为ids[i的节点]
+                var onde =zTree.getNodesByParam("id",ids[i])
+                //选中指定节点
+                zTree.checkNode(onde[0],true,false);
+            }
+        })
+    }
+    //返回数据展示页面
+    function cancelToRoleList(){
+        //把绑定的id清空
+        $("#cIframe").data("roleId","");
+        $("#cIframe").load("role/list");
+    }
+</script>

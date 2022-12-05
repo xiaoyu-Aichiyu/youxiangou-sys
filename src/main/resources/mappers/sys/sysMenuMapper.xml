@@ -12,6 +12,13 @@
     <select id="findZtreeMenu" resultType="com.qqls.youxiangousys.pj.common.entity.Node">
         select * from t_menu
     </select>
+    <!--通过菜单id找所有授权标识-->
+    <select id="findPermission" resultType="java.lang.String">
+        select permission from t_menu where id in
+        <foreach collection="menuIds" open="(" close=")" separator="," item="menuId">
+            #{menuId}
+        </foreach>
+    </select>
 
     <insert id="saveMenu">
         insert into t_menu values(null,#{name},#{menuNote},#{menuType},#{parentId},#{permission},null,null,now(),now())

@@ -1,15 +1,24 @@
 package com.qqls.youxiangousys.pj.sys.service.realm;
 
+import com.qqls.youxiangousys.pj.sys.dao.SysMenuDao;
+import com.qqls.youxiangousys.pj.sys.dao.SysRoleMenuDao;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserDao;
 import com.qqls.youxiangousys.pj.sys.dao.SysUserRoleDao;
+import com.qqls.youxiangousys.pj.sys.entity.SysUser;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ShiroUserRealm extends AuthorizingRealm {
@@ -20,11 +29,11 @@ public class ShiroUserRealm extends AuthorizingRealm {
     @Autowired
     private SysUserRoleDao userRoleDao;
 
-    /*@Autowired
+    @Autowired
     private SysRoleMenuDao roleMenuDao;
 
     @Autowired
-    private SysMenuDao menuDao;*/
+    private SysMenuDao menuDao;
 
     /**
      * 设置凭证匹配器(与用户添加操作使用相同的加密算法)
@@ -47,7 +56,7 @@ public class ShiroUserRealm extends AuthorizingRealm {
      */
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-       /* SysUser user = (SysUser) principals.getPrimaryPrincipal();
+        SysUser user = (SysUser) principals.getPrimaryPrincipal();
         int userId = user.getId();
         List<Integer> roleIds = userRoleDao.findRoleByUserId(userId);
         if (roleIds == null || roleIds.size() == 0){
@@ -68,8 +77,7 @@ public class ShiroUserRealm extends AuthorizingRealm {
         }
         System.out.println(set+"&*&*&*&*&*&**");
         info.setStringPermissions(set);
-        return info;*/
-        return null;
+        return info;
     }
 
     /*public static void main(String[] args) {
@@ -116,6 +124,4 @@ public class ShiroUserRealm extends AuthorizingRealm {
         //认证管理器会通过此信息完成认证操作)*/
         return null;
     }
-
-
 }
