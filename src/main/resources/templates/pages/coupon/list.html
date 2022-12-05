@@ -62,21 +62,18 @@
                                 <div class="cell">金额</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
-                                <div class="cell">折扣</div>
-                            </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
                                 <div class="cell">条件</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
                                 <div class="cell">优惠券状态</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_6 is-leaf">
                                 <div class="cell">开始时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
                                 <div class="cell">结束时间</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_9 is-center is-leaf">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_8 is-center is-leaf">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -100,7 +97,7 @@
 </div>
 <script>
     $(function() {
-        $("#cIframe").data("couponId", "");
+        $("#cIframe").data("couponRow", "");
         $(".tableBar").on("click",".el-button--add,.el-button--update",loadAddOrUpdate);
         $("#load-coupon-id").data("isDeletePage", false);
         $("#btn-search").on("click", doGetObjects);
@@ -112,11 +109,9 @@
     })
 
     function loadAddOrUpdate() {
-        debugger
         var bool = $(this).hasClass("el-button--update");
         if(bool) {
             var rowData = $(this).parents("tr").data("couponRow");
-            $("#cIframe").data("couponId", rowData.id);
             //每行数据绑定到大盒子上,为了修改页面能拿到数据
             $("#cIframe").data("couponRow", rowData)
         }
@@ -221,12 +216,11 @@
                     "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + d.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
                 dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ d.couponName + "</div></td>";
                 dataStr += "<td class='el-table_1_column_3 is-leaf'><div class='cell'>"+ d.couponMoney + "</div></td>";
-                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>"+ d.couponRebate + "</div></td>";
-                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>"+ d.couponTerm + "</div></td>";
-                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>"+ (d.couponState?"禁用":"启用") + "</div></td>";
-                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>"+ d.startTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>"+ d.endTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_9 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ (d.couponState?"启用":"禁用") +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>"+ d.couponTerm + "</div></td>";
+                dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>"+ (d.couponState == 1 ?"启用":"禁用") + "</div></td>";
+                dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>"+ d.startTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>"+ d.endTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_8 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ (d.couponState?"禁用":"启用") +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
                 $("#tbodyId").find("tr:last").data("couponRow",d);//把每一行的数据绑定到当前行

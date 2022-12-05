@@ -38,4 +38,14 @@
             #{ids}
         </foreach>
     </update>
+
+    <!-- 插入优惠券数据 -->
+    <insert id="insertCoupon">
+        insert into t_coupon values(null,#{couponName},#{couponMoney},#{couponTerm},#{startTime},#{endTime},#{couponState})
+    </insert>
+
+    <!-- 修改优惠券数据 -->
+    <update id="updateCoupon">
+        update t_coupon set coupon_name =#{couponName},coupon_money=#{couponMoney},coupon_term=#{couponTerm},start_time=#{startTime},end_time=#{endTime} where id=#{id}
+    </update>
 </mapper>

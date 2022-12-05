@@ -49,6 +49,22 @@
         top: 0;
         left: 0;
     }
+    .select{
+        width: 293px;
+        height: 40px;
+        border: 1px solid #d8dde3;
+        border-radius: 4px;
+        appearance:none;
+        -moz-appearance:none;
+        -webkit-appearance:none;
+        color: #818693;
+    }
+    .select option{
+        color: #ffc200;
+    }
+    .select:hover{
+        border: 1px solid #d8dde3;
+    }
 </style>
 
 
@@ -60,7 +76,7 @@
                     <label for="name" class="el-form-item__label" style="width: 180px;">优惠券名称:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="text" autocomplete="off" id="itemNameId" placeholder="请填写优惠券名称" maxlength="20" class="el-input__inner">
+                            <input type="text" autocomplete="off" id="couponName" placeholder="请填写优惠券名称" maxlength="20" class="el-input__inner">
                         </div>
                     </div>
                 </div>
@@ -68,7 +84,7 @@
                     <div class="el-form-item__content">
                         <div class="el-select">
                             <div class="el-input el-input--suffix">
-                                <input type="text" autocomplete="off" id="price" placeholder="请填写优惠券金额" maxlength="20" class="el-input__inner">
+                                <input type="text" autocomplete="off" id="couponPrice" placeholder="请填写优惠券金额" maxlength="20" class="el-input__inner">
                             </div>
                             <div class="el-select-dropdown el-popper" style="display: none; min-width: 293px;">
                                 <div class="el-scrollbar" style="display: none;">
@@ -92,17 +108,10 @@
             </div>
             <div>
                 <div class="el-form-item is-required">
-                    <label for="price" class="el-form-item__label" style="width: 180px;">优惠折扣:</label>
-                    <div class="el-form-item__content">
-                        <div class="el-input">
-                            <input type="text" id="itemPriceId" placeholder="请设置优惠券折扣" class="el-input__inner">
-                        </div>
-                    </div>
-                </div>
-                <label for="title" class="el-form-item__label" style="width: 180px;">优惠条件:</label>
+                <label for="title" class="el-form-item__label" style="width: 427px;">优惠条件:</label>
                 <div class="el-form-item__content">
                     <div class="el-input">
-                        <input type="text" autocomplete="off" id="itemTitleId" placeholder="请设置优惠条件" class="el-input__inner">
+                        <input type="text" autocomplete="off" id="couponTerm" placeholder="请设置优惠条件" class="el-input__inner">
                     </div>
                 </div>
             </div>
@@ -121,14 +130,14 @@
                     <label for="price" class="el-form-item__label" style="width: 180px;">开始时间:</label>
                     <div class="el-form-item__content">
                         <div class="el-input">
-                            <input type="date" placeholder="请设置优惠开始时间" class="el-input__inner">
+                            <input type="date" id="startTime" placeholder="请设置优惠开始时间" class="el-input__inner">
                         </div>
                     </div>
                 </div>
                 <label for="title" class="el-form-item__label" style="width: 180px;">结束时间:</label>
                 <div class="el-form-item__content">
                     <div class="el-input">
-                        <input type="date" autocomplete="off" placeholder="请设置优惠结束时间" class="el-input__inner">
+                        <input type="date" id="endTime" autocomplete="off" placeholder="请设置优惠结束时间" class="el-input__inner">
                     </div>
                 </div>
             </div>
@@ -168,6 +177,68 @@
 <script>
  
     $(function(){
-
+        $(".el-button--default").on("click",backToCouponList);//取消返回主界面
+        $(".el-button--primary").on("click",saveAddOrUpdate);//添加或者修改
+        var data = $("#cIframe").data("couponRow");
+        if(data)doInitEditFormData($("#cIframe").data("couponRow"));
     })
+
+    /**
+     * 如果是修改的话拿到要填充的数据
+     */
+    function doInitEditFormData(data) {
+        $("#couponName").val(data.couponName);
+        $("#couponPrice").val(data.couponMoney);
+        $("#couponTerm").val(data.couponTerm);
+        $("#startTime").val(data.startTime);
+        $("#endTime").val(data.endTime);
+    }
+
+    /**
+     * 提交添加或者修改结果
+     */
+    function saveAddOrUpdate() {
+        debugger
+        var insertUrl = "coupon/saveCouponData";//保存菜单url
+        var updateUrl = "coupon/updateCouponData";//修改
+        var params = doGetEditFormData();
+        var couponRow = $("#cIframe").data("couponRow");
+        var url=couponRow?updateUrl:insertUrl;
+        if(couponRow)params.id=couponRow.id;
+        if (!params.couponName || !params.couponMoney || !params.couponTerm){
+            commonShowTips("请将表单信息填写完整！！");
+            return;
+        }
+        $.get(url, params, function(result) {
+            if (result.state == 1) {
+                commonShowTips(result.message);
+                backToCouponList();
+            } else {
+                commonShowTips(result.message);
+            }
+        })
+    }
+
+    /**
+     *表单数据封装
+     */
+    function doGetEditFormData() {
+        debugger
+        var params={
+            couponName : $("#couponName").val(),
+            couponMoney : $("#couponPrice").val(),
+            couponTerm : $("#couponTerm").val(),
+            startTime : $("#startTime").val(),
+            endTime : $("#endTime").val()
+        }
+        return params;
+    }
+
+    /**
+     * 取消返回优惠券主界面
+     */
+    function backToCouponList() {
+        $("#cIframe").data("couponId","");
+        $("#cIframe").load("coupon/list");
+    }
 </script>

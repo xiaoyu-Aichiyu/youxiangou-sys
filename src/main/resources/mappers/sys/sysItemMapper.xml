@@ -54,17 +54,17 @@
     <insert id="insertItemExcel">
         insert into t_item values
         <foreach collection="list" separator="," item="item">
-            (null,#{item.itemName},#{item.itemTitle},#{item.itemImg},#{item.itemNote},#{item.itemPrice},#{item.itemNum},#{item.saleNum},now(),now(),#{item.createdUser},#{item.modifiedUser},#{item.typeId},#{item.itemState},#{item.itemSell})
+            (null,#{item.itemName},#{item.itemTitle},#{item.itemImg},#{item.itemNote},#{item.itemPrice},#{item.itemNum},#{item.saleNum},now(),now(),#{item.createdUser},#{item.modifiedUser},#{item.typeId},#{item.itemState},#{item.itemSell},#{item.itemRebate})
         </foreach>
     </insert>
 
     <!-- 插入商品数据 -->
     <insert id="insertItemData">
-        insert into t_item values(null,#{itemName},#{itemTitle},#{itemImg},#{itemNote},#{itemPrice},#{itemNum},#{saleNum},now(),now(),#{createdUser},#{modifiedUser},#{typeId},#{itemState},#{itemSell})
+        insert into t_item values(null,#{itemName},#{itemTitle},#{itemImg},#{itemNote},#{itemPrice},#{itemNum},#{saleNum},now(),now(),#{createdUser},#{modifiedUser},#{typeId},#{itemState},#{itemSell},#{itemRebate})
     </insert>
 
     <!-- 修改商品数据 -->
     <update id="updateItemData">
-        update t_item set item_name =#{itemName},item_title=#{itemTitle},item_title=#{itemTitle},item_img=#{itemImg},item_note=#{itemNote},item_price=#{itemPrice},item_num=#{itemNum},sale_num=#{saleNum},created_time=now(),modified_time=now(),created_user=#{createdUser},modified_user=#{modifiedUser},type_id=#{typeId},item_state=#{itemState},item_sell=#{itemSell} where id=#{id}
+        update t_item set item_name =#{itemName},item_title=#{itemTitle},item_title=#{itemTitle},item_img=#{itemImg},item_note=#{itemNote},item_price=#{itemPrice},item_num=#{itemNum},sale_num=#{saleNum},created_time=now(),modified_time=now(),created_user=#{createdUser},modified_user=#{modifiedUser},type_id=#{typeId},item_state=#{itemState},item_rebate=#{itemRebate} where id=#{id}
     </update>
 </mapper>

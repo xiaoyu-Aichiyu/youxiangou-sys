@@ -75,9 +75,6 @@
                             <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
                                 <div class="cell">商品标题</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_4 is-leaf">
-                                <div class="cell">商品详情</div>
-                            </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_5 is-leaf">
                                 <div class="cell">商品分类</div>
                             </th>
@@ -85,15 +82,24 @@
                                 <div class="cell">售价</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_7 is-leaf">
-                                <div class="cell">售卖状态</div>
+                                <div class="cell">折扣</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_8 is-leaf">
-                                <div class="cell">商品推荐</div>
+                                <div class="cell">销量</div>
                             </th>
                             <th colspan="1" rowspan="1" class="el-table_1_column_9 is-leaf">
-                                <div class="cell">最后操作时间</div>
+                                <div class="cell">库存</div>
                             </th>
-                            <th colspan="1" rowspan="1" class="el-table_1_column_10 is-center is-leaf" style="width: 153px">
+                            <th colspan="1" rowspan="1" class="el-table_1_column_10 is-leaf">
+                                <div class="cell">售卖状态</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_11 is-leaf">
+                                <div class="cell">商品推荐</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_12 is-leaf">
+                                <div class="cell">操作时间</div>
+                            </th>
+                            <th colspan="1" rowspan="1" class="el-table_1_column_13 is-center is-leaf" style="width: 153px">
                                 <div class="cell">操作</div>
                             </th>
                         </tr>
@@ -140,7 +146,7 @@
 </style>
 <script>
     $(function() {
-        $("#cIframe").data("itemId", "");
+        $("#cIframe").data("itemRow", "");
         $("#load-item-id").data("isDeletePage", false);
         $(".tableBar").on("click",".el-button--add,.el-button--update",saveAddOrUpdate);
         $("#btn-search").on("click", doGetObjects);
@@ -167,7 +173,7 @@
             //$("#cIframe").data("itemId",boxCheck.val());
             //拿到当前行绑定的数据
             var rowData = $(this).parents("tr").data("itemRow");
-            $("#cIframe").data("itemId",rowData.id);
+            //$("#cIframe").data("itemId",rowData.id);
             //每行数据绑定到大盒子上,为了修改页面能拿到数据
             $("#cIframe").data("itemRow",rowData)
         }
@@ -395,18 +401,20 @@
                 //dataStr += "<tr><td><input type='checkbox' value='"+ data[i].id+"'>" + (i+1) +"</td>"
                 dataStr += "<tr><td class='el-table_1_column_1   el-table-column--selection  is-leaf' style='width: 25px'><div class='cell'><label class='el-checkbox'><span class='el-checkbox__input'>" +
                     "<input type='checkbox' id='input-data' aria-hidden='false'' value='" + data.id+ "' onchange='commonChoiceThis()'></span></label></div></td>";
-                dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell'>"+ data.itemName + "</div></td>";
+                dataStr += "<td class='el-table_1_column_2 is-leaf'><div class='cell' title='" + data.itemName + "'>"+ data.itemName + "</div></td>";
                 dataStr += "<td class='el-table_1_column_3 is-center is-leaf'><div class='cell'><img src="+data.itemImg+" width='40px' height='40px'></div></td>";
                 dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemTitle + "</div></td>";
-                dataStr += "<td class='el-table_1_column_4 is-leaf'><div class='cell'>" + data.itemNote + "</div></td>";
                 dataStr += "<td class='el-table_1_column_5 is-leaf'><div class='cell'>" + (data.sysCategory?data.sysCategory.name:'未分配') + "</div></td>";
                 dataStr += "<td class='el-table_1_column_6 is-leaf'><div class='cell'>" + data.itemPrice + "</div></td>";
-                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
-                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" +
+                dataStr += "<td class='el-table_1_column_7 is-leaf'><div class='cell'>" + data.itemRebate + "</div></td>";
+                dataStr += "<td class='el-table_1_column_8 is-leaf'><div class='cell'>" + data.saleNum + "</div></td>";
+                dataStr += "<td class='el-table_1_column_9 is-leaf'><div class='cell'>" + data.itemNum + "</div></td>";
+                dataStr += "<td class='el-table_1_column_10 is-leaf'><div class='cell'>" + stateStr + "</div></td>";
+                dataStr += "<td class='el-table_1_column_11 is-leaf'><div class='cell'>" +
                             "<div class='sell-btn sell-btn-common' style='background-color: " + (data.itemSell ? "#ffc200" : "#e3e3e3") + ";'>" +
                             "<div style='margin-left:" + (data.itemSell ? "26" : "5") + "px; '></div></div></div></td>"
-                dataStr += "<td class='el-table_1_column_9 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
-                dataStr += "<td class='el-table_1_column_10 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
+                dataStr += "<td class='el-table_1_column_12 is-leaf'><div class='cell'>" +data.createdTime + "</div></td>";
+                dataStr += "<td class='el-table_1_column_13 is-center is-leaf' style='width: 153px'><div><button type='button' onclick='changeState(this)' class='el-button el-button--primary'>"+ stateBtnStr +"</button><button type='button' class='el-button el-button--primary el-button--update continue'>修改</button></div></td></td>";
                 dataStr += "</tr>"
                 $("#tbodyId").append(dataStr);
                 $("#tbodyId").find("tr:last").data("itemRow",data);//把每一行的数据绑定到当前行
